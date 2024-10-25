@@ -1,0 +1,14 @@
+html,
+body {
+    margin: 0px;
+    padding: 0px;
+
+    height: 100vh;
+    width: 100vw;
+}
+
+svg {
+    height: 100vh;
+    width: 100vw;
+    background-color: #424242;
+}
