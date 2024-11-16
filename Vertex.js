@@ -5,22 +5,22 @@ class Vertex {
         this._vx = 0;
         this._vy = 0;
         this._mass = 1;
-        this._body = undefined;
+        this._body = this.makeBody(this._x, this._y);
     }
 
-    draw() {
+    makeBody (x, y) {
         const canvas = document.getElementById("canvas");
         const body = document.createElementNS(
             "http://www.w3.org/2000/svg",
             "circle"
         );
-        body.setAttribute("cx", this._x);
-        body.setAttribute("cy", this._y);
+        body.setAttribute("cx", x);
+        body.setAttribute("cy", y);
         body.setAttribute("r", 2 * this._mass);
         body.setAttribute("fill", "white");
         canvas.appendChild(body);
 
-        this._body = body;
+        return body;
     }
 
     get x() {
@@ -55,26 +55,6 @@ class Vertex {
 
     set vy(newVy) {
         this._vy = newVy;
-    }
-
-    move(x, y) {
-        const translateX = x - this._x;
-        const translateY = y - this._y;
-
-        const animation = this._body.animate(
-            {
-                transform: `translate(${translateX}px, ${translateY}px)`
-            },
-            {
-                duration: 1000,
-                iteration: 1,
-                easing: "ease-in-out",
-                fill: "forwards"
-            }
-        );
-
-        this._x = x;
-        this._y = y;
     }
 
     diag() {

@@ -20,7 +20,6 @@ function main() {
         const y = height * Math.random();
         const vertex = new Vertex(x, y);
         vertices.push(vertex);
-        vertex.draw();
     }
 
     // Make some edges
