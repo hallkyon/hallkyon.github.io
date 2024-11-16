@@ -1,3 +1,5 @@
+// @prettier
+
 const stiffness = 0.001;
 const repulsion = 0.00001;
 const damping = 0.9;
@@ -7,7 +9,7 @@ function updatePositions(vertices) {
         throw new Error(`Invalid parameter (${typeof vertices})`);
     }
 
-    vertices.forEach(vertex => {
+    vertices.forEach((vertex) => {
         vertex.x += vertex.vx;
         vertex.y += vertex.vy;
     });
@@ -22,7 +24,7 @@ function applyForces(vertices, edges) {
         throw new Error(`Invalid parameter (${typeof edges})`);
     }
 
-    vertices.forEach(vertex => {
+    vertices.forEach((vertex) => {
         applyRepulsiveForces(vertices, vertex);
         applyAttractionForces(edges, vertex);
         applyDamping(vertex);
@@ -35,7 +37,7 @@ function applyRepulsiveForces(vertices, vertexA) {
         throw new Error(`Invalid parameter (${typeof vertices})`);
     }
 
-    vertices.forEach(vertexB => {
+    vertices.forEach((vertexB) => {
         if (vertexA === vertexB) {
             return; // Skip self interaction
         }

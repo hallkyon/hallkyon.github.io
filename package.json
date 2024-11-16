@@ -1,0 +1,21 @@
+{
+    "name": "GraphNote",
+    "version": "1.0.0",
+    "description": "Note taking and visualization",
+    "main": "main.js",
+    "type": "module",
+    "scripts": {
+        "test": "nyc --reporter=html --reporter=text mocha --recursive",
+        "server": "http-server"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.15.0",
+        "eslint": "^9.15.0",
+        "globals": "^15.12.0",
+        "http-server": "^14.1.1",
+        "mocha": "^10.8.2",
+        "nyc": "^17.1.0"
+    },
+    "author": "Jakob Haller",
+    "license": "MIT"
+}
