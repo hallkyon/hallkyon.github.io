@@ -8,18 +8,19 @@ class Vertex {
         this._body = this.makeBody(this._x, this._y);
     }
 
-    makeBody (x, y) {
+    makeBody(x, y) {
         const canvas = document.getElementById("canvas");
-        const body = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "circle"
-        );
+        const namespace = "http://www.w3.org/2000/svg";
+        const shape = "circle";
+        const body = document.createElementNS(namespace, shape);
+        const radius = 2 * this._mass;
+        const color = "white";
+
         body.setAttribute("cx", x);
         body.setAttribute("cy", y);
-        body.setAttribute("r", 2 * this._mass);
-        body.setAttribute("fill", "white");
+        body.setAttribute("r", radius);
+        body.setAttribute("fill", color);
         canvas.appendChild(body);
-
         return body;
     }
 
