@@ -1,0 +1,14 @@
+{
+    "name": "GraphNote",
+    "version": "1.0.0",
+    "description": "Note taking and visualization",
+    "main": "main.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0"
+    },
+    "author": "Jakob Haller",
+    "license": "MIT"
+}

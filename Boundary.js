@@ -1,26 +1,30 @@
 // @prettier
 
 class Boundary {
-    constructor(endpoints) {
-        this.endpoints = endpoints;
+    constructor(points) {
+        this.points = points;
     }
 
     draw() {
         const svg = document.getElementById('svg');
         const namespace = 'http://www.w3.org/2000/svg';
-        const shape = 'polygon';
-        const body = document.createElementNS(namespace, shape);
+        const svgElement = 'polygon';
+        const svgBoundary = document.createElementNS(namespace, svgElement);
 
-        // <polygon points="0,100 50,25, 50,75 100,0" />
-        const points = this.endpoints
+        // points attribute format: <polygon points="0,0 100,0 100,100, 0,100" />
+        const points = this.points
             .map((point) => `${point.x},${point.y}`)
             .join(' ');
         const strokeColor = 'white';
 
-        body.setAttribute('points', points);
-        body.setAttribute('stroke', strokeColor);
-        body.setAttribute('fill', 'none');
-        svg.appendChild(body);
-        return body;
+        svgBoundary.setAttribute('points', points);
+        svgBoundary.setAttribute('stroke', strokeColor);
+        svgBoundary.setAttribute('fill', 'none');
+        svg.appendChild(svgBoundary);
+        return svgBoundary;
+    }
+
+    isInside(point) {
+        return false;
     }
 }
