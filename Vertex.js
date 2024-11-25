@@ -1,3 +1,5 @@
+// @prettier
+
 class Vertex {
     constructor(x, y) {
         this._x = x;
@@ -9,18 +11,18 @@ class Vertex {
     }
 
     makeBody(x, y) {
-        const canvas = document.getElementById("canvas");
-        const namespace = "http://www.w3.org/2000/svg";
-        const shape = "circle";
+        const svg = document.getElementById('svg');
+        const namespace = 'http://www.w3.org/2000/svg';
+        const shape = 'circle';
         const body = document.createElementNS(namespace, shape);
         const radius = 2 * this._mass;
-        const color = "white";
+        const color = 'white';
 
-        body.setAttribute("cx", x);
-        body.setAttribute("cy", y);
-        body.setAttribute("r", radius);
-        body.setAttribute("fill", color);
-        canvas.appendChild(body);
+        body.setAttribute('cx', x);
+        body.setAttribute('cy', y);
+        body.setAttribute('r', radius);
+        body.setAttribute('fill', color);
+        svg.appendChild(body);
         return body;
     }
 
@@ -30,7 +32,7 @@ class Vertex {
 
     set x(newX) {
         this._x = newX;
-        this._body.setAttribute("cx", newX);
+        this._body.setAttribute('cx', newX);
     }
 
     get y() {
@@ -39,7 +41,7 @@ class Vertex {
 
     set y(newY) {
         this._y = newY;
-        this._body.setAttribute("cy", newY);
+        this._body.setAttribute('cy', newY);
     }
 
     get vx() {
