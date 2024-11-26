@@ -28,3 +28,5 @@ class Boundary {
         return false;
     }
 }
+
+module.exports = Boundary;

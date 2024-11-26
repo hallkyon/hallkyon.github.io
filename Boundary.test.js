@@ -14,11 +14,11 @@ describe('Boundary', () => {
 
     it('should return false if point is outside the boundary', () => {
         const point = { x: 6, y: 6 };
-        expect(boundary.isInside(point).toBe(false));
+        expect(boundary.isInside(point)).toBe(false);
     });
 
     it('should return true if point is inside the boundary', () => {
         const point = { x: 2, y: 2 };
-        expect(boundary.isInside(point).toBe(true));
+        expect(boundary.isInside(point)).toBe(true);
     });
 });
