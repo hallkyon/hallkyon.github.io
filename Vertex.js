@@ -1,6 +1,6 @@
 // @prettier
 
-class Vertex {
+export class Vertex {
     constructor(x, y) {
         this._x = x;
         this._y = y;

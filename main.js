@@ -1,8 +1,5 @@
 // @prettier
 
-const height = window.innerHeight;
-const width = window.innerWidth;
-
 const vertices = [];
 const edges = [];
 

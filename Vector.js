@@ -1,6 +1,6 @@
 // @prettier
 
-class Vector {
+export class Vector {
     #x;
     #y;
 

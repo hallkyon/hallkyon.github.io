@@ -1,6 +1,6 @@
 // @prettier
 
-class Boundary {
+export class Boundary {
     constructor(points) {
         this.points = points;
     }
@@ -25,8 +25,11 @@ class Boundary {
     }
 
     isInside(point) {
+        let intersections = 0;
+        for (let i = 0; i < this.points.length; i++) {
+            const endpointA = this.points[i];
+            const endpointB = this.points[(i + 1) % this.points.length];
+        }
         return false;
     }
 }
-
-export { Boundary };

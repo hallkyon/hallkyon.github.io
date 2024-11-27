@@ -26,4 +26,16 @@ describe('Boundary', () => {
         const result = boundary.isInside(point);
         strictEqual(result, true);
     });
+
+    it('should return true if point is exactly on an edge', () => {
+        const point = { x: 5, y: 2.5 };
+        const result = boundary.isInside(point);
+        strictEqual(result, true);
+    });
+
+    it('should return true if point is exactly on a node', () => {
+        const point = { x: 5, y: 5 };
+        const result = boundary.isInside(point);
+        strictEqual(result, true);
+    });
 });
