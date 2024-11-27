@@ -1,9 +1,12 @@
-const Boundary = require('./Boundary.js');
+// @prettier
+
+import { strictEqual } from 'assert';
+import { Boundary } from '../Boundary.js';
 
 describe('Boundary', () => {
     let boundary;
 
-    beforeEach(() => {
+    before(() => {
         boundary = new Boundary([
             { x: 0, y: 0 },
             { x: 5, y: 0 },
@@ -14,11 +17,13 @@ describe('Boundary', () => {
 
     it('should return false if point is outside the boundary', () => {
         const point = { x: 6, y: 6 };
-        expect(boundary.isInside(point)).toBe(false);
+        const result = boundary.isInside(point);
+        strictEqual(result, false);
     });
 
     it('should return true if point is inside the boundary', () => {
         const point = { x: 2, y: 2 };
-        expect(boundary.isInside(point)).toBe(true);
+        const result = boundary.isInside(point);
+        strictEqual(result, true);
     });
 });

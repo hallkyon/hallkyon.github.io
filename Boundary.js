@@ -29,4 +29,4 @@ class Boundary {
     }
 }
 
-module.exports = Boundary;
+export { Boundary };
