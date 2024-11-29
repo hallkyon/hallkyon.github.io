@@ -9,6 +9,7 @@ export default [
         },
         rules: {
             complexity: ['error', { max: 2 }],
+            eqeqeq: ['error', 'always', { null: 'always' }],
         },
     },
     pluginJs.configs.recommended,
