@@ -10,6 +10,7 @@ export default [
         rules: {
             complexity: ['error', { max: 2 }],
             eqeqeq: ['error', 'always', { null: 'always' }],
+            curly: ['error', 'all'],
         },
     },
     pluginJs.configs.recommended,
