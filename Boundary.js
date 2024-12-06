@@ -24,12 +24,40 @@ export class Boundary {
         return svgBoundary;
     }
 
+    #makeBoundingBox(points) {
+        const topLeft = points[0];
+        const bottomRight = points[3];
+        return {
+            x: topLeft.x,
+            y: topLeft.y,
+            width: topLeft.x + bottomRight.x,
+            height: topLeft.y + bottomRight.y,
+        };
+    }
+
+    #isInsideBox(point, box) {
+        if (
+            point.x > box.x &&
+            point.x < box.x + box.width &&
+            point.y > box.y &&
+            point.y < box.y + box.height
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     isInside(point) {
         let intersections = 0;
         for (let i = 0; i < this.points.length; i++) {
             const endpointA = this.points[i];
             const endpointB = this.points[(i + 1) % this.points.length];
+            // Does point lie between the y coordinate of the endpoint of the two
+            // edges
+            console.log(makeBoundingBox(this.points));
         }
+
         return false;
     }
 }
+

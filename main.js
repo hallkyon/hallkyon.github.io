@@ -1,5 +1,27 @@
 // @prettier
 
+import { Vector } from './Vector.js';
+import { Boundary } from './Boundary.js';
+
+function main() {
+    const margin = 50;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const boundary = new Boundary([
+        new Vector(0 + margin, 0 + margin),
+        new Vector(width - margin, 0 + margin),
+        new Vector(width - margin, height - margin),
+        new Vector(0 + margin, height - margin),
+    ]);
+    boundary.draw();
+}
+
+window.addEventListener('load', main);
+
+/*
+import { Vertex } from './Vertex.js';
+import { Boundary } from './Boundary.js';
+
 const vertices = [];
 const edges = [];
 
@@ -51,3 +73,4 @@ function main() {
 
     animate(0, vertices, edges);
 }
+*/
