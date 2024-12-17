@@ -2,6 +2,7 @@
 
 import { Vector } from './Vector.js';
 import { Boundary } from './Boundary.js';
+import { isInside } from './ray-casting.js';
 
 function main() {
     const margin = 50;
@@ -14,6 +15,21 @@ function main() {
         new Vector(0 + margin, height - margin),
     ]);
     boundary.draw();
+
+    const polygon = new Boundary([
+        { x: 0, y: 0 },
+        { x: 50, y: 0 },
+        { x: 50, y: 50 },
+        { x: 25, y: 25 },
+        { x: 0, y: 50 },
+    ]);
+    polygon.draw();
+
+    const point = new Vector(25, 25);
+    point.draw();
+
+    isInside(boundary.vertices, point);
+    isInside(polygon.vertices, point);
 }
 
 window.addEventListener('load', main);

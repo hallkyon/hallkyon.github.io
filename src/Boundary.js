@@ -59,5 +59,8 @@ export class Boundary {
 
         return false;
     }
-}
 
+    get vertices() {
+        return this.points;
+    }
+}
