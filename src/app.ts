@@ -1,70 +1,39 @@
 // @prettier
 
+import Graph from './Graph.js';
 import Vertex from './Vertex.js';
-import Edge from './Edge.js';
-import {
-    updatePositions,
-    applyPointerAttractionForce,
-} from './force-directed-engine.js';
+import EadesEmbedder from './EadesEmbedder.js';
+// import EadesStrategy from './EadesStrategy.js';
 
-type Point = {
-    x: number;
-    y: number;
-};
+import Canvas from './Canvas.js';
 
-const height = window.innerHeight;
-const width = window.innerWidth;
+function makeRandomGraph(order: number): Graph {
+    const graph = new Graph();
 
-const vertices: Vertex[] = [];
-const edges: Edge[] = [];
-let pointerLocation: Point;
-
-function animate(timestamp: number, vertices: Vertex[], edges: Edge[]) {
-    applyPointerAttractionForce(vertices, pointerLocation);
-    updatePositions(vertices, edges);
-
-    requestAnimationFrame((timestamp) => {
-        animate(timestamp, vertices, edges);
-    });
-}
-
-function addPointerMoveEvent() {
-    const canvas = document.getElementById('svg');
-    if (null === canvas) {
-        return;
+    for (let i = 0; i < order; i++) {
+        const vertex = new Vertex(new String(String(i)));
+        graph.insertVertex(vertex);
     }
 
-    canvas.addEventListener('pointermove', (event) => {
-        pointerLocation = new Vertex(event.clientX, event.clientY);
-    });
-}
-
-function main() {
-    addPointerMoveEvent();
-
-    // Make some vertices
-    for (let i = 0; i < 5; i++) {
-        const x = width * Math.random();
-        const y = height * Math.random();
-        const vertex = new Vertex(x, y);
-        vertices.push(vertex);
-        vertex.show();
-    }
-
-    // Make some edges
-    vertices.forEach((vertexA) => {
-        vertices.forEach((vertexB) => {
+    graph.vertices.forEach((vertexA) => {
+        graph.vertices.forEach((vertexB) => {
             if (vertexA === vertexB) {
                 return;
             }
-            if (Math.random() > 0.5) {
-                const edge = new Edge(vertexA, vertexB);
-                edges.push(edge);
+            if (Math.random() > 0.97) {
+                graph.insertUndirectedEdge(vertexA, vertexB);
             }
         });
     });
 
-    animate(0, vertices, edges);
+    return graph;
 }
 
-window.addEventListener('load', main);
+function main() {
+    const canvas = Canvas.getInstance();
+
+    const graph = makeRandomGraph(30);
+    canvas.setEmbedder(graph, EadesEmbedder.embedder);
+}
+
+main();

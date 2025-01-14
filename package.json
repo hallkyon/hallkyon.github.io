@@ -1,23 +1,27 @@
 {
     "name": "GraphNote",
     "version": "1.0.0",
-    "description": "Note taking and visualization",
-    "main": "main.js",
+    "description": "Note taking app",
+    "main": "public/dist/app.js",
     "type": "module",
     "scripts": {
-        "test": "nyc --reporter=html --reporter=text mocha --recursive",
         "//": "-c-1 disables caching for http-server",
-        "server": "http-server -c-1",
-        "build": "tsc"
+        "build": "tsc",
+        "lint": "eslint .",
+        "test": "vitest",
+        "coverage": "vitest run --coverage",
+        "server": "http-server . -c-1"
     },
     "devDependencies": {
         "@eslint/js": "^9.15.0",
+        "@types/node": "^22.10.7",
+        "@vitest/coverage-v8": "^2.1.8",
         "eslint": "^9.15.0",
-        "globals": "^15.12.0",
+        "globals": "^15.14.0",
         "http-server": "^14.1.1",
-        "mocha": "^10.8.2",
-        "nyc": "^17.1.0",
-        "typescript": "^5.7.3"
+        "typescript": "^5.7.3",
+        "typescript-eslint": "^8.20.0",
+        "vitest": "^2.1.8"
     },
     "author": "Jakob Haller",
     "license": "MIT"
