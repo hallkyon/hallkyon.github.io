@@ -4,6 +4,7 @@ import DrawingLine from './DrawingLine.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
 import Vector from './Vector.js';
+import SliderManager from './SliderManager.js';
 export default class EadesEmbedder {
     constructor() {
         this._vertexMap = new Map();
@@ -28,6 +29,8 @@ export default class EadesEmbedder {
         return centerForce;
     }
     calculateSpringForce(vertexA, vertexB) {
+        const c1Value = SliderManager.getSliderValue('c1');
+        const c2Value = SliderManager.getSliderValue('c2');
         const instance = EadesEmbedder.getInstance();
         const pointMassA = instance._vertexMap.get(vertexA);
         const pointMassB = instance._vertexMap.get(vertexB);
@@ -36,10 +39,11 @@ export default class EadesEmbedder {
         }
         const distance = pointMassA.getDistance(pointMassB);
         const direction = pointMassA.getDirection(pointMassB);
-        const springForce = direction.scale(Math.log(distance / 100));
+        const springForce = direction.scale(Math.log(distance / c2Value)).scale(c1Value);
         return springForce;
     }
     calculateRepulsionForce(vertexA, vertexB) {
+        const c3Value = SliderManager.getSliderValue('c3');
         const instance = EadesEmbedder.getInstance();
         const pointMassA = instance._vertexMap.get(vertexA);
         const pointMassB = instance._vertexMap.get(vertexB);
@@ -49,7 +53,7 @@ export default class EadesEmbedder {
         const distance = pointMassB.getDistance(pointMassA);
         const direction = pointMassB.getDirection(pointMassA);
         const repulsionForce = distance > 0
-            ? direction.scale(10 / Math.sqrt(distance))
+            ? direction.scale(c3Value / Math.sqrt(distance))
             : new Vector(0, 0);
         return repulsionForce;
     }
@@ -69,6 +73,7 @@ export default class EadesEmbedder {
             });
         }
         graph.vertices.forEach((vertexA) => {
+            const c4Value = SliderManager.getSliderValue('c4');
             const pointMassA = instance._vertexMap.get(vertexA);
             if (!pointMassA) {
                 throw new Error(`PointMass for vertex ${vertexA} is undefined.`);
@@ -87,7 +92,7 @@ export default class EadesEmbedder {
                 }
                 force = force.add(instance.calculateRepulsionForce(vertexA, vertexB));
             });
-            pointMassA.force = force.scale(0.99);
+            pointMassA.force = force.scale(c4Value);
             pointMassA.applyForce();
         });
         instance._edgeMap.forEach((edge, line) => {

@@ -7,6 +7,7 @@ import Point from './Point.js';
 import PointMass from './PointMass.js';
 import Vertex from './Vertex.js';
 import Vector from './Vector.js';
+import SliderManager from './SliderManager.js';
 
 export default class EadesEmbedder {
     private static instance: EadesEmbedder;
@@ -40,6 +41,9 @@ export default class EadesEmbedder {
     }
 
     public calculateSpringForce(vertexA: Vertex, vertexB: Vertex): Vector {
+        const c1Value = SliderManager.getSliderValue('c1');
+        const c2Value = SliderManager.getSliderValue('c2');
+
         const instance = EadesEmbedder.getInstance();
         const pointMassA = instance._vertexMap.get(vertexA);
         const pointMassB = instance._vertexMap.get(vertexB);
@@ -48,11 +52,13 @@ export default class EadesEmbedder {
         }
         const distance = pointMassA.getDistance(pointMassB);
         const direction = pointMassA.getDirection(pointMassB);
-        const springForce = direction.scale(Math.log(distance / 100));
+        const springForce = direction.scale(Math.log(distance / c2Value)).scale(c1Value);
         return springForce;
     }
 
     public calculateRepulsionForce(vertexA: Vertex, vertexB: Vertex): Vector {
+        const c3Value = SliderManager.getSliderValue('c3');
+
         const instance = EadesEmbedder.getInstance();
         const pointMassA = instance._vertexMap.get(vertexA);
         const pointMassB = instance._vertexMap.get(vertexB);
@@ -63,7 +69,7 @@ export default class EadesEmbedder {
         const direction = pointMassB.getDirection(pointMassA);
         const repulsionForce =
             distance > 0
-                ? direction.scale(10 / Math.sqrt(distance))
+                ? direction.scale(c3Value / Math.sqrt(distance))
                 : new Vector(0, 0);
         return repulsionForce;
     }
@@ -89,6 +95,8 @@ export default class EadesEmbedder {
         }
 
         graph.vertices.forEach((vertexA) => {
+            const c4Value = SliderManager.getSliderValue('c4');
+
             const pointMassA = instance._vertexMap.get(vertexA);
             if (!pointMassA) {
                 throw new Error(
@@ -113,7 +121,7 @@ export default class EadesEmbedder {
                     instance.calculateRepulsionForce(vertexA, vertexB)
                 );
             });
-            pointMassA.force = force.scale(0.99);
+            pointMassA.force = force.scale(c4Value);
             pointMassA.applyForce();
         });
 

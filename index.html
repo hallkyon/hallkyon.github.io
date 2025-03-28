@@ -1,14 +1,35 @@
 <!doctype html>
 <html lang="en-US">
-    <head>
-        <meta name="author" content="Jakob Haller" />
-        <meta charset="utf-8" />
-        <title>GraphNote</title>
 
-        <link rel="stylesheet" href="./public/styles.css" />
-        <script type="module" src="./public/dist/app.js"></script>
-    </head>
-    <body>
-        <svg xmlns="http://www.w3.org/2000/svg" id="svg"></svg>
-    </body>
+<head>
+    <meta name="author" content="Jakob Haller" />
+    <meta charset="utf-8" />
+    <title>GraphNote</title>
+
+    <link rel="stylesheet" href="./public/styles.css" />
+    <script type="module" src="./public/dist/app.js"></script>
+</head>
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" id="svg"></svg>
+    <div style="position: absolute; bottom: 10px; left: 10px;">
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <label for="c1" style="margin-right: 10px; width: 50px; text-align: right;">C1:</label>
+            <input type="range" id="c1" name="c1" min="0" max="5" step="0.1" style="width: 300px;" />
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <label for="c2" style="margin-right: 10px; width: 50px; text-align: right;">C2:</label>
+            <input type="range" id="c2" name="c2" min="1" max="500" step="1" style="width: 300px;" />
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <label for="c3" style="margin-right: 10px; width: 50px; text-align: right;">C3:</label>
+            <input type="range" id="c3" name="c3" min="1" max="10" step="1" style="width: 300px;" />
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <label for="c4" style="margin-right: 10px; width: 50px; text-align: right;">C4:</label>
+            <input type="range" id="c4" name="c4" min="0" max="1" step="0.01" style="width: 300px;" />
+        </div>
+    </div>
+</body>
+
 </html>
