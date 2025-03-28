@@ -25,7 +25,7 @@ export default class EadesEmbedder {
         }
         const distance = pointMass.getDistance(this._center);
         const direction = pointMass.getDirection(this._center);
-        const centerForce = direction.scale(Math.log(distance));
+        const centerForce = direction.scale(Math.log(distance / 5));
         return centerForce;
     }
     calculateSpringForce(vertexA, vertexB) {
