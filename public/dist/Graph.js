@@ -54,3 +54,4 @@ export default class Graph {
         return edges;
     }
 }
+//# sourceMappingURL=Graph.js.map

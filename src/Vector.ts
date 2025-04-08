@@ -12,7 +12,6 @@ export default class Vector implements VectorInterface {
                 `Vector constructor failed: Invalid arguments: ${x}, ${y}`
             );
         }
-
         this._x = x;
         this._y = y;
     }
@@ -25,7 +24,7 @@ export default class Vector implements VectorInterface {
         return new Vector(this.x - vector.x, this.y - vector.y);
     }
 
-    public scale(scalar: number): Vector {
+    public scale(scalar: number): this {
         if (false === isFinite(scalar)) {
             throw new Error(`Vector scale failed: Invalid argument: ${scalar}`);
         }
@@ -34,11 +33,29 @@ export default class Vector implements VectorInterface {
         return this;
     }
 
-    public toUnitVector(): Vector {
+    public toUnitVector(): this {
+        if (this.isZeroVector()) {
+            throw new Error('Cannot convert a zero vector to a unit vector');
+        }
         const magnitude = this.magnitude;
         this.x = this.x / magnitude;
         this.y = this.y / magnitude;
         return this;
+    }
+
+    public dotProduct(vector: Vector): number {
+        return this.x * vector.x + this.y * vector.y;
+    }
+
+    public projection(vector: Vector): Vector {
+        if (this.isZeroVector()) {
+            throw new Error('Cannot project a zero vector');
+        }
+        return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
+    }
+
+    private isZeroVector(): boolean {
+        return this.x === 0 && this.y === 0;
     }
 
     public get magnitude(): number {

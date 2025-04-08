@@ -44,4 +44,29 @@ describe('Vector', () => {
         expect(newVector.x).toStrictEqual(1 / Math.sqrt(2));
         expect(newVector.y).toStrictEqual(-1 / Math.sqrt(2));
     });
+
+    it('should throw an error when trying to convert a zero vector to a unit vector', () => {
+        const zeroVector = new Vector(0, 0);
+        expect(() => zeroVector.toUnitVector()).toThrow(
+            'Cannot convert a zero vector to a unit vector'
+        );
+    });
+
+    it('should return the dot product of two vectors', () => {
+        const dotProduct = vectorA.dotProduct(vectorB);
+        expect(dotProduct).toStrictEqual(-10);
+    });
+
+    it('should return the projection of vectorB onto vectorA', () => {
+        const projection = vectorA.projection(vectorB);
+        expect(projection.x).toStrictEqual(5);
+        expect(projection.y).toStrictEqual(-1.25);
+    });
+
+    it('should throw an error when trying to project a zero vector', () => {
+        const zeroVector = new Vector(0, 0);
+        expect(() => zeroVector.projection(vectorA)).toThrow(
+            'Cannot project a zero vector'
+        );
+    });
 });

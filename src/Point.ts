@@ -13,7 +13,6 @@ export default class Point implements PointInterface {
                 `Point constructor failed: Invalid arguments: ${x}, ${y}`
             );
         }
-
         this._x = x;
         this._y = y;
     }
@@ -28,11 +27,6 @@ export default class Point implements PointInterface {
         const vectorA = new Vector(this.x, this.y);
         const vectorB = new Vector(to.x, to.y);
         return vectorB.sub(vectorA).magnitude;
-    }
-
-    public offset(offset: Vector) {
-        this.x = this.x + offset.x;
-        this.y = this.y + offset.y;
     }
 
     public get x(): number {

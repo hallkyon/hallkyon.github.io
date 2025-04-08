@@ -7,12 +7,13 @@ import Point from './Point.js';
 export default class DrawingLine implements DrawingLineInterface {
     private _pointA: Point;
     private _pointB: Point;
-    private _svg: SVGLineElement;
+    private readonly _svg: SVGLineElement;
 
     constructor(pointA: Point, pointB: Point) {
         this._pointA = pointA;
         this._pointB = pointB;
         this._svg = this.makeSvgLine();
+        this.show();
     }
 
     private makeSvgLine(): SVGLineElement {
@@ -31,12 +32,12 @@ export default class DrawingLine implements DrawingLineInterface {
         return svg;
     }
 
-    public show(enable: boolean): void {
-        if (true === enable) {
-            Canvas.addDrawing(this._svg);
-        } else {
-            Canvas.removeDrawing(this._svg);
-        }
+    public show(): void {
+        Canvas.addDrawing(this._svg);
+    }
+
+    public hide(): void {
+        Canvas.removeDrawing(this._svg);
     }
 
     public get pointA(): Point {

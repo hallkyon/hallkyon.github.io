@@ -5,6 +5,7 @@ export default class DrawingLine {
         this._pointA = pointA;
         this._pointB = pointB;
         this._svg = this.makeSvgLine();
+        this.show();
     }
     makeSvgLine() {
         const namespace = 'http://www.w3.org/2000/svg';
@@ -18,13 +19,11 @@ export default class DrawingLine {
         svg.setAttribute('stroke', stroke);
         return svg;
     }
-    show(enable) {
-        if (true === enable) {
-            Canvas.addDrawing(this._svg);
-        }
-        else {
-            Canvas.removeDrawing(this._svg);
-        }
+    show() {
+        Canvas.addDrawing(this._svg);
+    }
+    hide() {
+        Canvas.removeDrawing(this._svg);
     }
     get pointA() {
         return this._pointA;
@@ -43,3 +42,4 @@ export default class DrawingLine {
         this._svg.setAttribute('y2', String(newPoint.y));
     }
 }
+//# sourceMappingURL=DrawingLine.js.map

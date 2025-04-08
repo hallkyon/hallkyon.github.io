@@ -1,4 +1,5 @@
 // @prettier
+import Point from './Point.js';
 export default class Canvas {
     constructor() {
         this.animate = (timestamp) => {
@@ -16,6 +17,9 @@ export default class Canvas {
     }
     static get width() {
         return window.innerWidth;
+    }
+    static get center() {
+        return new Point(Canvas.width / 2, Canvas.height / 2);
     }
     static getInstance() {
         if (!Canvas.instance) {
@@ -43,3 +47,4 @@ export default class Canvas {
         requestAnimationFrame(this.animate.bind(this));
     }
 }
+//# sourceMappingURL=Canvas.js.map
