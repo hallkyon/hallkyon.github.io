@@ -4,8 +4,11 @@ import DrawingLine from './DrawingLine.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
 import Vector from './Vector.js';
-export default class EadesEmbedder {
+class EadesEmbedder {
     constructor() {
+        this._c1 = 1;
+        this._c2 = 50;
+        this._c3 = 2;
         this._vertexMap = new Map();
         this._edgeMap = new Map();
         this._center = new PointMass(Canvas.width / 2, Canvas.height / 2);
@@ -22,9 +25,8 @@ export default class EadesEmbedder {
         if (!pointMass) {
             throw new Error('PointMass is undefined.');
         }
-        const distance = pointMass.getDistance(this._center);
         const direction = pointMass.getDirection(this._center);
-        const centerForce = direction.scale(Math.log(distance));
+        const centerForce = direction;
         return centerForce;
     }
     calculateSpringForce(vertexA, vertexB) {
@@ -36,7 +38,7 @@ export default class EadesEmbedder {
         }
         const distance = pointMassA.getDistance(pointMassB);
         const direction = pointMassA.getDirection(pointMassB);
-        const springForce = direction.scale(Math.log(distance / 100));
+        const springForce = direction.scale(this._c1 * Math.log(distance / this._c2));
         return springForce;
     }
     calculateRepulsionForce(vertexA, vertexB) {
@@ -49,7 +51,7 @@ export default class EadesEmbedder {
         const distance = pointMassB.getDistance(pointMassA);
         const direction = pointMassB.getDirection(pointMassA);
         const repulsionForce = distance > 0
-            ? direction.scale(10 / Math.sqrt(distance))
+            ? direction.scale(this._c3 / Math.sqrt(distance))
             : new Vector(0, 0);
         return repulsionForce;
     }
@@ -57,7 +59,7 @@ export default class EadesEmbedder {
         const instance = EadesEmbedder.getInstance();
         if (0 === instance._vertexMap.size) {
             graph.vertices.forEach((vertex) => {
-                const pointMass = new PointMass(Math.random() * Canvas.width / 2 + Canvas.width / 4, Math.random() * Canvas.height / 2 + Canvas.height / 4);
+                const pointMass = new PointMass((Math.random() * Canvas.width) / 2 + Canvas.width / 4, (Math.random() * Canvas.height) / 2 + Canvas.height / 4);
                 instance._vertexMap.set(vertex, pointMass);
             });
         }
@@ -87,7 +89,7 @@ export default class EadesEmbedder {
                 }
                 force = force.add(instance.calculateRepulsionForce(vertexA, vertexB));
             });
-            pointMassA.force = force.scale(0.99);
+            pointMassA.force = force.scale(EadesEmbedder._c4);
             pointMassA.applyForce();
         });
         instance._edgeMap.forEach((edge, line) => {
@@ -104,3 +106,5 @@ export default class EadesEmbedder {
         });
     }
 }
+EadesEmbedder._c4 = 0.5;
+export default EadesEmbedder;
