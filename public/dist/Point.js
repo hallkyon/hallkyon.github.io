@@ -18,10 +18,6 @@ export default class Point {
         const vectorB = new Vector(to.x, to.y);
         return vectorB.sub(vectorA).magnitude;
     }
-    offset(offset) {
-        this.x = this.x + offset.x;
-        this.y = this.y + offset.y;
-    }
     get x() {
         return this._x;
     }
@@ -35,3 +31,4 @@ export default class Point {
         this._y = newY;
     }
 }
+//# sourceMappingURL=Point.js.map

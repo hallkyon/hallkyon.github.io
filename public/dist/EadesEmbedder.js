@@ -1,110 +1,119 @@
 // @prettier
 import Canvas from './Canvas.js';
 import DrawingLine from './DrawingLine.js';
+import DrawingCircle from './DrawingCircle.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
 import Vector from './Vector.js';
 class EadesEmbedder {
-    constructor() {
-        this._c1 = 1;
-        this._c2 = 50;
-        this._c3 = 2;
+    constructor(graph) {
         this._vertexMap = new Map();
         this._edgeMap = new Map();
-        this._center = new PointMass(Canvas.width / 2, Canvas.height / 2);
+        this._pointMassDrawingMap = new Map();
+        this._c0 = 0.2; // center attraction constant
+        this._c1 = 10;
+        this._c2 = 50;
+        this._c3 = 2;
+        this._center = new PointMass(Canvas.center.x, Canvas.center.y);
+        const centerDrawing = new DrawingCircle();
+        centerDrawing.fill = 'none';
+        centerDrawing.stroke = 'white';
+        centerDrawing.radius = 3;
+        centerDrawing.show();
+        this._pointMassDrawingMap.set(this._center, centerDrawing);
+        graph.vertices.forEach((vertex) => {
+            const pointMass = new PointMass(Canvas.center.x, Canvas.center.y);
+            const pointMassDrawing = new DrawingCircle();
+            pointMassDrawing.fill = 'white';
+            pointMassDrawing.stroke = 'white';
+            pointMassDrawing.radius = 3;
+            pointMassDrawing.show();
+            this._vertexMap.set(vertex, pointMass);
+            this._pointMassDrawingMap.set(pointMass, pointMassDrawing);
+        });
+        graph.edges.forEach((edge) => {
+            const line = new DrawingLine(new Point(0, 0), new Point(0, 0));
+            this._edgeMap.set(line, edge);
+        });
     }
-    static getInstance() {
+    static getInstance(graph) {
         if (!EadesEmbedder.instance) {
-            EadesEmbedder.instance = new EadesEmbedder();
+            EadesEmbedder.instance = new EadesEmbedder(graph);
         }
         return EadesEmbedder.instance;
     }
-    calculateCenterForce(vertex) {
-        const instance = EadesEmbedder.getInstance();
-        const pointMass = instance._vertexMap.get(vertex);
+    getPointMass(vertex) {
+        const pointMass = this._vertexMap.get(vertex);
         if (!pointMass) {
-            throw new Error('PointMass is undefined.');
+            throw new Error(`PointMass for vertex is undefined.`);
         }
-        const direction = pointMass.getDirection(this._center);
-        const centerForce = direction;
-        return centerForce;
+        return pointMass;
     }
-    calculateSpringForce(vertexA, vertexB) {
-        const instance = EadesEmbedder.getInstance();
-        const pointMassA = instance._vertexMap.get(vertexA);
-        const pointMassB = instance._vertexMap.get(vertexB);
-        if (!pointMassA || !pointMassB) {
-            throw new Error('PointMass for one or both vertices is undefined.');
+    getDrawing(pointMass) {
+        const drawing = this._pointMassDrawingMap.get(pointMass);
+        if (!drawing) {
+            throw new Error(`Drawing for point mass is undefined.`);
         }
-        const distance = pointMassA.getDistance(pointMassB);
-        const direction = pointMassA.getDirection(pointMassB);
-        const springForce = direction.scale(this._c1 * Math.log(distance / this._c2));
-        return springForce;
+        return drawing;
     }
-    calculateRepulsionForce(vertexA, vertexB) {
-        const instance = EadesEmbedder.getInstance();
-        const pointMassA = instance._vertexMap.get(vertexA);
-        const pointMassB = instance._vertexMap.get(vertexB);
-        if (!pointMassA || !pointMassB) {
-            throw new Error('PointMass for one or both vertices is undefined.');
-        }
-        const distance = pointMassB.getDistance(pointMassA);
-        const direction = pointMassB.getDirection(pointMassA);
-        const repulsionForce = distance > 0
-            ? direction.scale(this._c3 / Math.sqrt(distance))
-            : new Vector(0, 0);
-        return repulsionForce;
+    calculateSpringScalar(distance) {
+        return this._c1 * Math.log(distance / this._c2);
     }
-    static embedder(graph) {
-        const instance = EadesEmbedder.getInstance();
-        if (0 === instance._vertexMap.size) {
-            graph.vertices.forEach((vertex) => {
-                const pointMass = new PointMass((Math.random() * Canvas.width) / 2 + Canvas.width / 4, (Math.random() * Canvas.height) / 2 + Canvas.height / 4);
-                instance._vertexMap.set(vertex, pointMass);
-            });
+    calculateRepulsionScalar(distance) {
+        return -this._c3 / Math.sqrt(distance);
+    }
+    calculateCenterScalar(distance) {
+        return this._c0 * Math.sqrt(distance);
+    }
+    calculateForce(pointMassA, pointMassB, scalarFunction) {
+        if (pointMassA === pointMassB) {
+            return new Vector(0, 0);
         }
-        if (0 === instance._edgeMap.size) {
-            graph.edges.forEach((edge) => {
-                const line = new DrawingLine(new Point(0, 0), new Point(0, 0));
-                line.show(true);
-                instance._edgeMap.set(line, edge);
-            });
+        try {
+            const distance = pointMassA.getDistance(pointMassB);
+            const direction = pointMassA.getDirection(pointMassB);
+            return direction.scale(scalarFunction(distance));
         }
+        catch (_a) {
+            return new Vector(Math.random(), Math.random());
+        }
+    }
+    embed(graph) {
+        let boundaryRadius = 0;
         graph.vertices.forEach((vertexA) => {
-            const pointMassA = instance._vertexMap.get(vertexA);
-            if (!pointMassA) {
-                throw new Error(`PointMass for vertex ${vertexA} is undefined.`);
-            }
+            const pointMassA = this.getPointMass(vertexA);
             let force = pointMassA.force;
-            force = force.add(instance.calculateCenterForce(vertexA));
+            force = force.add(this.calculateForce(pointMassA, this._center, this.calculateCenterScalar.bind(this)));
             graph.getAdjacentVertices(vertexA).forEach((vertexB) => {
-                if (vertexA === vertexB) {
-                    return;
-                }
-                force = force.add(instance.calculateSpringForce(vertexA, vertexB));
+                const pointMassB = this.getPointMass(vertexB);
+                force = force.add(this.calculateForce(pointMassA, pointMassB, this.calculateSpringScalar.bind(this)));
             });
             graph.getNonAdjacentVertices(vertexA).forEach((vertexB) => {
-                if (vertexA === vertexB) {
-                    return;
-                }
-                force = force.add(instance.calculateRepulsionForce(vertexA, vertexB));
+                const pointMassB = this.getPointMass(vertexB);
+                force = force.add(this.calculateForce(pointMassA, pointMassB, this.calculateRepulsionScalar.bind(this)));
             });
             pointMassA.force = force.scale(EadesEmbedder._c4);
-            pointMassA.applyForce();
+            pointMassA.x = pointMassA.x + pointMassA.force.x;
+            pointMassA.y = pointMassA.y + pointMassA.force.y;
+            const pointMassDrawing = this.getDrawing(pointMassA);
+            pointMassDrawing.x = pointMassA.x;
+            pointMassDrawing.y = pointMassA.y;
+            boundaryRadius = Math.max(boundaryRadius, pointMassA.getDistance(this._center));
         });
-        instance._edgeMap.forEach((edge, line) => {
-            const pointMassA = instance._vertexMap.get(edge[0]);
-            if (!pointMassA) {
-                throw new Error(`PointMass for vertex ${edge[0]} is undefined.`);
-            }
-            const pointMassB = instance._vertexMap.get(edge[1]);
-            if (!pointMassB) {
-                throw new Error(`PointMass for vertex ${edge[1]} is undefined.`);
-            }
+        this._edgeMap.forEach((edge, line) => {
+            const pointMassA = this.getPointMass(edge[0]);
             line.pointA = pointMassA.position;
+            const pointMassB = this.getPointMass(edge[1]);
             line.pointB = pointMassB.position;
         });
+        const centerDrawing = this.getDrawing(this._center);
+        centerDrawing.radius = Math.max(boundaryRadius * 1.1, 10);
+    }
+    static embedder(graph) {
+        const instance = EadesEmbedder.getInstance(graph);
+        instance.embed(graph);
     }
 }
 EadesEmbedder._c4 = 0.5;
 export default EadesEmbedder;
+//# sourceMappingURL=EadesEmbedder.js.map

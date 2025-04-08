@@ -22,10 +22,25 @@ export default class Vector {
         return this;
     }
     toUnitVector() {
+        if (this.isZeroVector()) {
+            throw new Error('Cannot convert a zero vector to a unit vector');
+        }
         const magnitude = this.magnitude;
         this.x = this.x / magnitude;
         this.y = this.y / magnitude;
         return this;
+    }
+    dotProduct(vector) {
+        return this.x * vector.x + this.y * vector.y;
+    }
+    projection(vector) {
+        if (this.isZeroVector()) {
+            throw new Error('Cannot project a zero vector');
+        }
+        return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
+    }
+    isZeroVector() {
+        return this.x === 0 && this.y === 0;
     }
     get magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
@@ -43,3 +58,4 @@ export default class Vector {
         this._y = newY;
     }
 }
+//# sourceMappingURL=Vector.js.map

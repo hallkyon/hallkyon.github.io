@@ -1,13 +1,12 @@
 // @prettier
+import Canvas from './Canvas.js';
+import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Vertex from './Vertex.js';
-import EadesEmbedder from './EadesEmbedder.js';
-// import EadesStrategy from './EadesStrategy.js';
-import Canvas from './Canvas.js';
 function makeRandomGraph(order) {
     const graph = new Graph();
     for (let i = 0; i < order; i++) {
-        const vertex = new Vertex(new String(String(i)));
+        const vertex = new Vertex(null);
         graph.insertVertex(vertex);
     }
     graph.vertices.forEach((vertexA) => {
@@ -15,7 +14,7 @@ function makeRandomGraph(order) {
             if (vertexA === vertexB) {
                 return;
             }
-            if (Math.random() > 0.97) {
+            if (Math.random() > 0.98) {
                 graph.insertUndirectedEdge(vertexA, vertexB);
             }
         });
@@ -24,7 +23,8 @@ function makeRandomGraph(order) {
 }
 function main() {
     const canvas = Canvas.getInstance();
-    const graph = makeRandomGraph(30);
+    const graph = makeRandomGraph(1);
     canvas.setEmbedder(graph, EadesEmbedder.embedder);
 }
 main();
+//# sourceMappingURL=app.js.map

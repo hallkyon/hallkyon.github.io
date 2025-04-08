@@ -1,17 +1,15 @@
 // @prettier
 
+import Canvas from './Canvas.js';
+import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Vertex from './Vertex.js';
-import EadesEmbedder from './EadesEmbedder.js';
-// import EadesStrategy from './EadesStrategy.js';
-
-import Canvas from './Canvas.js';
 
 function makeRandomGraph(order: number): Graph {
     const graph = new Graph();
 
     for (let i = 0; i < order; i++) {
-        const vertex = new Vertex(new String(String(i)));
+        const vertex = new Vertex(null);
         graph.insertVertex(vertex);
     }
 
@@ -20,7 +18,7 @@ function makeRandomGraph(order: number): Graph {
             if (vertexA === vertexB) {
                 return;
             }
-            if (Math.random() > 0.97) {
+            if (Math.random() > 0.98) {
                 graph.insertUndirectedEdge(vertexA, vertexB);
             }
         });

@@ -10,3 +10,4 @@ export default class Vertex {
         this._reference = newReference;
     }
 }
+//# sourceMappingURL=Vertex.js.map
