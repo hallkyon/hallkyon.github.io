@@ -2,16 +2,24 @@
 
 import Point from './Point.js';
 import Vector from './Vector.js';
+import DrawingCircle from './DrawingCircle.js';
+import PointMass from './PointMass.js';
 
 export default class Boundary {
-    private _center: Point;
-    private _radius = 1;
+    private _appearance: DrawingCircle;
+    private _center: Point = new Point(0, 0);
+    private _radius: number = 1;
 
-    constructor(center: Point) {
-        this._center = center;
+    private _pointMasses: PointMass[] = [];
+
+    constructor(x = 0, y = 0, appearance: DrawingCircle) {
+        this._appearance = appearance;
+        this._appearance.show(true);
+
+        this.center = new Point(x, y);
     }
 
-    isInside(point: Point): boolean {
+    public isInside(point: Point): boolean {
         const distance = new Vector(
             point.x - this._center.x,
             point.y - this._center.y
@@ -19,19 +27,25 @@ export default class Boundary {
         return distance <= this._radius;
     }
 
-    get center(): Point {
+    public insert(pointMass: PointMass): void {
+        this._pointMasses.push(pointMass);
+    }
+
+    public get center(): Point {
         return this._center;
     }
 
-    set center(newCenter: Point) {
+    public set center(newCenter: Point) {
         this._center = newCenter;
+        this._appearance.center = newCenter;
     }
 
-    get radius(): number {
+    public get radius(): number {
         return this._radius;
     }
 
-    set radius(newRadius: number) {
+    public set radius(newRadius: number) {
         this._radius = newRadius;
+        this._appearance.radius = newRadius;
     }
 }

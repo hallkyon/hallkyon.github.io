@@ -2,11 +2,12 @@
 import Point from './Point.js';
 import Vector from './Vector.js';
 export default class PointMass {
-    constructor(x, y, appearance) {
-        this._position = new Point(x, y);
+    constructor(x = 0, y = 0, appearance) {
+        this._position = new Point(0, 0);
         this._force = new Vector(0, 0);
         this._appearance = appearance;
         this._appearance.show(true);
+        this.position = new Point(x, y);
     }
     getDirection(to) {
         return this.position.getDirection(to);

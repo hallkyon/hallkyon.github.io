@@ -5,30 +5,22 @@ import DrawingPoint from './DrawingPoint.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
 import Vector from './Vector.js';
+import DrawingCircle from './DrawingCircle.js';
+import Boundary from './Boundary.js';
 class EadesEmbedder {
     constructor() {
-        this._c1 = 1;
+        this._c1 = 10;
         this._c2 = 50;
         this._c3 = 2;
         this._vertexMap = new Map();
         this._edgeMap = new Map();
-        this._center = new Point(Canvas.width / 2, Canvas.height / 2);
+        this._boundary = new Boundary(Canvas.width / 2, Canvas.height / 2, new DrawingCircle());
     }
     static getInstance() {
         if (!EadesEmbedder.instance) {
             EadesEmbedder.instance = new EadesEmbedder();
         }
         return EadesEmbedder.instance;
-    }
-    calculateCenterForce(vertex) {
-        const instance = EadesEmbedder.getInstance();
-        const pointMass = instance._vertexMap.get(vertex);
-        if (!pointMass) {
-            throw new Error('PointMass is undefined.');
-        }
-        const direction = pointMass.getDirection(this._center);
-        const centerForce = direction;
-        return centerForce;
     }
     calculateSpringForce(vertexA, vertexB) {
         const instance = EadesEmbedder.getInstance();
@@ -39,7 +31,9 @@ class EadesEmbedder {
         }
         const distance = pointMassA.getDistance(pointMassB.position);
         const direction = pointMassA.getDirection(pointMassB.position);
-        const springForce = direction.scale(this._c1 * Math.log(distance / this._c2));
+        const springForce = distance > 0
+            ? direction.scale(this._c1 * Math.log(distance / this._c2))
+            : new Vector(0, 0);
         return springForce;
     }
     calculateRepulsionForce(vertexA, vertexB) {
@@ -53,15 +47,16 @@ class EadesEmbedder {
         const direction = pointMassB.getDirection(pointMassA.position);
         const repulsionForce = distance > 0
             ? direction.scale(this._c3 / Math.sqrt(distance))
-            : new Vector(0, 0);
+            : new Vector(Math.random(), Math.random());
         return repulsionForce;
     }
     static embedder(graph) {
         const instance = EadesEmbedder.getInstance();
         if (0 === instance._vertexMap.size) {
             graph.vertices.forEach((vertex) => {
-                const pointMass = new PointMass((Math.random() * Canvas.width) / 2 + Canvas.width / 4, (Math.random() * Canvas.height) / 2 + Canvas.height / 4, new DrawingPoint());
+                const pointMass = new PointMass(Canvas.width / 2, Canvas.height / 2, new DrawingPoint());
                 instance._vertexMap.set(vertex, pointMass);
+                instance._boundary.insert(pointMass);
             });
         }
         if (0 === instance._edgeMap.size) {
@@ -77,7 +72,6 @@ class EadesEmbedder {
                 throw new Error(`PointMass for vertex ${vertexA} is undefined.`);
             }
             let force = pointMassA.force;
-            force = force.add(instance.calculateCenterForce(vertexA));
             graph.getAdjacentVertices(vertexA).forEach((vertexB) => {
                 if (vertexA === vertexB) {
                     return;

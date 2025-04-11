@@ -6,16 +6,15 @@ import Point from './Point.js';
 import Vector from './Vector.js';
 
 export default class PointMass implements PointMassInterface {
-    private _position: Point;
-    private _force: Vector;
     private _appearance: DrawingPointInterface;
+    private _position: Point = new Point(0, 0);
+    private _force: Vector = new Vector(0, 0);
 
-    constructor(x: number, y: number, appearance: DrawingPointInterface) {
-        this._position = new Point(x, y);
-        this._force = new Vector(0, 0);
-
+    constructor(x = 0, y = 0, appearance: DrawingPointInterface) {
         this._appearance = appearance;
         this._appearance.show(true);
+
+        this.position = new Point(x, y);
     }
 
     public getDirection(to: Point): Vector {
