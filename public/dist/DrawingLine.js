@@ -18,8 +18,8 @@ export default class DrawingLine {
         svg.setAttribute('stroke', stroke);
         return svg;
     }
-    show(enable) {
-        if (true === enable) {
+    show(visible) {
+        if (true === visible) {
             Canvas.addDrawing(this._svg);
         }
         else {

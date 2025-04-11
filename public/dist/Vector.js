@@ -27,6 +27,12 @@ export default class Vector {
         this.y = this.y / magnitude;
         return this;
     }
+    dotProduct(vector) {
+        return this.x * vector.x + this.y * vector.y;
+    }
+    projection(vector) {
+        return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
+    }
     get magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }

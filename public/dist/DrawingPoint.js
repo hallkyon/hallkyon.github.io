@@ -2,7 +2,7 @@
 import Canvas from './Canvas.js';
 import Point from './Point.js';
 export default class DrawingPoint {
-    constructor(x, y) {
+    constructor(x = 0, y = 0) {
         this._position = new Point(x, y);
         this._svg = this.makeSvgCircle();
     }
@@ -18,8 +18,8 @@ export default class DrawingPoint {
         svg.setAttribute('fill', fill);
         return svg;
     }
-    show(enable) {
-        if (true === enable) {
+    show(visible) {
+        if (true === visible) {
             Canvas.addDrawing(this._svg);
         }
         else {

@@ -44,4 +44,15 @@ describe('Vector', () => {
         expect(newVector.x).toStrictEqual(1 / Math.sqrt(2));
         expect(newVector.y).toStrictEqual(-1 / Math.sqrt(2));
     });
+
+    it('should return the dot product of two vectors', () => {
+        const dotProduct = vectorA.dotProduct(vectorB);
+        expect(dotProduct).toStrictEqual(-10);
+    });
+
+    it('should return the projection of vectorB onto vectorA', () => {
+        const projection = vectorA.projection(vectorB);
+        expect(projection.x).toStrictEqual(5);
+        expect(projection.y).toStrictEqual(-1.25);
+    });
 });

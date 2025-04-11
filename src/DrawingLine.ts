@@ -31,8 +31,8 @@ export default class DrawingLine implements DrawingLineInterface {
         return svg;
     }
 
-    public show(enable: boolean): void {
-        if (true === enable) {
+    public show(visible: boolean): void {
+        if (true === visible) {
             Canvas.addDrawing(this._svg);
         } else {
             Canvas.removeDrawing(this._svg);

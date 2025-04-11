@@ -41,6 +41,14 @@ export default class Vector implements VectorInterface {
         return this;
     }
 
+    public dotProduct(vector: Vector): number {
+        return this.x * vector.x + this.y * vector.y;
+    }
+
+    public projection(vector: Vector): Vector {
+        return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
+    }
+
     public get magnitude(): number {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }

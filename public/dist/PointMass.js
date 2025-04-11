@@ -1,19 +1,18 @@
 // @prettier
-import DrawingPoint from './DrawingPoint.js';
 import Point from './Point.js';
 import Vector from './Vector.js';
 export default class PointMass {
-    constructor(x, y) {
+    constructor(x, y, appearance) {
         this._position = new Point(x, y);
         this._force = new Vector(0, 0);
-        this._appearance = new DrawingPoint(x, y);
+        this._appearance = appearance;
         this._appearance.show(true);
     }
     getDirection(to) {
-        return this.position.getDirection(to.position);
+        return this.position.getDirection(to);
     }
     getDistance(to) {
-        return this.position.getDistance(to.position);
+        return this.position.getDistance(to);
     }
     applyForce() {
         const newPosition = new Point(this.position.x + this.force.x, this.position.y + this.force.y);

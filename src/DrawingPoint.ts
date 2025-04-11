@@ -8,7 +8,7 @@ export default class DrawingPoint implements DrawingPointInterface {
     private _position: Point;
     private _svg: SVGCircleElement;
 
-    constructor(x: number, y: number) {
+    constructor(x = 0, y = 0) {
         this._position = new Point(x, y);
         this._svg = this.makeSvgCircle();
     }
@@ -29,8 +29,8 @@ export default class DrawingPoint implements DrawingPointInterface {
         return svg;
     }
 
-    public show(enable: boolean): void {
-        if (true === enable) {
+    public show(visible: boolean): void {
+        if (true === visible) {
             Canvas.addDrawing(this._svg);
         } else {
             Canvas.removeDrawing(this._svg);

@@ -2,6 +2,7 @@
 
 import Canvas from './Canvas.js';
 import DrawingLine from './DrawingLine.js';
+import DrawingPoint from './DrawingPoint.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
@@ -12,7 +13,7 @@ export default class EadesEmbedder {
     private static instance: EadesEmbedder;
     private _vertexMap: Map<Vertex, PointMass>;
     private _edgeMap: Map<DrawingLine, Vertex[]>;
-    private _center: PointMass;
+    private _center: Point;
 
     private _c1 = 1;
     private _c2 = 50;
@@ -22,7 +23,7 @@ export default class EadesEmbedder {
     private constructor() {
         this._vertexMap = new Map<Vertex, PointMass>();
         this._edgeMap = new Map<DrawingLine, Vertex[]>();
-        this._center = new PointMass(Canvas.width / 2, Canvas.height / 2);
+        this._center = new Point(Canvas.width / 2, Canvas.height / 2);
     }
 
     public static getInstance(): EadesEmbedder {
@@ -50,8 +51,8 @@ export default class EadesEmbedder {
         if (!pointMassA || !pointMassB) {
             throw new Error('PointMass for one or both vertices is undefined.');
         }
-        const distance = pointMassA.getDistance(pointMassB);
-        const direction = pointMassA.getDirection(pointMassB);
+        const distance = pointMassA.getDistance(pointMassB.position);
+        const direction = pointMassA.getDirection(pointMassB.position);
         const springForce = direction.scale(
             this._c1 * Math.log(distance / this._c2)
         );
@@ -65,8 +66,8 @@ export default class EadesEmbedder {
         if (!pointMassA || !pointMassB) {
             throw new Error('PointMass for one or both vertices is undefined.');
         }
-        const distance = pointMassB.getDistance(pointMassA);
-        const direction = pointMassB.getDirection(pointMassA);
+        const distance = pointMassB.getDistance(pointMassA.position);
+        const direction = pointMassB.getDirection(pointMassA.position);
         const repulsionForce =
             distance > 0
                 ? direction.scale(this._c3 / Math.sqrt(distance))
@@ -80,7 +81,8 @@ export default class EadesEmbedder {
             graph.vertices.forEach((vertex) => {
                 const pointMass = new PointMass(
                     (Math.random() * Canvas.width) / 2 + Canvas.width / 4,
-                    (Math.random() * Canvas.height) / 2 + Canvas.height / 4
+                    (Math.random() * Canvas.height) / 2 + Canvas.height / 4,
+                    new DrawingPoint()
                 );
                 instance._vertexMap.set(vertex, pointMass);
             });
