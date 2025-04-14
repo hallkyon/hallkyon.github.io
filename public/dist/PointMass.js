@@ -15,11 +15,6 @@ export default class PointMass {
     getDistance(to) {
         return this.position.getDistance(to);
     }
-    applyForce() {
-        const newPosition = new Point(this.position.x + this.force.x, this.position.y + this.force.y);
-        this.position = newPosition;
-        return this.position;
-    }
     get position() {
         return this._position;
     }

@@ -11,6 +11,7 @@ export default class DrawingPoint implements DrawingPointInterface {
     constructor(x = 0, y = 0) {
         this._position = new Point(x, y);
         this._svg = this.makeSvgCircle();
+        this.show(true);
     }
 
     private makeSvgCircle(): SVGCircleElement {

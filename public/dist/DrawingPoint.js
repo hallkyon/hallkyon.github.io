@@ -5,6 +5,7 @@ export default class DrawingPoint {
     constructor(x = 0, y = 0) {
         this._position = new Point(x, y);
         this._svg = this.makeSvgCircle();
+        this.show(true);
     }
     makeSvgCircle() {
         const namespace = 'http://www.w3.org/2000/svg';

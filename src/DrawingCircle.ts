@@ -11,6 +11,7 @@ export default class DrawingCircle {
     constructor(x = 0, y = 0) {
         this._center = new Point(x, y);
         this._svg = this.makeSvgCircle();
+        this.show(true);
     }
 
     private makeSvgCircle(): SVGCircleElement {

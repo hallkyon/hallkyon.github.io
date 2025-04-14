@@ -5,27 +5,41 @@ import DrawingPoint from './DrawingPoint.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
 import Vector from './Vector.js';
-import DrawingCircle from './DrawingCircle.js';
-import Boundary from './Boundary.js';
 class EadesEmbedder {
-    constructor() {
+    constructor(graph) {
         this._c1 = 10;
         this._c2 = 50;
         this._c3 = 2;
         this._vertexMap = new Map();
         this._edgeMap = new Map();
-        this._boundary = new Boundary(Canvas.width / 2, Canvas.height / 2, new DrawingCircle());
+        graph.vertices.forEach((vertex) => {
+            const pointMass = new PointMass(Canvas.width / 2, Canvas.height / 2, new DrawingPoint());
+            this._vertexMap.set(vertex, pointMass);
+        });
+        graph.edges.forEach((edge) => {
+            const line = new DrawingLine(new Point(0, 0), new Point(0, 0));
+            this._edgeMap.set(line, edge);
+        });
     }
-    static getInstance() {
+    static getInstance(graph) {
         if (!EadesEmbedder.instance) {
-            EadesEmbedder.instance = new EadesEmbedder();
+            EadesEmbedder.instance = new EadesEmbedder(graph);
         }
         return EadesEmbedder.instance;
     }
+    getPointMass(vertex) {
+        const pointMass = this._vertexMap.get(vertex);
+        if (!pointMass) {
+            throw new Error(`PointMass for vertex ${vertex} is undefined.`);
+        }
+        return pointMass;
+    }
     calculateSpringForce(vertexA, vertexB) {
-        const instance = EadesEmbedder.getInstance();
-        const pointMassA = instance._vertexMap.get(vertexA);
-        const pointMassB = instance._vertexMap.get(vertexB);
+        if (vertexA === vertexB) {
+            return new Vector(0, 0);
+        }
+        const pointMassA = this._vertexMap.get(vertexA);
+        const pointMassB = this._vertexMap.get(vertexB);
         if (!pointMassA || !pointMassB) {
             throw new Error('PointMass for one or both vertices is undefined.');
         }
@@ -33,13 +47,15 @@ class EadesEmbedder {
         const direction = pointMassA.getDirection(pointMassB.position);
         const springForce = distance > 0
             ? direction.scale(this._c1 * Math.log(distance / this._c2))
-            : new Vector(0, 0);
+            : new Vector(Math.random(), Math.random());
         return springForce;
     }
     calculateRepulsionForce(vertexA, vertexB) {
-        const instance = EadesEmbedder.getInstance();
-        const pointMassA = instance._vertexMap.get(vertexA);
-        const pointMassB = instance._vertexMap.get(vertexB);
+        if (vertexA === vertexB) {
+            return new Vector(0, 0);
+        }
+        const pointMassA = this._vertexMap.get(vertexA);
+        const pointMassB = this._vertexMap.get(vertexB);
         if (!pointMassA || !pointMassB) {
             throw new Error('PointMass for one or both vertices is undefined.');
         }
@@ -50,55 +66,28 @@ class EadesEmbedder {
             : new Vector(Math.random(), Math.random());
         return repulsionForce;
     }
-    static embedder(graph) {
-        const instance = EadesEmbedder.getInstance();
-        if (0 === instance._vertexMap.size) {
-            graph.vertices.forEach((vertex) => {
-                const pointMass = new PointMass(Canvas.width / 2, Canvas.height / 2, new DrawingPoint());
-                instance._vertexMap.set(vertex, pointMass);
-                instance._boundary.insert(pointMass);
-            });
-        }
-        if (0 === instance._edgeMap.size) {
-            graph.edges.forEach((edge) => {
-                const line = new DrawingLine(new Point(0, 0), new Point(0, 0));
-                line.show(true);
-                instance._edgeMap.set(line, edge);
-            });
-        }
+    embed(graph) {
         graph.vertices.forEach((vertexA) => {
-            const pointMassA = instance._vertexMap.get(vertexA);
-            if (!pointMassA) {
-                throw new Error(`PointMass for vertex ${vertexA} is undefined.`);
-            }
+            const pointMassA = this.getPointMass(vertexA);
             let force = pointMassA.force;
             graph.getAdjacentVertices(vertexA).forEach((vertexB) => {
-                if (vertexA === vertexB) {
-                    return;
-                }
-                force = force.add(instance.calculateSpringForce(vertexA, vertexB));
+                force = force.add(this.calculateSpringForce(vertexA, vertexB));
             });
             graph.getNonAdjacentVertices(vertexA).forEach((vertexB) => {
-                if (vertexA === vertexB) {
-                    return;
-                }
-                force = force.add(instance.calculateRepulsionForce(vertexA, vertexB));
+                force = force.add(this.calculateRepulsionForce(vertexA, vertexB));
             });
             pointMassA.force = force.scale(EadesEmbedder._c4);
-            pointMassA.applyForce();
         });
-        instance._edgeMap.forEach((edge, line) => {
-            const pointMassA = instance._vertexMap.get(edge[0]);
-            if (!pointMassA) {
-                throw new Error(`PointMass for vertex ${edge[0]} is undefined.`);
-            }
-            const pointMassB = instance._vertexMap.get(edge[1]);
-            if (!pointMassB) {
-                throw new Error(`PointMass for vertex ${edge[1]} is undefined.`);
-            }
+        this._edgeMap.forEach((edge, line) => {
+            const pointMassA = this.getPointMass(edge[0]);
             line.pointA = pointMassA.position;
+            const pointMassB = this.getPointMass(edge[1]);
             line.pointB = pointMassB.position;
         });
+    }
+    static embedder(graph) {
+        const instance = EadesEmbedder.getInstance(graph);
+        instance.embed(graph);
     }
 }
 EadesEmbedder._c4 = 0.5;

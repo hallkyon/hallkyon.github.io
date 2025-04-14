@@ -25,15 +25,6 @@ export default class PointMass implements PointMassInterface {
         return this.position.getDistance(to);
     }
 
-    public applyForce(): Point {
-        const newPosition = new Point(
-            this.position.x + this.force.x,
-            this.position.y + this.force.y
-        );
-        this.position = newPosition;
-        return this.position;
-    }
-
     public get position(): Point {
         return this._position;
     }

@@ -6,6 +6,7 @@ export default class DrawingCircle {
         this._radius = 10;
         this._center = new Point(x, y);
         this._svg = this.makeSvgCircle();
+        this.show(true);
     }
     makeSvgCircle() {
         const namespace = 'http://www.w3.org/2000/svg';

@@ -13,6 +13,7 @@ export default class DrawingLine implements DrawingLineInterface {
         this._pointA = pointA;
         this._pointB = pointB;
         this._svg = this.makeSvgLine();
+        this.show(true);
     }
 
     private makeSvgLine(): SVGLineElement {
