@@ -6,7 +6,6 @@ export default class PointMass {
         this._position = new Point(0, 0);
         this._force = new Vector(0, 0);
         this._appearance = appearance;
-        this._appearance.show(true);
         this.position = new Point(x, y);
     }
     getDirection(to) {

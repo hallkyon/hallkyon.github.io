@@ -12,8 +12,6 @@ export default class PointMass implements PointMassInterface {
 
     constructor(x = 0, y = 0, appearance: DrawingPointInterface) {
         this._appearance = appearance;
-        this._appearance.show(true);
-
         this.position = new Point(x, y);
     }
 

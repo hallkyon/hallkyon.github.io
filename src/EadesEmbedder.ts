@@ -16,6 +16,11 @@ export default class EadesEmbedder {
     private static instance: EadesEmbedder;
     private _vertexMap: Map<Vertex, PointMass>;
     private _edgeMap: Map<DrawingLine, Vertex[]>;
+    private _boundary: Boundary = new Boundary(
+        Canvas.width / 2,
+        Canvas.height / 2,
+        new DrawingCircle()
+    );
 
     private _c1 = 10;
     private _c2 = 50;
@@ -95,6 +100,8 @@ export default class EadesEmbedder {
     }
 
     private embed(graph: Graph): void {
+        let forceStrengthOnBoundary = 0;
+
         graph.vertices.forEach((vertexA) => {
             const pointMassA = this.getPointMass(vertexA);
             let force = pointMassA.force;
@@ -107,7 +114,46 @@ export default class EadesEmbedder {
                 );
             });
             pointMassA.force = force.scale(EadesEmbedder._c4);
+
+            // 1, Move pointMass to edge of boundary (if possible)
+            const dx = pointMassA.position.x - this._boundary.center.x;
+            const dy = pointMassA.position.y - this._boundary.center.y;
+            const a = pointMassA.force.x ** 2 + pointMassA.force.y ** 2;
+            const b = 2 * (dx * pointMassA.force.x + dy * pointMassA.force.y);
+            const c = dx ** 2 + dy ** 2 - this._boundary.radius ** 2;
+
+            const discriminant = b * b - 4 * a * c;
+
+            const t = Math.max(
+                0,
+                Math.min(1, (-b + Math.sqrt(discriminant)) / (2 * a))
+            );
+
+            // 4. move all pointMasses outside of boundary back to boundary
+            if (dx ** 2 + dy ** 2 > this._boundary.radius ** 2) {
+                pointMassA.position = new Point(
+                    Canvas.width / 2 + 1,
+                    Canvas.height / 2 + 1
+                );
+            } else {
+                const newPosition = new Point(
+                    pointMassA.position.x + t * pointMassA.force.x,
+                    pointMassA.position.y + t * pointMassA.force.y
+                );
+                pointMassA.position = newPosition;
+            }
+
+            // 2. Calculate force on boundary
+            const forceStrengthByPointMass = new Vector(
+                pointMassA.position.x - this._boundary.center.x,
+                pointMassA.position.y - this._boundary.center.y
+            ).projection(pointMassA.force).magnitude;
+            forceStrengthOnBoundary += forceStrengthByPointMass;
         });
+
+        // 3. Expand boundary
+        this._boundary.radius =
+            this._boundary.radius + forceStrengthOnBoundary - 1;
 
         this._edgeMap.forEach((edge, line) => {
             const pointMassA = this.getPointMass(edge[0]);

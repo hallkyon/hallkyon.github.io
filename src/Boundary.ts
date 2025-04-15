@@ -8,9 +8,7 @@ import PointMass from './PointMass.js';
 export default class Boundary {
     private _appearance: DrawingCircle;
     private _center: Point = new Point(0, 0);
-    private _radius: number = 1;
-
-    private _pointMasses: PointMass[] = [];
+    private _radius: number = 10;
 
     constructor(x = 0, y = 0, appearance: DrawingCircle) {
         this._appearance = appearance;
@@ -25,10 +23,6 @@ export default class Boundary {
             point.y - this._center.y
         ).magnitude;
         return distance <= this._radius;
-    }
-
-    public insert(pointMass: PointMass): void {
-        this._pointMasses.push(pointMass);
     }
 
     public get center(): Point {
