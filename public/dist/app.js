@@ -14,7 +14,7 @@ function makeRandomGraph(order) {
             if (vertexA === vertexB) {
                 return;
             }
-            if (Math.random() > 0.95) {
+            if (Math.random() > 0.8) {
                 graph.insertUndirectedEdge(vertexA, vertexB);
             }
         });
@@ -23,7 +23,7 @@ function makeRandomGraph(order) {
 }
 function main() {
     const canvas = Canvas.getInstance();
-    const graph = makeRandomGraph(30);
+    const graph = makeRandomGraph(5);
     canvas.setEmbedder(graph, EadesEmbedder.embedder);
 }
 main();

@@ -11,10 +11,10 @@ export default class Boundary {
     private _radius: number = 10;
 
     constructor(x = 0, y = 0, appearance: DrawingCircle) {
+        this._center = new Point(x, y);
         this._appearance = appearance;
         this._appearance.show(true);
-
-        this.center = new Point(x, y);
+        this._appearance.center = this._center;
     }
 
     public isInside(point: Point): boolean {

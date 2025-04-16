@@ -5,9 +5,10 @@ export default class Boundary {
     constructor(x = 0, y = 0, appearance) {
         this._center = new Point(0, 0);
         this._radius = 10;
+        this._center = new Point(x, y);
         this._appearance = appearance;
         this._appearance.show(true);
-        this.center = new Point(x, y);
+        this._appearance.center = this._center;
     }
     isInside(point) {
         const distance = new Vector(point.x - this._center.x, point.y - this._center.y).magnitude;

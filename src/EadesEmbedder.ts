@@ -118,24 +118,22 @@ export default class EadesEmbedder {
             // 1, Move pointMass to edge of boundary (if possible)
             const dx = pointMassA.position.x - this._boundary.center.x;
             const dy = pointMassA.position.y - this._boundary.center.y;
-            const a = pointMassA.force.x ** 2 + pointMassA.force.y ** 2;
-            const b = 2 * (dx * pointMassA.force.x + dy * pointMassA.force.y);
-            const c = dx ** 2 + dy ** 2 - this._boundary.radius ** 2;
 
-            const discriminant = b * b - 4 * a * c;
-
-            const t = Math.max(
-                0,
-                Math.min(1, (-b + Math.sqrt(discriminant)) / (2 * a))
-            );
-
-            // 4. move all pointMasses outside of boundary back to boundary
+            // 4. move all pointMasses
             if (dx ** 2 + dy ** 2 > this._boundary.radius ** 2) {
-                pointMassA.position = new Point(
-                    Canvas.width / 2 + 1,
-                    Canvas.height / 2 + 1
-                );
+                // pointMass is outside the boundary
+                pointMassA.position = this._boundary.center;
             } else {
+                const a = pointMassA.force.x ** 2 + pointMassA.force.y ** 2;
+                const b =
+                    2 * (dx * pointMassA.force.x + dy * pointMassA.force.y);
+                const c = dx ** 2 + dy ** 2 - this._boundary.radius ** 2;
+                const discriminant = b * b - 4 * a * c;
+                const t = Math.max(
+                    0,
+                    Math.min(1, (-b + Math.sqrt(discriminant)) / (2 * a))
+                );
+                // pointMass is inside the boundary
                 const newPosition = new Point(
                     pointMassA.position.x + t * pointMassA.force.x,
                     pointMassA.position.y + t * pointMassA.force.y
@@ -144,11 +142,16 @@ export default class EadesEmbedder {
             }
 
             // 2. Calculate force on boundary
-            const forceStrengthByPointMass = new Vector(
+            const normalVector = new Vector(
                 pointMassA.position.x - this._boundary.center.x,
                 pointMassA.position.y - this._boundary.center.y
-            ).projection(pointMassA.force).magnitude;
-            forceStrengthOnBoundary += forceStrengthByPointMass;
+            );
+            if (normalVector.magnitude > 0) {
+                const forceStrengthByPointMass = normalVector.projection(
+                    pointMassA.force
+                ).magnitude;
+                forceStrengthOnBoundary += forceStrengthByPointMass;
+            }
         });
 
         // 3. Expand boundary
