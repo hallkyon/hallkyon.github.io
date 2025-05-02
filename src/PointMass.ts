@@ -1,6 +1,5 @@
 // @prettier
 
-import DrawingCircleInterface from './interfaces/DrawingCircleInterface.js';
 import PointMassInterface from './interfaces/PointMassInterface.js';
 import Point from './Point.js';
 import Vector from './Vector.js';

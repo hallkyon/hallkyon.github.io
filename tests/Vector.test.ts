@@ -17,6 +17,15 @@ describe('Vector', () => {
         expect(vectorA.y).toStrictEqual(-2);
     });
 
+    it('should throw an error when creating a Vector with invalid arguments', () => {
+        expect(() => new Vector(NaN, 0)).toThrow(
+            'Vector constructor failed: Invalid arguments: NaN, 0'
+        );
+        expect(() => new Vector(0, NaN)).toThrow(
+            'Vector constructor failed: Invalid arguments: 0, NaN'
+        );
+    });
+
     it('should give back the magnitude', () => {
         expect(vectorA.magnitude).toStrictEqual(Math.sqrt(8));
     });
@@ -37,6 +46,12 @@ describe('Vector', () => {
         const newVector = vectorA.scale(2);
         expect(newVector.x).toStrictEqual(4);
         expect(newVector.y).toStrictEqual(-4);
+    });
+
+    it('should throw an error when trying to scale a vector with an invalid argument', () => {
+        expect(() => vectorA.scale(NaN)).toThrow(
+            'Vector scale failed: Invalid argument: NaN'
+        );
     });
 
     it('should return a unit vector', () => {

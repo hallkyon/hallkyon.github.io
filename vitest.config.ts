@@ -4,7 +4,9 @@ export default defineConfig({
     test: {
         coverage: {
             provider: 'v8',
-            reporter: ['text'],
+            reporter: ['text', 'html'],
+            exclude: ['src/interfaces/GraphInterface.ts'],
         },
+        environment: 'jsdom',
     },
 });
