@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   id="svg5"
+   version="1.1"
+   viewBox="0 0 423.33332 238.125"
+   height="900"
+   width="1600"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="design.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#f5f5f5"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="false"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="936.5"
+     inkscape:cy="398.5"
+     inkscape:window-width="2560"
+     inkscape:window-height="1368"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <rect
+       x="1022.1698"
+       y="937.70887"
+       width="407.90816"
+       height="107.4958"
+       id="rect9299" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect234"
+       style="fill:#b780d1;fill-opacity:1;stroke-width:0.685042"
+       d="M 92.604165 0 C 92.604165 7.3289507 98.50438 13.229166 105.83333 13.229166 L 317.49999 13.229166 C 324.82895 13.229166 330.72916 7.3289507 330.72916 0 L 92.604165 0 z " />
+    <rect
+       style="fill:#b780d1;fill-opacity:1;stroke-width:0.0883438"
+       id="rect236"
+       width="238.125"
+       height="0.52916664"
+       x="92.604164"
+       y="224.89583" />
+    <rect
+       style="fill:#f5f5f5;stroke-width:0.921822;fill-opacity:1"
+       id="rect348"
+       width="148.64232"
+       height="211.66666"
+       x="137.3455"
+       y="13.22917" />
+    <circle
+       style="fill:#407fbf;stroke-width:0.244043;fill-opacity:1"
+       id="path402"
+       cx="10.583333"
+       cy="10.583333"
+       r="10.583333" />
+    <circle
+       style="fill:#008080;stroke-width:0.244043;fill-opacity:1"
+       id="path402-3"
+       cx="31.749998"
+       cy="10.583333"
+       r="10.583333" />
+    <circle
+       style="fill:#b780d1;stroke-width:0.244043;fill-opacity:1"
+       id="path402-6"
+       cx="52.916664"
+       cy="10.583333"
+       r="10.583333" />
+    <circle
+       style="fill:#424242;fill-opacity:1;stroke-width:0.289683"
+       id="path8411"
+       cx="74.083328"
+       cy="10.583333"
+       r="10.583333" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.93889px;white-space:pre;inline-size:123.875;fill:#b780d1;fill-opacity:1;stroke-width:0.264999"
+       x="188.90205"
+       y="100.91536"
+       id="text9193"
+       transform="translate(-38.238961,-70.704628)"><tspan
+         x="188.90205"
+         y="100.91536"
+         id="tspan2895"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2893"># Heading 1
+</tspan></tspan><tspan
+         x="188.90205"
+         y="107.21298"
+         id="tspan2899"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2897">
+</tspan></tspan><tspan
+         x="188.90205"
+         y="113.5106"
+         id="tspan2903"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2901">Lorem ipsum dolor sit amet, consectetur </tspan></tspan><tspan
+         x="188.90205"
+         y="119.80823"
+         id="tspan2907"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2905">adipiscing elit, sed do eiusmod tempor </tspan></tspan><tspan
+         x="188.90205"
+         y="126.10585"
+         id="tspan2911"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2909">incididunt ut labore et dolore magna aliqua. Ut </tspan></tspan><tspan
+         x="188.90205"
+         y="132.40347"
+         id="tspan2915"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2913">enim ad minim veniam, quis nostrud exercitation </tspan></tspan><tspan
+         x="188.90205"
+         y="138.70109"
+         id="tspan2919"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2917">ullamco laboris nisi ut aliquip ex ea commodo </tspan></tspan><tspan
+         x="188.90205"
+         y="144.99872"
+         id="tspan2923"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2921">consequat. Duis aute irure dolor in </tspan></tspan><tspan
+         x="188.90205"
+         y="151.29634"
+         id="tspan2927"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2925">reprehenderit in voluptate velit esse cillum </tspan></tspan><tspan
+         x="188.90205"
+         y="157.59396"
+         id="tspan2931"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2929">dolore eu fugiat nulla pariatur. Excepteur sint </tspan></tspan><tspan
+         x="188.90205"
+         y="163.89159"
+         id="tspan2935"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2933">occaecat cupidatat non proident, sunt in culpa </tspan></tspan><tspan
+         x="188.90205"
+         y="170.18921"
+         id="tspan2939"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2937">qui officia deserunt mollit anim id est laborum.
+</tspan></tspan><tspan
+         x="188.90205"
+         y="176.48683"
+         id="tspan2943"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2941">
+</tspan></tspan><tspan
+         x="188.90205"
+         y="182.78445"
+         id="tspan2947"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2945">## Heading 2
+</tspan></tspan><tspan
+         x="188.90205"
+         y="189.08208"
+         id="tspan2951"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2949">
+</tspan></tspan><tspan
+         x="188.90205"
+         y="195.3797"
+         id="tspan2955"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2953">Lorem ipsum dolor sit amet, consectetur </tspan></tspan><tspan
+         x="188.90205"
+         y="201.67732"
+         id="tspan2959"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2957">adipiscing elit, sed do eiusmod tempor </tspan></tspan><tspan
+         x="188.90205"
+         y="207.97494"
+         id="tspan2963"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2961">incididunt ut labore et dolore magna aliqua. Ut </tspan></tspan><tspan
+         x="188.90205"
+         y="214.27257"
+         id="tspan2967"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2965">enim ad minim veniam, quis nostrud exercitation </tspan></tspan><tspan
+         x="188.90205"
+         y="220.57019"
+         id="tspan2971"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2969">ullamco laboris nisi ut aliquip ex ea commodo </tspan></tspan><tspan
+         x="188.90205"
+         y="226.86781"
+         id="tspan2975"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2973">consequat. Duis aute irure dolor in </tspan></tspan><tspan
+         x="188.90205"
+         y="233.16543"
+         id="tspan2979"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2977">reprehenderit in voluptate velit esse cillum </tspan></tspan><tspan
+         x="188.90205"
+         y="239.46306"
+         id="tspan2983"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2981">dolore eu fugiat nulla pariatur. Excepteur sint </tspan></tspan><tspan
+         x="188.90205"
+         y="245.76068"
+         id="tspan2987"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2985">occaecat cupidatat non proident, sunt in culpa </tspan></tspan><tspan
+         x="188.90205"
+         y="252.0583"
+         id="tspan2991"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2989">qui officia deserunt mollit anim id est laborum.
+</tspan></tspan><tspan
+         x="188.90205"
+         y="258.35593"
+         id="tspan2995"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2993">
+</tspan></tspan><tspan
+         x="188.90205"
+         y="264.65356"
+         id="tspan2999"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan2997">Lorem ipsum dolor sit amet, consectetur </tspan></tspan><tspan
+         x="188.90205"
+         y="270.9512"
+         id="tspan3003"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan3001">adipiscing elit, sed do eiusmod tempor </tspan></tspan><tspan
+         x="188.90205"
+         y="277.24884"
+         id="tspan3007"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan3005">incididunt ut labore et dolore magna aliqua. Ut </tspan></tspan><tspan
+         x="188.90205"
+         y="283.54648"
+         id="tspan3011"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan3009">enim ad minim veniam, quis nostrud exercitation </tspan></tspan><tspan
+         x="188.90205"
+         y="289.84412"
+         id="tspan3015"><tspan
+           style="font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';fill:#000000;stroke-width:0.265"
+           id="tspan3013">ullamco laboris nisi ut aliquip ex ea commodo </tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text9297"
+       style="fill:#000000;stroke-width:1.0015748;fill-opacity:1;-inkscape-font-specification:'DejaVu Serif';font-family:'DejaVu Serif';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:18.66666667px;white-space:pre;shape-inside:url(#rect9299)" />
+    <g
+       id="g10209"
+       transform="rotate(45,297.23832,51.614333)"
+       style="fill:#f5f5f5;fill-opacity:1">
+      <rect
+         style="fill:#f5f5f5;fill-opacity:1;stroke-width:0.22137"
+         id="rect9411"
+         width="7.7954187"
+         height="0.79374999"
+         x="-9.9276733"
+         y="278.50095"
+         transform="rotate(-90)" />
+      <rect
+         style="fill:#f5f5f5;fill-opacity:1;stroke-width:0.221369"
+         id="rect9673"
+         width="7.795361"
+         height="0.79374999"
+         x="275.00015"
+         y="5.6330886" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';white-space:pre;inline-size:31.6024;fill:#f5f5f5;fill-opacity:1;stroke-width:0.264999"
+       x="279.81152"
+       y="231.91328"
+       id="text9735"
+       transform="translate(-158.78594,1.198257)"><tspan
+         x="279.81152"
+         y="231.91328"
+         id="tspan3019"><tspan
+           style="text-align:end;text-anchor:end;fill:#424242;stroke-width:0.265"
+           id="tspan3017">5 changes</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';text-align:end;text-anchor:end;fill:#424242;fill-opacity:1;stroke-width:0.264999"
+       x="121.97315"
+       y="233.29956"
+       id="text9993"><tspan
+         sodipodi:role="line"
+         id="tspan9991"
+         style="fill:#424242;fill-opacity:1;stroke-width:0.265"
+         x="121.97315"
+         y="233.29956">365 words</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';text-align:end;text-anchor:end;fill:#424242;fill-opacity:1;stroke-width:0.264999"
+       x="324.24689"
+       y="232.60181"
+       id="text10260"><tspan
+         sodipodi:role="line"
+         id="tspan10258"
+         style="fill:#424242;fill-opacity:1;stroke-width:0.265"
+         x="324.24689"
+         y="232.60181">save</tspan></text>
+    <rect
+       style="fill:#b780d1;fill-opacity:1;stroke-width:0.3352"
+       id="rect10266"
+       width="14.816667"
+       height="0.52916664"
+       x="312.05539"
+       y="233.99089" />
+  </g>
+</svg>

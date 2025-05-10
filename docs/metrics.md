@@ -1,4 +1,5 @@
 # Metrics
 
-| Commit hash | Lines of code | Complexity |
-| ----------- | ------------- | ---------- |
+- Cyclomatic Complexity
+- Code Churn
+- Code Duplication

@@ -1,76 +1,101 @@
 // @prettier
+
 import Canvas from './Canvas.js';
+import Note from './Note.js';
+import DrawingCircleInterface from './interfaces/DrawingCircleInterface.js';
 import Point from './Point.js';
-export default class DrawingCircle {
+
+export default class DrawingCircle implements DrawingCircleInterface {
+    private readonly _position: Point;
+    private readonly _svg: SVGCircleElement;
+
     constructor(x = Canvas.center.x, y = Canvas.center.y) {
         this._position = new Point(x, y);
         this._svg = this.makeSvgCircle();
         this.show();
     }
-    makeSvgCircle() {
+
+    private makeSvgCircle(): SVGCircleElement {
         const namespace = 'http://www.w3.org/2000/svg';
         const shape = 'circle';
         const svg = document.createElementNS(namespace, shape);
+
         const radius = 1;
         const fill = 'white';
+
         svg.setAttribute('cx', String(this._position.x));
         svg.setAttribute('cy', String(this._position.y));
         svg.setAttribute('r', String(radius));
         svg.setAttribute('fill', fill);
+
         return svg;
     }
-    show() {
+
+    public show(): void {
         Canvas.addDrawing(this._svg);
     }
-    hide() {
+
+    public hide(): void {
         Canvas.removeDrawing(this._svg);
     }
-    setCallback(callback, arg) {
+
+    public setCallback(
+        callback: (arg: string) => Promise<Note>,
+        arg: string
+    ): void {
         this._svg.addEventListener('click', () => {
             callback(arg);
         });
     }
-    get x() {
+
+    public get x(): number {
         return this._position.x;
     }
-    set x(newX) {
+
+    public set x(newX: number) {
         this._position.x = newX;
         this._svg.setAttribute('cx', String(newX));
     }
-    get y() {
+
+    public get y(): number {
         return this._position.y;
     }
-    set y(newY) {
+
+    public set y(newY: number) {
         this._position.y = newY;
         this._svg.setAttribute('cy', String(newY));
     }
-    get radius() {
-        var _a;
-        return Number((_a = this._svg.getAttribute('r')) !== null && _a !== void 0 ? _a : 0);
+
+    public get radius(): number {
+        return Number(this._svg.getAttribute('r') ?? 0);
     }
-    set radius(newRadius) {
+
+    public set radius(newRadius: number) {
         this._svg.setAttribute('r', String(newRadius));
     }
-    get position() {
+
+    public get position(): Point {
         return this._position;
     }
-    set position(newPosition) {
+
+    public set position(newPosition: Point) {
         this.x = newPosition.x;
         this.y = newPosition.y;
     }
-    get fill() {
-        var _a;
-        return (_a = this._svg.getAttribute('fill')) !== null && _a !== void 0 ? _a : '';
+
+    public get fill(): string {
+        return this._svg.getAttribute('fill') ?? '';
     }
-    set fill(newFill) {
+
+    public set fill(newFill: string) {
         this._svg.setAttribute('fill', newFill);
     }
-    get stroke() {
-        var _a;
-        return (_a = this._svg.getAttribute('stroke')) !== null && _a !== void 0 ? _a : '';
+
+    public get stroke(): string {
+        return this._svg.getAttribute('stroke') ?? '';
     }
-    set stroke(newStroke) {
+
+    public set stroke(newStroke: string) {
         this._svg.setAttribute('stroke', newStroke);
     }
 }
-//# sourceMappingURL=DrawingCircle.js.map

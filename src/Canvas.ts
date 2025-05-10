@@ -88,7 +88,7 @@ export default class Canvas {
         canvas.appendChild(drawing);
     }
 
-    private static animate(timestamp: number) {
+    private static updateDrawing(timestamp: number) {
         Canvas._pointGraph = EadesEmbedder.embed(Canvas._pointGraph);
 
         Canvas._pointGraph.vertices.forEach((point) => {
@@ -99,7 +99,7 @@ export default class Canvas {
             Canvas.drawEdge(edge[0], edge[1]);
         });
 
-        requestAnimationFrame(Canvas.animate);
+        requestAnimationFrame(Canvas.updateDrawing);
     }
 
     private static createPointGraph(graph: Graph<number>): Graph<Point> {
@@ -155,7 +155,7 @@ export default class Canvas {
             Canvas._edgeMap.set(point, neighborsMap);
         });
 
-        Canvas.animate(0);
+        Canvas.updateDrawing(0);
     }
 
     public static get height(): number {

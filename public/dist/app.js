@@ -2,8 +2,9 @@
 import Canvas from './Canvas.js';
 import Mapper from './Mapper.js';
 function main() {
-    const graph = Mapper.getGraph();
-    Canvas.draw(graph);
+    Mapper.getNotes().then((graph) => {
+        Canvas.draw(graph);
+    });
 }
 main();
 //# sourceMappingURL=app.js.map

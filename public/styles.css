@@ -11,6 +11,10 @@
 }
 
 svg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
     height: 100vh;
     width: 100vw;
     background-color: whitesmoke;
@@ -28,4 +32,60 @@ svg {
             rgba(255, 0, 100, 0.7)),
         url(noise.svg);
     clip-path: url(#clip-path-vertices);
+    width: 50%;
+
+    background-color: #424242;
+    width: 100%;
 }
+
+.main {
+    display: flex;
+    height: 100%;
+}
+
+.editor-container {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 500px;
+}
+
+.editor-content {
+    width: 100%;
+    height: 100%;
+
+    resize: none;
+
+    background-color: #424242;
+
+    color: white;
+    outline: none;
+}
+
+.editor-header {
+    display: flex;
+    flex-direction: row;
+
+    background-color: #606060;
+}
+
+.editor-title {
+    margin: 3px;
+    padding-right: 5px;
+    margin-right: auto;
+
+    height: 25px;
+    border-radius: 10px;
+
+    text-align: end;
+
+    background-color: white;
+}
+
+button {
+    margin: 0px 2px;
+    padding: 0px 5px;
+
+    background-color: white;
+}
+
