@@ -1,30 +1,28 @@
 // @prettier
-import Canvas from './Canvas.js';
-import EadesEmbedder from './EadesEmbedder.js';
-import Graph from './Graph.js';
-import Vertex from './Vertex.js';
-function makeRandomGraph(order) {
-    const graph = new Graph();
-    for (let i = 0; i < order; i++) {
-        const vertex = new Vertex(null);
-        graph.insertVertex(vertex);
-    }
-    graph.vertices.forEach((vertexA) => {
-        graph.vertices.forEach((vertexB) => {
-            if (vertexA === vertexB) {
-                return;
-            }
-            if (Math.random() > 0.98) {
-                graph.insertUndirectedEdge(vertexA, vertexB);
-            }
-        });
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
-    return graph;
-}
+};
+import Canvas from './Canvas.js';
+import Controller from './Controller.js';
+import EadesEmbedder from './EadesEmbedder.js';
 function main() {
-    const canvas = Canvas.getInstance();
-    const graph = makeRandomGraph(30);
-    canvas.setEmbedder(graph, EadesEmbedder.embedder);
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const canvas = Canvas.getInstance();
+            const controller = Controller.getInstance();
+            const graph = yield controller.getNotes();
+            canvas.setEmbedder(graph, EadesEmbedder.embedder);
+        }
+        catch (error) {
+            console.error('Error initializing application:', error);
+        }
+    });
 }
 main();
 //# sourceMappingURL=app.js.map

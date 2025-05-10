@@ -1,37 +1,18 @@
 // @prettier
 
 import Canvas from './Canvas.js';
+import Controller from './Controller.js';
 import EadesEmbedder from './EadesEmbedder.js';
-import Graph from './Graph.js';
-import Vertex from './Vertex.js';
 
-function makeRandomGraph(order: number): Graph {
-    const graph = new Graph();
-
-    for (let i = 0; i < order; i++) {
-        const vertex = new Vertex(null);
-        graph.insertVertex(vertex);
+async function main() {
+    try {
+        const canvas = Canvas.getInstance();
+        const controller = Controller.getInstance();
+        const graph = await controller.getNotes();
+        canvas.setEmbedder(graph, EadesEmbedder.embedder);
+    } catch (error) {
+        console.error('Error initializing application:', error);
     }
-
-    graph.vertices.forEach((vertexA) => {
-        graph.vertices.forEach((vertexB) => {
-            if (vertexA === vertexB) {
-                return;
-            }
-            if (Math.random() > 0.98) {
-                graph.insertUndirectedEdge(vertexA, vertexB);
-            }
-        });
-    });
-
-    return graph;
-}
-
-function main() {
-    const canvas = Canvas.getInstance();
-
-    const graph = makeRandomGraph(30);
-    canvas.setEmbedder(graph, EadesEmbedder.embedder);
 }
 
 main();
