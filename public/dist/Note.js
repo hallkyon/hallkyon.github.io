@@ -1,6 +1,6 @@
 // @prettier
 export default class Note {
-    constructor(filename, content) {
+    constructor(filename, content = '') {
         this._filename = filename;
         this._content = content;
     }

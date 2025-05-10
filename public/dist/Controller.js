@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import Graph from './Graph.js';
+import Note from './Note.js';
+import Vertex from './Vertex.js';
 export default class Controller {
     constructor() { }
     static getInstance() {
@@ -22,7 +25,14 @@ export default class Controller {
             if (!request.ok) {
                 throw new Error('Failed to fetch notes');
             }
-            return request.json();
+            const graph = new Graph();
+            const notes = yield request.json();
+            notes.forEach((filename) => {
+                const note = new Note(filename);
+                const vertex = new Vertex(note);
+                graph.insertVertex(vertex);
+            });
+            return graph;
         });
     }
     getContent(filename) {

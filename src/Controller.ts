@@ -1,9 +1,9 @@
 // @prettier
 
 import ControllerInterface from './interfaces/ControllerInterface';
-import Graph from './Graph';
-import Note from './Note';
-import Vertex from './Vertex';
+import Graph from './Graph.js';
+import Note from './Note.js';
+import Vertex from './Vertex.js';
 
 export default class Controller implements ControllerInterface {
     private static instance: Controller;
@@ -22,7 +22,14 @@ export default class Controller implements ControllerInterface {
         if (!request.ok) {
             throw new Error('Failed to fetch notes');
         }
-        return request.json();
+        const graph = new Graph();
+        const notes: string[] = await request.json();
+        notes.forEach((filename) => {
+            const note = new Note(filename);
+            const vertex = new Vertex(note);
+            graph.insertVertex(vertex);
+        });
+        return graph;
     }
 
     public async getContent(filename: string): Promise<string> {
