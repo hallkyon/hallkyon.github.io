@@ -23,7 +23,7 @@ function makeRandomGraph(order) {
 }
 function main() {
     const canvas = Canvas.getInstance();
-    const graph = makeRandomGraph(1);
+    const graph = makeRandomGraph(30);
     canvas.setEmbedder(graph, EadesEmbedder.embedder);
 }
 main();
