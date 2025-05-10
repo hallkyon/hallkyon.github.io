@@ -1,21 +1,15 @@
 // @prettier
 
 import PointMassInterface from './interfaces/PointMassInterface.js';
-import DrawingPoint from './DrawingPoint.js';
 import Point from './Point.js';
 import Vector from './Vector.js';
 
 export default class PointMass implements PointMassInterface {
-    private _position: Point;
-    private _force: Vector;
-    private _appearance: DrawingPoint;
+    private readonly _position: Point = new Point(0, 0);
+    private _force: Vector = new Vector(0, 0);
 
     constructor(x: number, y: number) {
-        this._position = new Point(x, y);
-        this._force = new Vector(0, 0);
-
-        this._appearance = new DrawingPoint(x, y);
-        this._appearance.show(true);
+        this.position = new Point(x, y);
     }
 
     public getDirection(to: PointMass): Vector {
@@ -26,13 +20,20 @@ export default class PointMass implements PointMassInterface {
         return this.position.getDistance(to.position);
     }
 
-    public applyForce(): Point {
-        const newPosition = new Point(
-            this.position.x + this.force.x,
-            this.position.y + this.force.y
-        );
-        this.position = newPosition;
-        return this.position;
+    public get x(): number {
+        return this._position.x;
+    }
+
+    public set x(newX: number) {
+        this._position.x = newX;
+    }
+
+    public get y(): number {
+        return this._position.y;
+    }
+
+    public set y(newY: number) {
+        this._position.y = newY;
     }
 
     public get position(): Point {
@@ -40,8 +41,8 @@ export default class PointMass implements PointMassInterface {
     }
 
     public set position(newPosition: Point) {
-        this._position = newPosition;
-        this._appearance.position = newPosition;
+        this.x = newPosition.x;
+        this.y = newPosition.y;
     }
 
     public get force(): Vector {

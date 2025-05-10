@@ -1,6 +1,7 @@
 // @prettier
 
 import Graph from './Graph.js';
+import Point from './Point.js';
 
 export default class Canvas {
     private static instance: Canvas;
@@ -20,6 +21,10 @@ export default class Canvas {
         return window.innerWidth;
     }
 
+    public static get center(): Point {
+        return new Point(Canvas.width / 2, Canvas.height / 2);
+    }
+
     public static getInstance(): Canvas {
         if (!Canvas.instance) {
             Canvas.instance = new Canvas();
@@ -32,7 +37,6 @@ export default class Canvas {
         if (null === canvas) {
             throw new Error('Canvas element with id "svg" not found');
         }
-
         canvas.appendChild(drawing);
     }
 
@@ -41,7 +45,6 @@ export default class Canvas {
         if (null === canvas) {
             throw new Error('Canvas element with id "svg" not found');
         }
-
         canvas.removeChild(drawing);
     }
 
@@ -51,11 +54,10 @@ export default class Canvas {
         requestAnimationFrame(this.animate.bind(this));
     }
 
-    private animate = (timestamp: number) => {
+    private readonly animate = (timestamp: number) => {
         if (!this._embedder || !this._graph) {
             throw new Error('Embedder or graph not set');
         }
-
         this._embedder(this._graph);
         requestAnimationFrame(this.animate.bind(this));
     };

@@ -5,12 +5,12 @@
     "main": "public/dist/app.js",
     "type": "module",
     "scripts": {
-        "//": "-c-1 disables caching for http-server",
         "build": "tsc",
-        "lint": "eslint .",
+        "lint": "eslint . --ignore-pattern public/dist",
         "test": "vitest",
         "coverage": "vitest run --coverage",
-        "server": "http-server . -c-1"
+        "server": "http-server . -c-1",
+        "//": "-c-1 disables caching for http-server"
     },
     "devDependencies": {
         "@eslint/js": "^9.15.0",
@@ -19,6 +19,7 @@
         "eslint": "^9.15.0",
         "globals": "^15.14.0",
         "http-server": "^14.1.1",
+        "jsdom": "^26.1.0",
         "typescript": "^5.7.3",
         "typescript-eslint": "^8.20.0",
         "vitest": "^3.1.2"

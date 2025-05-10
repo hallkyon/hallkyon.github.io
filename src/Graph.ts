@@ -4,7 +4,7 @@ import GraphInterface from './interfaces/GraphInterface';
 import Vertex from './Vertex.js';
 
 export default class Graph implements GraphInterface {
-    private _adjacencyList: Map<Vertex, Vertex[]>;
+    private readonly _adjacencyList: Map<Vertex, Vertex[]>;
 
     constructor() {
         this._adjacencyList = new Map<Vertex, Vertex[]>();
@@ -23,7 +23,6 @@ export default class Graph implements GraphInterface {
         if (false === this._adjacencyList.has(vertexB)) {
             this._adjacencyList.set(vertexB, []);
         }
-
         const adjacentVertices = this._adjacencyList.get(vertexA);
         if (undefined === adjacentVertices) {
             return;
