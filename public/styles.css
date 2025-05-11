@@ -8,7 +8,52 @@ body {
 }
 
 svg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
     height: 100vh;
-    width: 100vw;
+    width: 50%;
+
     background-color: #424242;
+}
+
+#user-input {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+
+    height: 100vh;
+    width: 50%;
+
+    background-color: #424242;
+    color: white;
+    font-size: 12px;
+    font-family: monospace;
+
+    border: solid 1px white;
+}
+
+textarea {
+    height: calc(100% - 30px);
+    width: 100%;
+
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+
+    resize: none;
+}
+
+button {
+    height: 20px;
+    width: auto;
+
+    background-color: transparent;
+    color: white;
+    font-size: 12px;
+    font-family: monospace;
+
+    border: solid 1px white;
 }

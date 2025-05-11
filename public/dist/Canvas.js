@@ -13,10 +13,18 @@ export default class Canvas {
         this._graph = null;
     }
     static get height() {
-        return window.innerHeight;
+        const svg = document.getElementById('svg');
+        if (null === svg) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        return svg.clientHeight;
     }
     static get width() {
-        return window.innerWidth;
+        const svg = document.getElementById('svg');
+        if (null === svg) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        return svg.clientWidth;
     }
     static get center() {
         return new Point(Canvas.width / 2, Canvas.height / 2);

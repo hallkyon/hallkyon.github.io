@@ -14,11 +14,19 @@ export default class Canvas {
     }
 
     public static get height(): number {
-        return window.innerHeight;
+        const svg = document.getElementById('svg');
+        if (null === svg) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        return svg.clientHeight;
     }
 
     public static get width(): number {
-        return window.innerWidth;
+        const svg = document.getElementById('svg');
+        if (null === svg) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        return svg.clientWidth;
     }
 
     public static get center(): Point {
