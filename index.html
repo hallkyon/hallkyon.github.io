@@ -9,11 +9,22 @@
         <script type="module" src="./public/dist/app.js"></script>
     </head>
     <body>
-        <svg xmlns="http://www.w3.org/2000/svg" id="svg"></svg>
-        <div id="user-input">
-            <textarea id="textarea"></textarea>
-            <button id="save">Save</button>
-            <button id="cancel">Cancel</button>
+        <div class="main">
+            <svg xmlns="http://www.w3.org/2000/svg" id="svg"></svg>
+            <div class="editor-container">
+                <div class="editor-header">
+                    <input
+                        type="text"
+                        placeholder="title"
+                        class="editor-title" />
+                    <button class="editor-button">delete</button>
+                    <button class="editor-button">close</button>
+                </div>
+                <textarea class="editor-content" spellcheck="false"></textarea>
+            </div>
         </div>
+        <footer>
+            <button>create</button>
+        </footer>
     </body>
 </html>

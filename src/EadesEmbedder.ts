@@ -1,4 +1,3 @@
-import Canvas from './Canvas.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
 import Vector from './Vector.js';

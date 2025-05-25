@@ -1,59 +1,75 @@
-html,
-body {
+* {
     margin: 0px;
     padding: 0px;
 
+    background-color: #424242;
+
+    box-sizing: border-box;
+}
+
+html,
+body {
     height: 100vh;
     width: 100vw;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
 }
 
 svg {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-
-    height: 100vh;
-    width: 50%;
-
     background-color: #424242;
-}
-
-#user-input {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-
-    height: 100vh;
-    width: 50%;
-
-    background-color: #424242;
-    color: white;
-    font-size: 12px;
-    font-family: monospace;
-
-    border: solid 1px white;
-}
-
-textarea {
-    height: calc(100% - 30px);
     width: 100%;
+}
 
-    background-color: transparent;
-    outline: none;
-    border: none;
-    color: white;
+.main {
+    display: flex;
+    height: 100%;
+}
+
+.editor-container {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 500px;
+}
+
+.editor-content {
+    width: 100%;
+    height: 100%;
 
     resize: none;
+
+    background-color: #424242;
+
+    color: white;
+    outline: none;
+}
+
+.editor-header {
+    display: flex;
+    flex-direction: row;
+
+    background-color: #606060;
+}
+
+.editor-title {
+    margin: 3px;
+    padding-right: 5px;
+    margin-right: auto;
+
+    height: 25px;
+    border-radius: 10px;
+
+    text-align: end;
+
+    background-color: white;
 }
 
 button {
-    height: 20px;
-    width: auto;
+    margin: 0px 2px;
+    padding: 0px 5px;
 
-    background-color: transparent;
-    color: white;
-    font-size: 12px;
-    font-family: monospace;
-
-    border: solid 1px white;
+    background-color: white;
 }

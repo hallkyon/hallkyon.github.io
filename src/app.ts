@@ -14,8 +14,7 @@ import EadesEmbedder from './EadesEmbedder.js';
 async function main() {
     try {
         const canvas = Canvas.getInstance();
-        const controller = Controller.getInstance();
-        const graph = await controller.getNotes();
+        const graph = await Controller.getNotes();
         canvas.setEmbedder(graph, EadesEmbedder.embedder);
     } catch (error) {
         console.error('Error initializing application:', error);
