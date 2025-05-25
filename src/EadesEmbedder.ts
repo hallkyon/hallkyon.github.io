@@ -1,9 +1,11 @@
 // @prettier
 
 import Canvas from './Canvas.js';
+import Controller from './Controller.js';
 import DrawingLine from './DrawingLine.js';
 import DrawingCircle from './DrawingCircle.js';
 import Graph from './Graph.js';
+import Note from './Note.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
 import Vertex from './Vertex.js';
@@ -29,6 +31,14 @@ export default class EadesEmbedder {
     private readonly _c3 = 2;
     private static readonly _c4 = 0.5;
 
+    private getFilename(vertex: Vertex): string {
+        const note: Note = vertex.reference as Note;
+        if (!note) {
+            throw new Error(`Vertex reference is undefined.`);
+        }
+        return note.filename;
+    }
+
     private constructor(graph: Graph) {
         this._center = new PointMass(Canvas.center.x, Canvas.center.y);
         const centerDrawing = new DrawingCircle();
@@ -45,6 +55,19 @@ export default class EadesEmbedder {
             pointMassDrawing.stroke = 'white';
             pointMassDrawing.radius = 3;
             pointMassDrawing.show();
+            pointMassDrawing.setCallback((filename: string): Promise<Note> => {
+                const notePromise = Controller.getContent(filename);
+                notePromise.then((note) => {
+                    const textarea = document.querySelector(
+                        '.editor-content'
+                    ) as HTMLTextAreaElement;
+                    if (!textarea) {
+                        throw new Error('Editor textarea not found.');
+                    }
+                    textarea.value = note.content;
+                });
+                return notePromise;
+            }, this.getFilename(vertex));
             this._vertexMap.set(vertex, pointMass);
             this._pointMassDrawingMap.set(pointMass, pointMassDrawing);
         });

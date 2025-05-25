@@ -15,8 +15,7 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const canvas = Canvas.getInstance();
-            const controller = Controller.getInstance();
-            const graph = yield controller.getNotes();
+            const graph = yield Controller.getNotes();
             canvas.setEmbedder(graph, EadesEmbedder.embedder);
         }
         catch (error) {

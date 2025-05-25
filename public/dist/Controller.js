@@ -19,7 +19,7 @@ export default class Controller {
         }
         return Controller.instance;
     }
-    getNotes() {
+    static getNotes() {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield fetch('http://localhost:3000/api/notes');
             if (!request.ok) {
@@ -27,24 +27,44 @@ export default class Controller {
             }
             const graph = new Graph();
             const notes = yield request.json();
-            notes.forEach((filename) => {
+            const FilenameVertexMap = new Map();
+            for (const filename of Object.keys(notes)) {
                 const note = new Note(filename);
-                const vertex = new Vertex(note);
-                graph.insertVertex(vertex);
-            });
+                const vertexA = new Vertex(note);
+                FilenameVertexMap.set(filename, vertexA);
+                graph.insertVertex(vertexA);
+            }
+            console.log(FilenameVertexMap);
+            for (const [filename, links] of Object.entries(notes)) {
+                const vertexA = FilenameVertexMap.get(filename);
+                if (vertexA === undefined) {
+                    throw new Error(`Could not find vertex ${filename} => ${vertexA})`);
+                }
+                if (Array.isArray(links) && links.length > 0) {
+                    for (const link of links) {
+                        const vertexB = FilenameVertexMap.get(link);
+                        if (vertexB === undefined) {
+                            throw new Error(`Could not find vertex ${link} => ${vertexB})`);
+                        }
+                        graph.insertDirectedEdge(vertexA, vertexB);
+                    }
+                }
+            }
             return graph;
         });
     }
-    getContent(filename) {
+    static getContent(filename) {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield fetch(`http://localhost:3000/api/notes/${filename}`);
             if (!request.ok) {
                 throw new Error('Failed to fetch note content');
             }
-            return request.json();
+            const data = yield request.json();
+            const note = new Note(data.filename, data.content);
+            return note;
         });
     }
-    createNote(filename, content) {
+    static createNote(filename, content) {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield fetch('http://localhost:3000/api/notes', {
                 method: 'POST',
@@ -59,7 +79,7 @@ export default class Controller {
             return request.json();
         });
     }
-    editNote(filename, content) {
+    static editNote(filename, content) {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield fetch(`http://localhost:3000/api/notes/${filename}`, {
                 method: 'PUT',
@@ -74,7 +94,7 @@ export default class Controller {
             return request.json();
         });
     }
-    deleteNote(filename) {
+    static deleteNote(filename) {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield fetch(`http://localhost:3000/api/notes/${filename}`, {
                 method: 'DELETE',

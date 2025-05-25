@@ -17,32 +17,62 @@ export default class Controller implements ControllerInterface {
         return Controller.instance;
     }
 
-    public async getNotes(): Promise<Graph> {
+    public static async getNotes(): Promise<Graph> {
         const request = await fetch('http://localhost:3000/api/notes');
         if (!request.ok) {
             throw new Error('Failed to fetch notes');
         }
         const graph = new Graph();
-        const notes: string[] = await request.json();
-        notes.forEach((filename) => {
+        const notes = await request.json();
+        const FilenameVertexMap = new Map<string, Vertex>();
+
+        for (const filename of Object.keys(notes)) {
             const note = new Note(filename);
-            const vertex = new Vertex(note);
-            graph.insertVertex(vertex);
-        });
+            const vertexA = new Vertex(note);
+            FilenameVertexMap.set(filename, vertexA);
+            graph.insertVertex(vertexA);
+        }
+
+        console.log(FilenameVertexMap);
+
+        for (const [filename, links] of Object.entries(notes)) {
+            const vertexA = FilenameVertexMap.get(filename);
+            if (vertexA === undefined) {
+                throw new Error(
+                    `Could not find vertex ${filename} => ${vertexA})`
+                );
+            }
+            if (Array.isArray(links) && links.length > 0) {
+                for (const link of links) {
+                    const vertexB = FilenameVertexMap.get(link);
+                    if (vertexB === undefined) {
+                        throw new Error(
+                            `Could not find vertex ${link} => ${vertexB})`
+                        );
+                    }
+                    graph.insertDirectedEdge(vertexA, vertexB);
+                }
+            }
+        }
         return graph;
     }
 
-    public async getContent(filename: string): Promise<string> {
+    public static async getContent(filename: string): Promise<Note> {
         const request = await fetch(
             `http://localhost:3000/api/notes/${filename}`
         );
         if (!request.ok) {
             throw new Error('Failed to fetch note content');
         }
-        return request.json();
+        const data = await request.json();
+        const note = new Note(data.filename, data.content);
+        return note;
     }
 
-    public async createNote(filename: string, content: string): Promise<void> {
+    public static async createNote(
+        filename: string,
+        content: string
+    ): Promise<void> {
         const request = await fetch('http://localhost:3000/api/notes', {
             method: 'POST',
             headers: {
@@ -56,7 +86,10 @@ export default class Controller implements ControllerInterface {
         return request.json();
     }
 
-    public async editNote(filename: string, content: string): Promise<void> {
+    public static async editNote(
+        filename: string,
+        content: string
+    ): Promise<void> {
         const request = await fetch(
             `http://localhost:3000/api/notes/${filename}`,
             {
@@ -73,7 +106,7 @@ export default class Controller implements ControllerInterface {
         return request.json();
     }
 
-    public async deleteNote(filename: string): Promise<void> {
+    public static async deleteNote(filename: string): Promise<void> {
         const request = await fetch(
             `http://localhost:3000/api/notes/${filename}`,
             {
