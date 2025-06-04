@@ -5,6 +5,7 @@ import DrawingLine from './DrawingLine.js';
 import DrawingCircle from './DrawingCircle.js';
 import Point from './Point.js';
 import PointMass from './PointMass.js';
+import UserInterface from './UserInterface.js';
 import Vector from './Vector.js';
 class EadesEmbedder {
     getFilename(vertex) {
@@ -34,16 +35,12 @@ class EadesEmbedder {
             const pointMassDrawing = new DrawingCircle();
             pointMassDrawing.fill = 'white';
             pointMassDrawing.stroke = 'white';
-            pointMassDrawing.radius = 3;
+            pointMassDrawing.radius = 10;
             pointMassDrawing.show();
             pointMassDrawing.setCallback((filename) => {
-                const notePromise = Controller.getContent(filename);
+                const notePromise = Controller.getNote(filename);
                 notePromise.then((note) => {
-                    const textarea = document.querySelector('.editor-content');
-                    if (!textarea) {
-                        throw new Error('Editor textarea not found.');
-                    }
-                    textarea.value = note.content;
+                    UserInterface.setNote(note);
                 });
                 return notePromise;
             }, this.getFilename(vertex));

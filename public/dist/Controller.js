@@ -11,13 +11,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import Graph from './Graph.js';
 import Note from './Note.js';
 import Vertex from './Vertex.js';
-export default class Controller {
-    constructor() { }
-    static getInstance() {
-        if (!Controller.instance) {
-            Controller.instance = new Controller();
+class Controller {
+    static getVertex(filename) {
+        const vertex = this.filenameVertexMap.get(filename);
+        if (vertex === undefined) {
+            throw new Error(`Vertex for filename ${filename} not found.`);
         }
-        return Controller.instance;
+        return vertex;
+    }
+    static setVertex(filename) {
+        if (this.filenameVertexMap.has(filename)) {
+            throw new Error(`Vertex for filename ${filename} already exists.`);
+        }
+        const vertex = new Vertex(new Note(filename));
+        Controller.graph.insertVertex(vertex);
+        this.filenameVertexMap.set(filename, vertex);
+        return vertex;
+    }
+    static setEdge(filename, links) {
+        const vertexA = Controller.getVertex(filename);
+        if (links.length > 0) {
+            for (const link of links) {
+                const vertexB = Controller.getVertex(link);
+                Controller.graph.insertDirectedEdge(vertexA, vertexB);
+            }
+        }
+    }
+    static checkGetNotesResponse(json) {
+        if (typeof json !== 'object' || json === null || Array.isArray(json)) {
+            throw new Error('Invalid JSON format received');
+        }
+        for (const [key, value] of Object.entries(json)) {
+            if (typeof key !== 'string' ||
+                !Array.isArray(value) ||
+                !value.every((item) => typeof item === 'string')) {
+                throw new Error('Invalid JSON structure: expected JSON object with arrays of strings as values');
+            }
+        }
     }
     static getNotes() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -25,78 +55,68 @@ export default class Controller {
             if (!request.ok) {
                 throw new Error('Failed to fetch notes');
             }
-            const graph = new Graph();
-            const notes = yield request.json();
-            const FilenameVertexMap = new Map();
-            for (const filename of Object.keys(notes)) {
-                const note = new Note(filename);
-                const vertexA = new Vertex(note);
-                FilenameVertexMap.set(filename, vertexA);
-                graph.insertVertex(vertexA);
+            const json = yield request.json();
+            this.checkGetNotesResponse(json);
+            for (const filename of Object.keys(json)) {
+                Controller.setVertex(filename);
             }
-            console.log(FilenameVertexMap);
-            for (const [filename, links] of Object.entries(notes)) {
-                const vertexA = FilenameVertexMap.get(filename);
-                if (vertexA === undefined) {
-                    throw new Error(`Could not find vertex ${filename} => ${vertexA})`);
-                }
-                if (Array.isArray(links) && links.length > 0) {
-                    for (const link of links) {
-                        const vertexB = FilenameVertexMap.get(link);
-                        if (vertexB === undefined) {
-                            throw new Error(`Could not find vertex ${link} => ${vertexB})`);
-                        }
-                        graph.insertDirectedEdge(vertexA, vertexB);
-                    }
-                }
+            for (const [filename, links] of Object.entries(json)) {
+                Controller.setEdge(filename, links);
             }
-            return graph;
+            return Controller.graph;
         });
     }
-    static getContent(filename) {
+    static getNote(filename) {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield fetch(`http://localhost:3000/api/notes/${filename}`);
             if (!request.ok) {
-                throw new Error('Failed to fetch note content');
+                throw new Error('Failed to get note');
             }
             const data = yield request.json();
+            if (typeof data.filename !== 'string' ||
+                typeof data.content !== 'string') {
+                throw new Error('Invalid note data received');
+            }
             const note = new Note(data.filename, data.content);
             return note;
         });
     }
-    static createNote(filename, content) {
+    static postNote(note) {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield fetch('http://localhost:3000/api/notes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ filename, content }),
+                body: JSON.stringify({
+                    filename: note.filename,
+                    content: note.content,
+                }),
             });
             if (!request.ok) {
-                throw new Error('Failed to create note');
+                throw new Error('Failed to post note');
             }
             return request.json();
         });
     }
-    static editNote(filename, content) {
+    static putNote(note) {
         return __awaiter(this, void 0, void 0, function* () {
-            const request = yield fetch(`http://localhost:3000/api/notes/${filename}`, {
+            const request = yield fetch(`http://localhost:3000/api/notes/${note.filename}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ content }),
+                body: JSON.stringify({ content: note.content }),
             });
             if (!request.ok) {
-                throw new Error('Failed to save note');
+                throw new Error('Failed to put note');
             }
             return request.json();
         });
     }
-    static deleteNote(filename) {
+    static deleteNote(note) {
         return __awaiter(this, void 0, void 0, function* () {
-            const request = yield fetch(`http://localhost:3000/api/notes/${filename}`, {
+            const request = yield fetch(`http://localhost:3000/api/notes/${note.filename}`, {
                 method: 'DELETE',
             });
             if (!request.ok) {
@@ -106,4 +126,7 @@ export default class Controller {
         });
     }
 }
+Controller.filenameVertexMap = new Map();
+Controller.graph = new Graph();
+export default Controller;
 //# sourceMappingURL=Controller.js.map

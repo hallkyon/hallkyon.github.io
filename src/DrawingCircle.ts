@@ -4,7 +4,6 @@ import Canvas from './Canvas.js';
 import Note from './Note.js';
 import DrawingCircleInterface from './interfaces/DrawingCircleInterface.js';
 import Point from './Point.js';
-import Controller from './Controller.js';
 
 export default class DrawingCircle implements DrawingCircleInterface {
     private readonly _position: Point;
@@ -14,10 +13,6 @@ export default class DrawingCircle implements DrawingCircleInterface {
         this._position = new Point(x, y);
         this._svg = this.makeSvgCircle();
         this.show();
-
-        this._svg.addEventListener('click', () => {
-            const controller = Controller.getInstance();
-        });
     }
 
     private makeSvgCircle(): SVGCircleElement {

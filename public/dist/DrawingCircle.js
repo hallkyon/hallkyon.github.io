@@ -1,15 +1,11 @@
 // @prettier
 import Canvas from './Canvas.js';
 import Point from './Point.js';
-import Controller from './Controller.js';
 export default class DrawingCircle {
     constructor(x = Canvas.center.x, y = Canvas.center.y) {
         this._position = new Point(x, y);
         this._svg = this.makeSvgCircle();
         this.show();
-        this._svg.addEventListener('click', () => {
-            const controller = Controller.getInstance();
-        });
     }
     makeSvgCircle() {
         const namespace = 'http://www.w3.org/2000/svg';

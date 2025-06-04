@@ -6,6 +6,7 @@
         <title>GraphNote</title>
 
         <link rel="stylesheet" href="./public/styles.css" />
+        <link rel="stylesheet" href="./public/button.css" />
         <script type="module" src="./public/dist/app.js"></script>
     </head>
     <body>
@@ -17,14 +18,14 @@
                         type="text"
                         placeholder="title"
                         class="editor-title" />
-                    <button class="editor-button">delete</button>
-                    <button class="editor-button">close</button>
+                    <button class="hexagon-button delete-button">delete</button>
+                    <button class="hexagon-button save-button">save</button>
                 </div>
                 <textarea class="editor-content" spellcheck="false"></textarea>
             </div>
         </div>
         <footer>
-            <button>create</button>
+            <button class="hexagon-button">create</button>
         </footer>
     </body>
 </html>

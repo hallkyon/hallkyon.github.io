@@ -1,0 +1,30 @@
+:root {
+    --hex-radius: 10px;
+    --color-primary: #007bff;
+    --color-secondary: #ffffff;
+}
+
+.hexagon-button {
+    border: none;
+
+    height: 35px;
+    min-width: 50px;
+
+    margin: 5px 5px;
+    padding: 0px 30px;
+
+    clip-path: polygon(
+        var(--hex-radius) 0%,
+        calc(100% - var(--hex-radius)) 0%,
+        100% 50%,
+        calc(100% - var(--hex-radius)) 100%,
+        var(--hex-radius) 100%,
+        0% 50%
+    );
+}
+
+.hexagon-button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    transition: 0.3s;
+}
