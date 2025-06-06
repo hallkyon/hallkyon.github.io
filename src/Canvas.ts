@@ -1,35 +1,38 @@
 // @prettier
 
+import DrawingCircle from './DrawingCircle.js';
+import DrawingLine from './DrawingLine.js';
+import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
 
 export default class Canvas {
-    private static instance: Canvas;
-    private _embedder: ((graph: Graph) => void) | null;
-    private _graph: Graph | null;
+    private static _pointGraph: Graph<Point>;
+    private static readonly _pointArray: Point[] = [];
+    private static readonly _vertexArray: DrawingCircle[] = [];
+    private static readonly _edgeArray: DrawingLine[] = [];
 
-    private constructor() {
-        this._embedder = null;
-        this._graph = null;
-    }
+    private static animate(timestamp: number) {
+        Canvas._pointGraph = EadesEmbedder.embed(Canvas._pointGraph);
 
-    public static get height(): number {
-        return window.innerHeight;
-    }
+        Canvas._pointGraph.vertices.forEach((pointA, index) => {
+            const circle = Canvas._vertexArray[index];
+            circle.x = pointA.x;
+            circle.y = pointA.y;
 
-    public static get width(): number {
-        return window.innerWidth;
-    }
+            const neighbors = Canvas._pointGraph.getAdjacentVertices(pointA);
+            neighbors.forEach((pointB) => {
+                const line = Canvas._edgeArray.find(
+                    (l) => l.pointA === pointA && l.pointB === pointB
+                );
+                if (line) {
+                    line.pointA = pointA;
+                    line.pointB = pointB;
+                }
+            });
+        });
 
-    public static get center(): Point {
-        return new Point(Canvas.width / 2, Canvas.height / 2);
-    }
-
-    public static getInstance(): Canvas {
-        if (!Canvas.instance) {
-            Canvas.instance = new Canvas();
-        }
-        return Canvas.instance;
+        requestAnimationFrame(Canvas.animate);
     }
 
     public static addDrawing(drawing: SVGElement): void {
@@ -48,17 +51,43 @@ export default class Canvas {
         canvas.removeChild(drawing);
     }
 
-    public setEmbedder(graph: Graph, embedder: (graph: Graph) => void) {
-        this._graph = graph;
-        this._embedder = embedder;
-        requestAnimationFrame(this.animate.bind(this));
+    public static draw(graph: Graph<number>): void {
+        Canvas._pointGraph = new Graph<Point>();
+        graph.vertices.forEach((vertex) => {
+            const point = new Point(Canvas.center.x, Canvas.center.y);
+            Canvas._pointArray[vertex] = point;
+            Canvas._pointGraph.insertVertex(point);
+
+            const circle = new DrawingCircle();
+            circle.fill = 'white';
+            circle.stroke = 'white';
+            circle.radius = 3;
+            circle.show();
+            Canvas._vertexArray[vertex] = circle;
+        });
+
+        graph.edges.forEach((edge) => {
+            const pointA = Canvas._pointArray[edge[0]];
+            const pointB = Canvas._pointArray[edge[1]];
+            Canvas._pointGraph.insertUndirectedEdge(pointA, pointB);
+
+            const line = new DrawingLine(pointA, pointB);
+            line.show();
+            Canvas._edgeArray.push(line);
+        });
+
+        Canvas.animate(0);
     }
 
-    private readonly animate = (timestamp: number) => {
-        if (!this._embedder || !this._graph) {
-            throw new Error('Embedder or graph not set');
-        }
-        this._embedder(this._graph);
-        requestAnimationFrame(this.animate.bind(this));
-    };
+    public static get height(): number {
+        return window.innerHeight;
+    }
+
+    public static get width(): number {
+        return window.innerWidth;
+    }
+
+    public static get center(): Point {
+        return new Point(Canvas.width / 2, Canvas.height / 2);
+    }
 }

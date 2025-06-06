@@ -7,6 +7,9 @@ export default class Vector {
         this._x = x;
         this._y = y;
     }
+    isZeroVector() {
+        return this.x === 0 && this.y === 0;
+    }
     add(vector) {
         return new Vector(vector.x + this.x, vector.y + this.y);
     }
@@ -38,9 +41,6 @@ export default class Vector {
             throw new Error('Cannot project a zero vector');
         }
         return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
-    }
-    isZeroVector() {
-        return this.x === 0 && this.y === 0;
     }
     get magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
