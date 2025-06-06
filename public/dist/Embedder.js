@@ -1,14 +1,14 @@
 import Canvas from './Canvas.js';
 import Vector from './Vector.js';
 class EadesEmbedder {
-    static calculateCenterScalar(distance) {
-        return EadesEmbedder._c0 * Math.sqrt(distance);
-    }
     static calculateSpringScalar(distance) {
         return EadesEmbedder._c1 * Math.log(distance / EadesEmbedder._c2);
     }
     static calculateRepulsionScalar(distance) {
         return -EadesEmbedder._c3 / Math.sqrt(distance);
+    }
+    static calculateCenterScalar(distance) {
+        return EadesEmbedder._c0 * Math.sqrt(distance);
     }
     static calculateForce(pointA, pointB, scalarFunction) {
         if (pointA === pointB) {
@@ -18,8 +18,7 @@ class EadesEmbedder {
             const distance = pointA.getDistance(pointB);
             const direction = pointA.getDirection(pointB);
             return direction.scale(scalarFunction(distance));
-        }
-        catch (_a) {
+        } catch (_a) {
             return new Vector(Math.random(), Math.random());
         }
     }
@@ -29,12 +28,30 @@ class EadesEmbedder {
         }
         graph.vertices.forEach((pointA) => {
             let force = new Vector(0, 0);
-            force = force.add(this.calculateForce(pointA, EadesEmbedder._center, EadesEmbedder.calculateCenterScalar));
+            force = force.add(
+                this.calculateForce(
+                    pointA,
+                    EadesEmbedder._center,
+                    EadesEmbedder.calculateCenterScalar
+                )
+            );
             graph.getAdjacentVertices(pointA).forEach((pointB) => {
-                force = force.add(this.calculateForce(pointA, pointB, EadesEmbedder.calculateSpringScalar));
+                force = force.add(
+                    this.calculateForce(
+                        pointA,
+                        pointB,
+                        EadesEmbedder.calculateSpringScalar
+                    )
+                );
             });
             graph.getNonAdjacentVertices(pointA).forEach((pointB) => {
-                force = force.add(this.calculateForce(pointA, pointB, EadesEmbedder.calculateRepulsionScalar));
+                force = force.add(
+                    this.calculateForce(
+                        pointA,
+                        pointB,
+                        EadesEmbedder.calculateRepulsionScalar
+                    )
+                );
             });
             force.scale(EadesEmbedder._c4);
             pointA.x += force.x;

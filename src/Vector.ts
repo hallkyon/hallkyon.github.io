@@ -16,6 +16,10 @@ export default class Vector implements VectorInterface {
         this._y = y;
     }
 
+    private isZeroVector(): boolean {
+        return this.x === 0 && this.y === 0;
+    }
+
     public add(vector: Vector): Vector {
         return new Vector(vector.x + this.x, vector.y + this.y);
     }
@@ -52,10 +56,6 @@ export default class Vector implements VectorInterface {
             throw new Error('Cannot project a zero vector');
         }
         return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
-    }
-
-    private isZeroVector(): boolean {
-        return this.x === 0 && this.y === 0;
     }
 
     public get magnitude(): number {
