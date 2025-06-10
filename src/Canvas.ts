@@ -8,15 +8,18 @@ import Point from './Point.js';
 
 export default class Canvas {
     private static _pointGraph: Graph<Point>;
-    private static readonly _pointArray: Point[] = [];
-    private static readonly _vertexArray: DrawingCircle[] = [];
+    private static readonly _pointMap: Map<string, Point> = new Map();
+    private static readonly _circleMap: Map<Point, DrawingCircle> = new Map();
     private static readonly _edgeArray: DrawingLine[] = [];
 
     private static animate(timestamp: number) {
         Canvas._pointGraph = EadesEmbedder.embed(Canvas._pointGraph);
 
-        Canvas._pointGraph.vertices.forEach((pointA, index) => {
-            const circle = Canvas._vertexArray[index];
+        Canvas._pointGraph.vertices.forEach((pointA) => {
+            const circle = Canvas._circleMap.get(pointA);
+            if (circle === undefined) {
+                throw new Error(`Circle for point ${pointA} not found`);
+            }
             circle.x = pointA.x;
             circle.y = pointA.y;
 
@@ -51,11 +54,11 @@ export default class Canvas {
         canvas.removeChild(drawing);
     }
 
-    public static draw(graph: Graph<number>): void {
+    public static draw(graph: Graph<string>): void {
         Canvas._pointGraph = new Graph<Point>();
         graph.vertices.forEach((vertex) => {
             const point = new Point(Canvas.center.x, Canvas.center.y);
-            Canvas._pointArray[vertex] = point;
+            Canvas._pointMap.set(vertex, point);
             Canvas._pointGraph.insertVertex(point);
 
             const circle = new DrawingCircle();
@@ -63,12 +66,15 @@ export default class Canvas {
             circle.stroke = 'white';
             circle.radius = 3;
             circle.show();
-            Canvas._vertexArray[vertex] = circle;
+            Canvas._circleMap.set(point, circle);
         });
 
         graph.edges.forEach((edge) => {
-            const pointA = Canvas._pointArray[edge[0]];
-            const pointB = Canvas._pointArray[edge[1]];
+            const pointA = Canvas._pointMap.get(edge[0]);
+            const pointB = Canvas._pointMap.get(edge[1]);
+            if (pointA === undefined || pointB === undefined) {
+                throw new Error(`Edge ${edge} contains undefined points`);
+            }
             Canvas._pointGraph.insertUndirectedEdge(pointA, pointB);
 
             const line = new DrawingLine(pointA, pointB);
