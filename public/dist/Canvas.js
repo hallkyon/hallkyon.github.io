@@ -1,20 +1,12 @@
 // @prettier
-
 import DrawingCircle from './DrawingCircle.js';
 import DrawingLine from './DrawingLine.js';
 import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
-
-export default class Canvas {
-    private static _pointGraph: Graph<Point>;
-    private static readonly _pointMap: Map<string, Point> = new Map();
-    private static readonly _circleMap: Map<Point, DrawingCircle> = new Map();
-    private static readonly _edgeArray: DrawingLine[] = [];
-
-    private static updateDrawing(timestamp: number) {
+class Canvas {
+    static updateDrawing(timestamp) {
         Canvas._pointGraph = EadesEmbedder.embed(Canvas._pointGraph);
-
         Canvas._pointGraph.vertices.forEach((pointA) => {
             const circle = Canvas._circleMap.get(pointA);
             if (circle === undefined) {
@@ -22,45 +14,37 @@ export default class Canvas {
             }
             circle.x = pointA.x;
             circle.y = pointA.y;
-
             const neighbors = Canvas._pointGraph.getAdjacentVertices(pointA);
             neighbors.forEach((pointB) => {
-                const line = Canvas._edgeArray.find(
-                    (l) => l.pointA === pointA && l.pointB === pointB
-                );
+                const line = Canvas._edgeArray.find((l) => l.pointA === pointA && l.pointB === pointB);
                 if (line) {
                     line.pointA = pointA;
                     line.pointB = pointB;
                 }
             });
         });
-
         requestAnimationFrame(Canvas.updateDrawing);
     }
-
-    public static addDrawing(drawing: SVGElement): void {
+    static addDrawing(drawing) {
         const canvas = document.getElementById('svg');
         if (null === canvas) {
             throw new Error('Canvas element with id "svg" not found');
         }
         canvas.appendChild(drawing);
     }
-
-    public static removeDrawing(drawing: SVGElement): void {
+    static removeDrawing(drawing) {
         const canvas = document.getElementById('svg');
         if (null === canvas) {
             throw new Error('Canvas element with id "svg" not found');
         }
         canvas.removeChild(drawing);
     }
-
-    public static draw(graph: Graph<string>): void {
-        Canvas._pointGraph = new Graph<Point>();
+    static draw(graph) {
+        Canvas._pointGraph = new Graph();
         graph.vertices.forEach((vertex) => {
             const point = new Point(Canvas.center.x, Canvas.center.y);
             Canvas._pointMap.set(vertex, point);
             Canvas._pointGraph.insertVertex(point);
-
             const circle = new DrawingCircle();
             circle.fill = 'white';
             circle.stroke = 'white';
@@ -68,7 +52,6 @@ export default class Canvas {
             circle.show();
             Canvas._circleMap.set(point, circle);
         });
-
         graph.edges.forEach((edge) => {
             const pointA = Canvas._pointMap.get(edge[0]);
             const pointB = Canvas._pointMap.get(edge[1]);
@@ -76,24 +59,24 @@ export default class Canvas {
                 throw new Error(`Edge ${edge} contains undefined points`);
             }
             Canvas._pointGraph.insertUndirectedEdge(pointA, pointB);
-
             const line = new DrawingLine(pointA, pointB);
             line.show();
             Canvas._edgeArray.push(line);
         });
-
         Canvas.updateDrawing(0);
     }
-
-    public static get height(): number {
+    static get height() {
         return window.innerHeight;
     }
-
-    public static get width(): number {
+    static get width() {
         return window.innerWidth;
     }
-
-    public static get center(): Point {
+    static get center() {
         return new Point(Canvas.width / 2, Canvas.height / 2);
     }
 }
+Canvas._pointMap = new Map();
+Canvas._circleMap = new Map();
+Canvas._edgeArray = [];
+export default Canvas;
+//# sourceMappingURL=Canvas.js.map

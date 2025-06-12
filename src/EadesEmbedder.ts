@@ -42,9 +42,7 @@ export default class EadesEmbedder {
     }
 
     public static embed(graph: Graph<Point>): Graph<Point> {
-        if (EadesEmbedder._center === undefined) {
-            EadesEmbedder._center = Canvas.center;
-        }
+        EadesEmbedder._center ??= Canvas.center;
 
         graph.vertices.forEach((pointA) => {
             let force = new Vector(0, 0);
