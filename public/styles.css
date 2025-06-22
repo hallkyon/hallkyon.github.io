@@ -1,14 +1,27 @@
-html,
-body {
+* {
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
+}
 
+:root {
     height: 100vh;
     width: 100vw;
+    overflow: hidden;
 }
 
 svg {
     height: 100vh;
     width: 100vw;
     background-color: #424242;
+}
+
+#background {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(20deg, red, orange, yellow, green, blue, indigo, violet);
+    clip-path: url(#vertices);
 }

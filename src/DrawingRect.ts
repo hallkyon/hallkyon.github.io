@@ -1,30 +1,33 @@
 // @prettier
 
 import Canvas from './Canvas.js';
-import DrawingCircleInterface from './interfaces/DrawingCircleInterface.js';
+import DrawingRectInterface from './interfaces/DrawingRectInterface.js';
 import Point from './Point.js';
 
-export default class DrawingCircle implements DrawingCircleInterface {
+export default class DrawingRect implements DrawingRectInterface {
     private readonly _position: Point;
-    private readonly _svg: SVGCircleElement;
+    private readonly _svg: SVGRectElement;
 
     constructor(x = Canvas.center.x, y = Canvas.center.y) {
         this._position = new Point(x, y);
-        this._svg = this.makeSvgCircle();
+        this._svg = this.makeSvgRect();
         this.show();
     }
 
-    private makeSvgCircle(): SVGCircleElement {
+    private makeSvgRect(): SVGRectElement {
         const namespace = 'http://www.w3.org/2000/svg';
-        const shape = 'circle';
+        const shape = 'rect';
         const svg = document.createElementNS(namespace, shape);
 
-        const radius = 1;
+        const height = 20;
+        const width = 20;
         const fill = 'white';
 
-        svg.setAttribute('cx', String(this._position.x));
-        svg.setAttribute('cy', String(this._position.y));
-        svg.setAttribute('r', String(radius));
+        svg.setAttribute('transform', `translate(-${width / 2}, -${height / 2})`);
+        svg.setAttribute('x', String(this._position.x));
+        svg.setAttribute('y', String(this._position.y));
+        svg.setAttribute('height', String(height));
+        svg.setAttribute('width', String(width));
         svg.setAttribute('fill', fill);
 
         return svg;
@@ -44,7 +47,7 @@ export default class DrawingCircle implements DrawingCircleInterface {
 
     public set x(newX: number) {
         this._position.x = newX;
-        this._svg.setAttribute('cx', String(newX));
+        this._svg.setAttribute('x', String(newX));
     }
 
     public get y(): number {
@@ -53,15 +56,25 @@ export default class DrawingCircle implements DrawingCircleInterface {
 
     public set y(newY: number) {
         this._position.y = newY;
-        this._svg.setAttribute('cy', String(newY));
+        this._svg.setAttribute('y', String(newY));
     }
 
-    public get radius(): number {
-        return Number(this._svg.getAttribute('r') ?? 0);
+    get width(): number {
+        const width = this._svg.getAttribute('width');
+        return width ? parseFloat(width) : 0
     }
 
-    public set radius(newRadius: number) {
-        this._svg.setAttribute('r', String(newRadius));
+    set width(newWidth: number) {
+        this._svg.setAttribute('width', String(newWidth));
+    }
+
+    get height(): number {
+        const height = this._svg.getAttribute('height');
+        return height ? parseFloat(height) : 0;
+    }
+
+    set height(newHeight: number) {
+        this._svg.setAttribute('height', String(newHeight));
     }
 
     public get position(): Point {

@@ -1,5 +1,5 @@
 // @prettier
-import DrawingCircle from './DrawingCircle.js';
+import DrawingRect from './DrawingRect.js';
 import DrawingLine from './DrawingLine.js';
 import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
@@ -8,9 +8,9 @@ class Canvas {
     static animate(timestamp) {
         Canvas._pointGraph = EadesEmbedder.embed(Canvas._pointGraph);
         Canvas._pointGraph.vertices.forEach((pointA, index) => {
-            const circle = Canvas._vertexArray[index];
-            circle.x = pointA.x;
-            circle.y = pointA.y;
+            const rect = Canvas._vertexArray[index];
+            rect.x = pointA.x;
+            rect.y = pointA.y;
             const neighbors = Canvas._pointGraph.getAdjacentVertices(pointA);
             neighbors.forEach((pointB) => {
                 const line = Canvas._edgeArray.find((l) => l.pointA === pointA && l.pointB === pointB);
@@ -23,9 +23,9 @@ class Canvas {
         requestAnimationFrame(Canvas.animate);
     }
     static addDrawing(drawing) {
-        const canvas = document.getElementById('svg');
+        const canvas = document.getElementById('vertices');
         if (null === canvas) {
-            throw new Error('Canvas element with id "svg" not found');
+            throw new Error('Canvas element with id "vertices" not found');
         }
         canvas.appendChild(drawing);
     }
@@ -42,12 +42,10 @@ class Canvas {
             const point = new Point(Canvas.center.x, Canvas.center.y);
             Canvas._pointArray[vertex] = point;
             Canvas._pointGraph.insertVertex(point);
-            const circle = new DrawingCircle();
-            circle.fill = 'white';
-            circle.stroke = 'white';
-            circle.radius = 3;
-            circle.show();
-            Canvas._vertexArray[vertex] = circle;
+            const rect = new DrawingRect();
+            rect.stroke = 'white';
+            rect.show();
+            Canvas._vertexArray[vertex] = rect;
         });
         graph.edges.forEach((edge) => {
             const pointA = Canvas._pointArray[edge[0]];

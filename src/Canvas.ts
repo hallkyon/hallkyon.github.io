@@ -1,6 +1,6 @@
 // @prettier
 
-import DrawingCircle from './DrawingCircle.js';
+import DrawingRect from './DrawingRect.js';
 import DrawingLine from './DrawingLine.js';
 import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
@@ -9,16 +9,16 @@ import Point from './Point.js';
 export default class Canvas {
     private static _pointGraph: Graph<Point>;
     private static readonly _pointArray: Point[] = [];
-    private static readonly _vertexArray: DrawingCircle[] = [];
+    private static readonly _vertexArray: DrawingRect[] = [];
     private static readonly _edgeArray: DrawingLine[] = [];
 
     private static animate(timestamp: number) {
         Canvas._pointGraph = EadesEmbedder.embed(Canvas._pointGraph);
 
         Canvas._pointGraph.vertices.forEach((pointA, index) => {
-            const circle = Canvas._vertexArray[index];
-            circle.x = pointA.x;
-            circle.y = pointA.y;
+            const rect = Canvas._vertexArray[index];
+            rect.x = pointA.x;
+            rect.y = pointA.y;
 
             const neighbors = Canvas._pointGraph.getAdjacentVertices(pointA);
             neighbors.forEach((pointB) => {
@@ -36,9 +36,9 @@ export default class Canvas {
     }
 
     public static addDrawing(drawing: SVGElement): void {
-        const canvas = document.getElementById('svg');
+        const canvas = document.getElementById('vertices');
         if (null === canvas) {
-            throw new Error('Canvas element with id "svg" not found');
+            throw new Error('Canvas element with id "vertices" not found');
         }
         canvas.appendChild(drawing);
     }
@@ -58,12 +58,10 @@ export default class Canvas {
             Canvas._pointArray[vertex] = point;
             Canvas._pointGraph.insertVertex(point);
 
-            const circle = new DrawingCircle();
-            circle.fill = 'white';
-            circle.stroke = 'white';
-            circle.radius = 3;
-            circle.show();
-            Canvas._vertexArray[vertex] = circle;
+            const rect = new DrawingRect();
+            rect.stroke = 'white';
+            rect.show();
+            Canvas._vertexArray[vertex] = rect;
         });
 
         graph.edges.forEach((edge) => {
