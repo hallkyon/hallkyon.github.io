@@ -1,32 +1,27 @@
 // @prettier
-import Canvas from './Canvas.js';
 import Point from './Point.js';
 export default class DrawingRect {
-    constructor(x = Canvas.center.x, y = Canvas.center.y) {
+    constructor(x, y) {
         this._position = new Point(x, y);
         this._svg = this.makeSvgRect();
-        this.show();
     }
     makeSvgRect() {
         const namespace = 'http://www.w3.org/2000/svg';
         const shape = 'rect';
         const svg = document.createElementNS(namespace, shape);
-        const height = 20;
-        const width = 20;
+        const height = 30;
+        const width = 30;
         const fill = 'white';
-        svg.setAttribute('transform', `translate(-${width / 2}, -${height / 2})`);
-        svg.setAttribute('x', String(this._position.x));
-        svg.setAttribute('y', String(this._position.y));
+        svg.setAttribute('transform', `translate(${-width / 2}, ${-height / 2})`);
         svg.setAttribute('height', String(height));
         svg.setAttribute('width', String(width));
+        svg.setAttribute('x', String(this._position.x));
+        svg.setAttribute('y', String(this._position.y));
         svg.setAttribute('fill', fill);
         return svg;
     }
-    show() {
-        Canvas.addDrawing(this._svg);
-    }
-    hide() {
-        Canvas.removeDrawing(this._svg);
+    get svg() {
+        return this._svg;
     }
     get x() {
         return this._position.x;
@@ -41,6 +36,18 @@ export default class DrawingRect {
     set y(newY) {
         this._position.y = newY;
         this._svg.setAttribute('y', String(newY));
+    }
+    get top() {
+        return this.y - this.height / 2;
+    }
+    get right() {
+        return this.x + this.width / 2;
+    }
+    get bottom() {
+        return this.y + this.height / 2;
+    }
+    get left() {
+        return this.x - this.width / 2;
     }
     get width() {
         const width = this._svg.getAttribute('width');

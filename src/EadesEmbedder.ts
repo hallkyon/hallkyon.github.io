@@ -6,8 +6,8 @@ import Vector from './Vector.js';
 export default class EadesEmbedder {
     private static readonly _c0 = 0.2; // center attraction constant
     private static readonly _c1 = 10;
-    private static readonly _c2 = 50;
-    private static readonly _c3 = 2;
+    private static readonly _c2 = 100;  // distance between two vertices
+    private static readonly _c3 = 4;
     private static readonly _c4 = 0.5; // repulsion constant
 
     private static _center: Point;
@@ -42,9 +42,7 @@ export default class EadesEmbedder {
     }
 
     public static embed(graph: Graph<Point>): Graph<Point> {
-        if (EadesEmbedder._center === undefined) {
-            EadesEmbedder._center = Canvas.center;
-        }
+        EadesEmbedder._center ??= Canvas.center;
 
         graph.vertices.forEach((pointA) => {
             let force = new Vector(0, 0);

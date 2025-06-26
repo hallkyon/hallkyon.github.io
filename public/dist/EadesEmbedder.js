@@ -24,9 +24,8 @@ class EadesEmbedder {
         }
     }
     static embed(graph) {
-        if (EadesEmbedder._center === undefined) {
-            EadesEmbedder._center = Canvas.center;
-        }
+        var _a;
+        (_a = EadesEmbedder._center) !== null && _a !== void 0 ? _a : (EadesEmbedder._center = Canvas.center);
         graph.vertices.forEach((pointA) => {
             let force = new Vector(0, 0);
             force = force.add(this.calculateForce(pointA, EadesEmbedder._center, EadesEmbedder.calculateCenterScalar));
@@ -45,8 +44,8 @@ class EadesEmbedder {
 }
 EadesEmbedder._c0 = 0.2; // center attraction constant
 EadesEmbedder._c1 = 10;
-EadesEmbedder._c2 = 50;
-EadesEmbedder._c3 = 2;
+EadesEmbedder._c2 = 100; // distance between two vertices
+EadesEmbedder._c3 = 4;
 EadesEmbedder._c4 = 0.5; // repulsion constant
 export default EadesEmbedder;
 //# sourceMappingURL=EadesEmbedder.js.map
