@@ -1,5 +1,6 @@
 export default class Matrix {
 <<<<<<< HEAD
+<<<<<<< HEAD
     constructor(rows, columns) {
         this._rows = rows;
         this._columns = columns;
@@ -37,6 +38,8 @@ export default class Matrix {
             .map((row) => row.join(', '))
             .join('\n');
 =======
+=======
+>>>>>>> 8f01410 (Rectangular vertices now have random widths)
     constructor(numRows, numColumns) {
         if (numRows < 1 || numColumns < 1) {
             throw new Error(`Cannot create ${numRows}x${numColumns} matrix`);
@@ -66,7 +69,48 @@ export default class Matrix {
     }
     get numColumns() {
         return this._data[0].length;
+<<<<<<< HEAD
 >>>>>>> 08ad5bc (Added Matrix class)
+=======
+=======
+    constructor(rows, columns) {
+        this._rows = rows;
+        this._columns = columns;
+        this._matrix = new Array();
+        for (let i = 0; i < rows; i++) {
+            this._matrix.push(new Array());
+            for (let j = 0; j < columns; j++) {
+                this._matrix[i].push(0);
+            }
+        }
+    }
+    getValue(row, column) {
+        if (row < 0 || row >= this._rows || column < 0 || column >= this._columns) {
+            throw new Error(`Matrix getValue failed: Invalid indices: ${row}, ${column}`);
+        }
+        return this._matrix[row][column];
+    }
+    setValue(row, column, value) {
+        if (row < 0 || row >= this._rows || column < 0 || column >= this._columns) {
+            throw new Error(`Matrix setValue failed: Invalid indices: ${row}, ${column}`);
+        }
+        if (!isFinite(value)) {
+            throw new Error(`Matrix setValue failed: Invalid value: ${value}`);
+        }
+        this._matrix[row][column] = value;
+    }
+    get rows() {
+        return this._rows;
+    }
+    get columns() {
+        return this._columns;
+    }
+    toString() {
+        return this._matrix
+            .map((row) => row.join(', '))
+            .join('\n');
+>>>>>>> 7b553b8 (Rectangular vertices now have random widths)
+>>>>>>> 8f01410 (Rectangular vertices now have random widths)
     }
 }
 //# sourceMappingURL=Matrix.js.map
