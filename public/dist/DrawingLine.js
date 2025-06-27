@@ -37,7 +37,8 @@ export default class DrawingLine {
         this._svg.setAttribute('y2', String(newPoint.y));
     }
     get stroke() {
-        return this._svg.getAttribute('stroke') || '';
+        var _a;
+        return (_a = this._svg.getAttribute('stroke')) !== null && _a !== void 0 ? _a : '';
     }
     set stroke(newStroke) {
         this._svg.setAttribute('stroke', newStroke);

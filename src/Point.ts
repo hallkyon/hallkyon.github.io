@@ -29,10 +29,6 @@ export default class Point implements PointInterface {
         return vectorB.sub(vectorA).magnitude;
     }
 
-    public move(vector: Vector): Point {
-        return new Point(this.x + vector.x, this.y + vector.y);
-    }
-
     public get x(): number {
         return this._x;
     }

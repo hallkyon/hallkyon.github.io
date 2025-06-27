@@ -18,9 +18,6 @@ export default class Point {
         const vectorB = new Vector(to.x, to.y);
         return vectorB.sub(vectorA).magnitude;
     }
-    move(vector) {
-        return new Point(this.x + vector.x, this.y + vector.y);
-    }
     get x() {
         return this._x;
     }
