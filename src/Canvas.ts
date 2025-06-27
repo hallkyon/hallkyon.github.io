@@ -102,9 +102,9 @@ export default class Canvas {
         requestAnimationFrame(Canvas.updateDrawing);
     }
 
-    private static createPointGraph(graph: Graph<number>): Graph<Point> {
+    private static createPointGraph(graph: Graph<string>): Graph<Point> {
         const pointGraph = new Graph<Point>();
-        const pointMap = new Map<number, Point>();
+        const pointMap = new Map<string, Point>();
 
         graph.vertices.forEach((vertex) => {
             const point = new Point(Canvas.width / 2, Canvas.height / 2);
@@ -133,7 +133,7 @@ export default class Canvas {
         canvas.removeChild(drawing);
     }
 
-    public static draw(graph: Graph<number>): void {
+    public static draw(graph: Graph<string>): void {
         Canvas._pointGraph = Canvas.createPointGraph(graph);
 
         Canvas._pointGraph.vertices.forEach((vertex: Point) => {

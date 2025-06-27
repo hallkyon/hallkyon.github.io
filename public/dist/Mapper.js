@@ -53,7 +53,6 @@ export default class Mapper {
                     });
                 }
             });
-            console.log('Graph created with vertices:', graph.vertices, 'and edges:', graph.edges);
             return graph;
         });
     }

@@ -1,17 +1,9 @@
 // @prettier
-<<<<<<< HEAD
-=======
-import Canvas from './Canvas.js';
->>>>>>> d7f883a (work in progress)
 export default class DrawingLine {
     constructor(pointA, pointB) {
         this._pointA = pointA;
         this._pointB = pointB;
         this._svg = this.makeSvgLine();
-<<<<<<< HEAD
-=======
-        this.show();
->>>>>>> d7f883a (work in progress)
     }
     makeSvgLine() {
         const namespace = 'http://www.w3.org/2000/svg';
@@ -25,16 +17,8 @@ export default class DrawingLine {
         svg.setAttribute('stroke', stroke);
         return svg;
     }
-<<<<<<< HEAD
     get svg() {
         return this._svg;
-=======
-    show() {
-        Canvas.addDrawing(this._svg);
-    }
-    hide() {
-        Canvas.removeDrawing(this._svg);
->>>>>>> d7f883a (work in progress)
     }
     get pointA() {
         return this._pointA;
@@ -52,7 +36,6 @@ export default class DrawingLine {
         this._svg.setAttribute('x2', String(newPoint.x));
         this._svg.setAttribute('y2', String(newPoint.y));
     }
-<<<<<<< HEAD
     get stroke() {
         var _a;
         return (_a = this._svg.getAttribute('stroke')) !== null && _a !== void 0 ? _a : '';
@@ -60,7 +43,5 @@ export default class DrawingLine {
     set stroke(newStroke) {
         this._svg.setAttribute('stroke', newStroke);
     }
-=======
->>>>>>> d7f883a (work in progress)
 }
 //# sourceMappingURL=DrawingLine.js.map

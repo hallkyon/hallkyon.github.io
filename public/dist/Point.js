@@ -30,11 +30,8 @@ export default class Point {
     set y(newY) {
         this._y = newY;
     }
-<<<<<<< HEAD
     toString() {
         return `Point(${this.x}, ${this.y})`;
     }
-=======
->>>>>>> d7f883a (work in progress)
 }
 //# sourceMappingURL=Point.js.map
