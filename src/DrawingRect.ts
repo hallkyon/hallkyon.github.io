@@ -78,6 +78,9 @@ export default class DrawingRect implements DrawingRectInterface {
     }
 
     set width(newWidth: number) {
+        if (newWidth < 0) {
+            throw new Error(`Invalid width: ${newWidth}`);
+        }
         this._svg.setAttribute('width', String(newWidth));
     }
 
@@ -87,6 +90,9 @@ export default class DrawingRect implements DrawingRectInterface {
     }
 
     set height(newHeight: number) {
+        if (newHeight < 0) {
+            throw new Error(`Invalid height: ${newHeight}`);
+        }
         this._svg.setAttribute('height', String(newHeight));
     }
 
@@ -113,5 +119,9 @@ export default class DrawingRect implements DrawingRectInterface {
 
     public set stroke(newStroke: string) {
         this._svg.setAttribute('stroke', newStroke);
+    }
+
+    public toString(): string {
+        return `DrawingRect(${this.x}, ${this.y}, ${this.width}, ${this.height})`;
     }
 }

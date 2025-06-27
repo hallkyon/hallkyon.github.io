@@ -1,6 +1,7 @@
 // @prettier
 
 import VectorInterface from './interfaces/VectorInterface.js';
+import Matrix from './Matrix.js';
 
 export default class Vector implements VectorInterface {
     private _x: number;
@@ -58,6 +59,27 @@ export default class Vector implements VectorInterface {
         return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
     }
 
+    public vectorMatrixMultiply(matrix: Matrix): Vector {
+        try {
+            if (matrix.rows != 2 || matrix.columns != 2) {
+                throw new Error(
+                    `Vector matrix multiplication failed: Invalid matrix dimensions: ${matrix.rows}x${matrix.columns}`
+                );
+            }
+            const newX =
+                this.x * matrix.getValue(0, 0) + this.y * matrix.getValue(0, 1);
+            const newY =
+                this.x * matrix.getValue(1, 0) + this.y * matrix.getValue(1, 1);
+            return new Vector(newX, newY);
+        } catch (error) {
+            throw new Error(
+                `Vector matrix multiplication failed: ${
+                    error instanceof Error ? error.message : String(error)
+                }`
+            );
+        }
+    }
+
     public get magnitude(): number {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
@@ -76,5 +98,9 @@ export default class Vector implements VectorInterface {
 
     public set y(newY: number) {
         this._y = newY;
+    }
+
+    public toString(): string {
+        return `Vector(${this.x}, ${this.y})`;
     }
 }

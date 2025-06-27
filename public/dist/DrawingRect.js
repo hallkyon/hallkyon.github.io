@@ -54,6 +54,9 @@ export default class DrawingRect {
         return width ? parseFloat(width) : 0;
     }
     set width(newWidth) {
+        if (newWidth < 0) {
+            throw new Error(`Invalid width: ${newWidth}`);
+        }
         this._svg.setAttribute('width', String(newWidth));
     }
     get height() {
@@ -61,6 +64,9 @@ export default class DrawingRect {
         return height ? parseFloat(height) : 0;
     }
     set height(newHeight) {
+        if (newHeight < 0) {
+            throw new Error(`Invalid height: ${newHeight}`);
+        }
         this._svg.setAttribute('height', String(newHeight));
     }
     get position() {
@@ -83,6 +89,9 @@ export default class DrawingRect {
     }
     set stroke(newStroke) {
         this._svg.setAttribute('stroke', newStroke);
+    }
+    toString() {
+        return `DrawingRect(${this.x}, ${this.y}, ${this.width}, ${this.height})`;
     }
 }
 //# sourceMappingURL=DrawingRect.js.map

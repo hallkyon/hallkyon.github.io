@@ -1,4 +1,5 @@
 import Canvas from './Canvas.js';
+import DrawingRect from './DrawingRect.js';
 import Vector from './Vector.js';
 class EadesEmbedder {
     static calculateCenterScalar(distance) {
@@ -10,13 +11,13 @@ class EadesEmbedder {
     static calculateRepulsionScalar(distance) {
         return -EadesEmbedder._c3 / Math.sqrt(distance);
     }
-    static calculateForce(pointA, pointB, scalarFunction) {
-        if (pointA === pointB) {
+    static calculateForce(rectA, rectB, scalarFunction) {
+        if (rectA === rectB) {
             return new Vector(0, 0);
         }
         try {
-            const distance = pointA.getDistance(pointB);
-            const direction = pointA.getDirection(pointB);
+            const distance = rectA.position.getDistance(rectB.position);
+            const direction = rectA.position.getDirection(rectB.position);
             return direction.scale(scalarFunction(distance));
         }
         catch (_a) {
@@ -25,19 +26,19 @@ class EadesEmbedder {
     }
     static embed(graph) {
         var _a;
-        (_a = EadesEmbedder._center) !== null && _a !== void 0 ? _a : (EadesEmbedder._center = Canvas.center);
-        graph.vertices.forEach((pointA) => {
+        (_a = EadesEmbedder._center) !== null && _a !== void 0 ? _a : (EadesEmbedder._center = new DrawingRect(Canvas.center.x, Canvas.center.y));
+        graph.vertices.forEach((rectA) => {
             let force = new Vector(0, 0);
-            force = force.add(this.calculateForce(pointA, EadesEmbedder._center, EadesEmbedder.calculateCenterScalar));
-            graph.getAdjacentVertices(pointA).forEach((pointB) => {
-                force = force.add(this.calculateForce(pointA, pointB, EadesEmbedder.calculateSpringScalar));
+            force = force.add(this.calculateForce(rectA, EadesEmbedder._center, EadesEmbedder.calculateCenterScalar));
+            graph.getAdjacentVertices(rectA).forEach((rectB) => {
+                force = force.add(this.calculateForce(rectA, rectB, EadesEmbedder.calculateSpringScalar));
             });
-            graph.getNonAdjacentVertices(pointA).forEach((pointB) => {
-                force = force.add(this.calculateForce(pointA, pointB, EadesEmbedder.calculateRepulsionScalar));
+            graph.getNonAdjacentVertices(rectA).forEach((rectB) => {
+                force = force.add(this.calculateForce(rectA, rectB, EadesEmbedder.calculateRepulsionScalar));
             });
             force.scale(EadesEmbedder._c4);
-            pointA.x += force.x;
-            pointA.y += force.y;
+            rectA.x += force.x;
+            rectA.y += force.y;
         });
         return graph;
     }
