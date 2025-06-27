@@ -18,7 +18,7 @@ export default class DrawingRect implements DrawingRectInterface {
         const svg = document.createElementNS(namespace, shape);
 
         const height = 30;
-        const width = 30;
+        const width = 30 + 200 * Math.random();
         const fill = 'white';
 
         svg.setAttribute(

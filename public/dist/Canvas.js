@@ -33,8 +33,9 @@ class Canvas {
         const rectB = Canvas.getVertexDrawing(pointB);
         let vector = rectA.position.getDirection(rectB.position);
         vector.scale(rectA.position.getDistance(rectB.position));
-        const dx = vector.x / 2;
-        const dy = vector.y / 2;
+        const vectorScalar = rectA.width / (rectA.width + rectB.width);
+        const dx = vectorScalar * vector.x;
+        const dy = vectorScalar * vector.y;
         const anchorA = new Point(rectA.position.x + dx, rectA.position.y + dy);
         const anchorB = new Point(rectA.position.x + dx, rectA.position.y + dy);
         if (Math.abs(vector.x) >= (rectA.width + rectB.width) / 2) {
