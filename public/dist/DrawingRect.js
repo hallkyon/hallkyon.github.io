@@ -9,8 +9,8 @@ export default class DrawingRect {
         const namespace = 'http://www.w3.org/2000/svg';
         const shape = 'rect';
         const svg = document.createElementNS(namespace, shape);
-        const height = 30;
-        const width = 30;
+        const height = 30 * Math.floor(3 * Math.random() + 1);
+        const width = 30 * Math.floor(5 * Math.random() + 1);
         const fill = 'white';
         svg.setAttribute('transform', `translate(${-width / 2}, ${-height / 2})`);
         svg.setAttribute('height', String(height));
@@ -49,11 +49,26 @@ export default class DrawingRect {
     get left() {
         return this.x - this.width / 2;
     }
+    get topLeft() {
+        return new Point(this.left, this.top);
+    }
+    get topRight() {
+        return new Point(this.right, this.top);
+    }
+    get bottomRight() {
+        return new Point(this.right, this.bottom);
+    }
+    get bottomLeft() {
+        return new Point(this.left, this.bottom);
+    }
     get width() {
         const width = this._svg.getAttribute('width');
         return width ? parseFloat(width) : 0;
     }
     set width(newWidth) {
+        if (newWidth < 0) {
+            throw new Error(`Invalid width: ${newWidth}`);
+        }
         this._svg.setAttribute('width', String(newWidth));
     }
     get height() {
@@ -61,6 +76,9 @@ export default class DrawingRect {
         return height ? parseFloat(height) : 0;
     }
     set height(newHeight) {
+        if (newHeight < 0) {
+            throw new Error(`Invalid height: ${newHeight}`);
+        }
         this._svg.setAttribute('height', String(newHeight));
     }
     get position() {
@@ -83,6 +101,9 @@ export default class DrawingRect {
     }
     set stroke(newStroke) {
         this._svg.setAttribute('stroke', newStroke);
+    }
+    toString() {
+        return `DrawingRect(${this.x}, ${this.y}, ${this.width}, ${this.height})`;
     }
 }
 //# sourceMappingURL=DrawingRect.js.map

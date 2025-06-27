@@ -17,6 +17,9 @@ export default tseslint.config(
     ...tseslint.configs.stylistic,
     // Ignore patterns
     {
-        ignores: ['./public/dist/*'],
+        ignores: ['./public/dist', 'coverage'],
+        rules: {
+            complexity: ['error', { max: 2 , variant: 'modified'}],
+        }
     }
 );

@@ -3,7 +3,7 @@
 import VectorInterface from 'VectorInterface.js';
 
 export default interface PointInterface {
-    getDirection(to: PointInterface): VectorInterface;
+    getDirectedVector(to: PointInterface): VectorInterface;
     getDistance(to: PointInterface): number;
     get x(): number;
     set x(newX: number);

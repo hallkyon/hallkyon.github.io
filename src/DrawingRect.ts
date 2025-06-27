@@ -17,8 +17,8 @@ export default class DrawingRect implements DrawingRectInterface {
         const shape = 'rect';
         const svg = document.createElementNS(namespace, shape);
 
-        const height = 30;
-        const width = 30;
+        const height = 30 * Math.floor(3 * Math.random() + 1);
+        const width = 30 * Math.floor(5 * Math.random() + 1);
         const fill = 'white';
 
         svg.setAttribute(
@@ -72,12 +72,31 @@ export default class DrawingRect implements DrawingRectInterface {
         return this.x - this.width / 2;
     }
 
+    get topLeft(): Point {
+        return new Point(this.left, this.top);
+    }
+
+    get topRight(): Point {
+        return new Point(this.right, this.top);
+    }
+
+    get bottomRight(): Point {
+        return new Point(this.right, this.bottom);
+    }
+
+    get bottomLeft(): Point {
+        return new Point(this.left, this.bottom);
+    }
+
     get width(): number {
         const width = this._svg.getAttribute('width');
         return width ? parseFloat(width) : 0;
     }
 
     set width(newWidth: number) {
+        if (newWidth < 0) {
+            throw new Error(`Invalid width: ${newWidth}`);
+        }
         this._svg.setAttribute('width', String(newWidth));
     }
 
@@ -87,6 +106,9 @@ export default class DrawingRect implements DrawingRectInterface {
     }
 
     set height(newHeight: number) {
+        if (newHeight < 0) {
+            throw new Error(`Invalid height: ${newHeight}`);
+        }
         this._svg.setAttribute('height', String(newHeight));
     }
 
@@ -113,5 +135,9 @@ export default class DrawingRect implements DrawingRectInterface {
 
     public set stroke(newStroke: string) {
         this._svg.setAttribute('stroke', newStroke);
+    }
+
+    public toString(): string {
+        return `DrawingRect(${this.x}, ${this.y}, ${this.width}, ${this.height})`;
     }
 }
