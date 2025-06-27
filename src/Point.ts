@@ -44,4 +44,8 @@ export default class Point implements PointInterface {
     public set y(newY: number) {
         this._y = newY;
     }
+
+    public toString(): string {
+        return `Point(${this.x}, ${this.y})`;
+    }
 }

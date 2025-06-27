@@ -10,14 +10,14 @@ export default class Graph {
     }
     insertDirectedEdge(vertexA, vertexB) {
         if (false === this._adjacencyList.has(vertexA)) {
-            this._adjacencyList.set(vertexA, []);
+            throw new Error(`Vertex ${vertexA} not found in graph.`);
         }
         if (false === this._adjacencyList.has(vertexB)) {
-            this._adjacencyList.set(vertexB, []);
+            throw new Error(`Vertex ${vertexB} not found in graph.`);
         }
         const adjacentVertices = this._adjacencyList.get(vertexA);
         if (undefined === adjacentVertices) {
-            return;
+            throw new Error(`Vertex ${vertexA} not found in graph.`);
         }
         adjacentVertices.push(vertexB);
         this._adjacencyList.set(vertexA, adjacentVertices);
@@ -27,8 +27,11 @@ export default class Graph {
         this.insertDirectedEdge(vertexB, vertexA);
     }
     getAdjacentVertices(vertex) {
+        if (false === this._adjacencyList.has(vertex)) {
+            throw new Error(`Vertex ${vertex} not found in graph.`);
+        }
         const adjacentVertices = this._adjacencyList.get(vertex);
-        if (undefined === adjacentVertices) {
+        if (undefined === adjacentVertices) { // Shouldn't happen, but just in case
             return [];
         }
         return adjacentVertices;

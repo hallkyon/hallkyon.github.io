@@ -1,6 +1,5 @@
 // @prettier
 
-import Canvas from './Canvas.js';
 import DrawingLineInterface from './interfaces/DrawingLineInterface.js';
 import Point from './Point.js';
 
@@ -13,7 +12,6 @@ export default class DrawingLine implements DrawingLineInterface {
         this._pointA = pointA;
         this._pointB = pointB;
         this._svg = this.makeSvgLine();
-        this.show();
     }
 
     private makeSvgLine(): SVGLineElement {
@@ -32,12 +30,8 @@ export default class DrawingLine implements DrawingLineInterface {
         return svg;
     }
 
-    public show(): void {
-        Canvas.addDrawing(this._svg);
-    }
-
-    public hide(): void {
-        Canvas.removeDrawing(this._svg);
+    public get svg(): SVGElement {
+        return this._svg;
     }
 
     public get pointA(): Point {
@@ -58,5 +52,13 @@ export default class DrawingLine implements DrawingLineInterface {
         this._pointB = newPoint;
         this._svg.setAttribute('x2', String(newPoint.x));
         this._svg.setAttribute('y2', String(newPoint.y));
+    }
+
+    get stroke(): string {
+        return this._svg.getAttribute('stroke') ?? '';
+    }
+
+    set stroke(newStroke: string) {
+        this._svg.setAttribute('stroke', newStroke);
     }
 }

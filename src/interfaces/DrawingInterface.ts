@@ -1,6 +1,5 @@
 // @prettier
 
 export default interface DrawingInterface {
-    show(): void;
-    hide(): void;
+    get svg(): SVGElement;
 }
