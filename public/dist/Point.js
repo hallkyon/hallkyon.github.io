@@ -31,7 +31,7 @@ export default class Point {
         this._y = newY;
     }
     toString() {
-        return `Point(${this.x}, ${this.y})`;
+        return `Point(${this.x},${this.y})`;
     }
 }
 //# sourceMappingURL=Point.js.map

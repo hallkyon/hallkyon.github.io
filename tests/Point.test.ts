@@ -43,4 +43,8 @@ describe('Point', () => {
         const distance = pointA.getDistance(pointB);
         expect(distance).toStrictEqual(Math.sqrt(8));
     });
+
+    it('should stringify the object', () => {
+        expect(pointA.toString()).toStrictEqual('Point(0,0)');
+    });
 });

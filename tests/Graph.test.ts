@@ -3,13 +3,7 @@
 import { describe, expect, it, beforeEach } from 'vitest';
 import Graph from '../src/Graph.ts';
 
-class Dummy {
-    constructor(id: string) {
-        this.id = id;
-    }
-}
-
-let graph: Graph;
+let graph: Graph<number>;
 
 describe('Graph', () => {
     beforeEach(() => {
@@ -21,51 +15,60 @@ describe('Graph', () => {
         expect(graph.edges).toStrictEqual([]);
     });
 
-    it('should add a vertex', () => {
-        const dummy = new Dummy('vertex');
-        graph.insertVertex(dummy);
-        expect(graph.vertices).toStrictEqual([dummy]);
+    it('should add two vertices', () => {
+        graph.insertVertex(1);
+        graph.insertVertex(2);
+        expect(graph.vertices).toStrictEqual([1, 2]);
     });
 
-    it('should add two vertices as endpoints if an edge is added', () => {
-        const dummy1 = new Dummy('1');
-        const dummy2 = new Dummy('2');
-        graph.insertUndirectedEdge(dummy1, dummy2);
-        expect(graph.vertices).toStrictEqual([dummy1, dummy2]);
+    it('should throw an error if connecting to vertexA, which is not in graph', () => {
+        graph.insertVertex(2);
+        expect(() => graph.insertDirectedEdge(1, 2)).toThrowError();
+    });
+
+    it('should throw an error if connecting to vertexB, which is not in graph', () => {
+        graph.insertVertex(1);
+        expect(() => graph.insertDirectedEdge(1, 2)).toThrowError();
     });
 
     it('should add two edges if an undirected edge is added', () => {
-        const dummy1 = new Dummy('1');
-        const dummy2 = new Dummy('2');
-        graph.insertUndirectedEdge(dummy1, dummy2);
+        graph.insertVertex(1);
+        graph.insertVertex(2);
+        graph.insertUndirectedEdge(1, 2);
         expect(graph.edges).toStrictEqual([
-            [dummy1, dummy2],
-            [dummy2, dummy1],
+            [1, 2],
+            [2, 1],
         ]);
-        expect(graph.vertices).toStrictEqual([dummy1, dummy2]);
     });
 
     it('should add one edge if a directed edge is added', () => {
-        const dummy1 = new Dummy('1');
-        const dummy2 = new Dummy('2');
-        graph.insertDirectedEdge(dummy1, dummy2);
-        expect(graph.edges).toStrictEqual([[dummy1, dummy2]]);
-        expect(graph.vertices).toStrictEqual([dummy1, dummy2]);
+        graph.insertVertex(1);
+        graph.insertVertex(2);
+        graph.insertDirectedEdge(1, 2);
+        expect(graph.edges).toStrictEqual([[1, 2]]);
+    });
+
+    it('should throw an error while getting adjacent vertices, if vertex is not in graph', () => {
+        expect(() => graph.getAdjacentVertices(2)).toThrowError();
     });
 
     it('should return all adjacent vertices to v', () => {
-        const dummy1 = new Dummy('1');
-        const dummy2 = new Dummy('2');
-        graph.insertDirectedEdge(dummy1, dummy2);
-        expect(graph.getAdjacentVertices(dummy1)).toStrictEqual([dummy2]);
-        expect(graph.getAdjacentVertices(dummy2)).toStrictEqual([]);
+        graph.insertVertex(1);
+        graph.insertVertex(2);
+        graph.insertDirectedEdge(1, 2);
+        expect(graph.getAdjacentVertices(1)).toStrictEqual([2]);
+        expect(graph.getAdjacentVertices(2)).toStrictEqual([]);
+    });
+
+    it('should throw an error while getting non-adjacent vertices, if vertex is not in graph', () => {
+        expect(() => graph.getNonAdjacentVertices(2)).toThrowError();
     });
 
     it('should return all non adjacent vertices to v', () => {
-        const dummy1 = new Dummy('1');
-        const dummy2 = new Dummy('2');
-        graph.insertDirectedEdge(dummy1, dummy2);
-        expect(graph.getNonAdjacentVertices(dummy1)).toStrictEqual([]);
-        expect(graph.getNonAdjacentVertices(dummy2)).toStrictEqual([dummy1]);
+        graph.insertVertex(1);
+        graph.insertVertex(2);
+        graph.insertDirectedEdge(1, 2);
+        expect(graph.getNonAdjacentVertices(1)).toStrictEqual([]);
+        expect(graph.getNonAdjacentVertices(2)).toStrictEqual([1]);
     });
 });

@@ -46,6 +46,6 @@ export default class Point implements PointInterface {
     }
 
     public toString(): string {
-        return `Point(${this.x}, ${this.y})`;
+        return `Point(${this.x},${this.y})`;
     }
 }

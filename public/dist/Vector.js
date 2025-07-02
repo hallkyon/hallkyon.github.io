@@ -1,11 +1,13 @@
 // @prettier
+import Matrix from './Matrix.js';
 export default class Vector {
     constructor(x, y) {
         if (false === isFinite(x) || false === isFinite(y)) {
             throw new Error(`Vector constructor failed: Invalid arguments: ${x}, ${y}`);
         }
-        this._x = x;
-        this._y = y;
+        this._data = new Matrix(2, 1);
+        this.x = x;
+        this.y = y;
     }
     isZeroVector() {
         return this.x === 0 && this.y === 0;
@@ -59,16 +61,16 @@ export default class Vector {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
     get x() {
-        return this._x;
+        return this._data.getValue(0, 0);
     }
     set x(newX) {
-        this._x = newX;
+        this._data.setValue(0, 0, newX);
     }
     get y() {
-        return this._y;
+        return this._data.getValue(1, 0);
     }
     set y(newY) {
-        this._y = newY;
+        this._data.setValue(1, 0, newY);
     }
     toString() {
         return `Vector(${this.x}, ${this.y})`;

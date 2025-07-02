@@ -3,18 +3,18 @@
 import VectorInterface from './interfaces/VectorInterface.js';
 import Matrix from './Matrix.js';
 
-export default class Vector implements VectorInterface {
-    private _x: number;
-    private _y: number;
-
+export default class Vector extends Matrix implements VectorInterface {
     constructor(x: number, y: number) {
+        super(2, 1);
+
         if (false === isFinite(x) || false === isFinite(y)) {
             throw new Error(
                 `Vector constructor failed: Invalid arguments: ${x}, ${y}`
             );
         }
-        this._x = x;
-        this._y = y;
+
+        this.x = x;
+        this.y = y;
     }
 
     private isZeroVector(): boolean {
@@ -52,11 +52,22 @@ export default class Vector implements VectorInterface {
         return this.x * vector.x + this.y * vector.y;
     }
 
-    public projection(vector: Vector): Vector {
+    public projectOn(nonZeroVector: Vector): Vector {
         if (this.isZeroVector()) {
             throw new Error('Cannot project a zero vector');
         }
-        return vector.scale(this.dotProduct(vector) / this.dotProduct(this));
+        return nonZeroVector.scale(this.dotProduct(nonZeroVector) / this.dotProduct(this));
+    }
+
+    public matrixMultiply(matrix: Matrix): Vector {
+        if (matrix.numRows !== 2 || matrix.numColumns !== 2) {
+            throw new Error(
+                `Matrix must be 2x2 for vector transformation, got ${matrix.numRows}x${matrix.numColumns}`
+            );
+        }
+        const x = this.x * matrix.getValue(0, 0) + this.y * matrix.getValue(0, 1);
+        const y = this.x * matrix.getValue(1, 0) + this.y * matrix.getValue(1, 1);
+        return new Vector(x, y);
     }
 
     public vectorMatrixMultiply(matrix: Matrix): Vector {
@@ -85,19 +96,19 @@ export default class Vector implements VectorInterface {
     }
 
     public get x(): number {
-        return this._x;
+        return this.getValue(0, 0);
     }
 
     public set x(newX: number) {
-        this._x = newX;
+        this.setValue(0, 0, newX);
     }
 
     public get y(): number {
-        return this._y;
+        return this.getValue(1, 0);
     }
 
     public set y(newY: number) {
-        this._y = newY;
+        this.setValue(1, 0, newY);
     }
 
     public toString(): string {
