@@ -17,16 +17,19 @@ export default class Point implements PointInterface {
         this._y = y;
     }
 
-    public getDirection(to: Point): Vector {
-        const vectorA = new Vector(this.x, this.y);
-        const vectorB = new Vector(to.x, to.y);
-        return vectorB.sub(vectorA).toUnitVector();
+    public getPositionVector(): Vector {
+        return new Vector(this.x, this.y);
+    }
+
+    public getDirectedVector(to: Point): Vector {
+        const vectorA = this.getPositionVector();
+        const vectorB = to.getPositionVector();
+        return vectorB.sub(vectorA);
     }
 
     public getDistance(to: Point): number {
-        const vectorA = new Vector(this.x, this.y);
-        const vectorB = new Vector(to.x, to.y);
-        return vectorB.sub(vectorA).magnitude;
+        const vector = this.getDirectedVector(to);
+        return vector.magnitude;
     }
 
     public get x(): number {

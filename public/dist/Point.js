@@ -8,15 +8,17 @@ export default class Point {
         this._x = x;
         this._y = y;
     }
-    getDirection(to) {
-        const vectorA = new Vector(this.x, this.y);
-        const vectorB = new Vector(to.x, to.y);
-        return vectorB.sub(vectorA).toUnitVector();
+    getPositionVector() {
+        return new Vector(this.x, this.y);
+    }
+    getDirectedVector(to) {
+        const vectorA = this.getPositionVector();
+        const vectorB = to.getPositionVector();
+        return vectorB.sub(vectorA);
     }
     getDistance(to) {
-        const vectorA = new Vector(this.x, this.y);
-        const vectorB = new Vector(to.x, to.y);
-        return vectorB.sub(vectorA).magnitude;
+        const vector = this.getDirectedVector(to);
+        return vector.magnitude;
     }
     get x() {
         return this._x;

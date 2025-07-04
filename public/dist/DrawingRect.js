@@ -9,8 +9,8 @@ export default class DrawingRect {
         const namespace = 'http://www.w3.org/2000/svg';
         const shape = 'rect';
         const svg = document.createElementNS(namespace, shape);
-        const height = 30;
-        const width = 30;
+        const height = 30 * Math.floor(3 * Math.random() + 1);
+        const width = 30 * Math.floor(5 * Math.random() + 1);
         const fill = 'white';
         svg.setAttribute('transform', `translate(${-width / 2}, ${-height / 2})`);
         svg.setAttribute('height', String(height));

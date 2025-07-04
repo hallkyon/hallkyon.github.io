@@ -21,20 +21,24 @@ export default class Vector extends Matrix implements VectorInterface {
         return this.x === 0 && this.y === 0;
     }
 
-    public add(vector: Vector): Vector {
-        return new Vector(vector.x + this.x, vector.y + this.y);
+    public add(vector: Vector): this {
+        this.x += vector.x;
+        this.y += vector.y;
+        return this;
     }
 
-    public sub(vector: Vector): Vector {
-        return new Vector(this.x - vector.x, this.y - vector.y);
+    public sub(vector: Vector): this {
+        this.x -= vector.x;
+        this.y -= vector.y;
+        return this;
     }
 
     public scale(scalar: number): this {
         if (false === isFinite(scalar)) {
             throw new Error(`Vector scale failed: Invalid argument: ${scalar}`);
         }
-        this.x = scalar * this.x;
-        this.y = scalar * this.y;
+        this.x *= scalar;
+        this.y *= scalar;
         return this;
     }
 
@@ -70,27 +74,6 @@ export default class Vector extends Matrix implements VectorInterface {
         return new Vector(x, y);
     }
 
-    public vectorMatrixMultiply(matrix: Matrix): Vector {
-        try {
-            if (matrix.rows != 2 || matrix.columns != 2) {
-                throw new Error(
-                    `Vector matrix multiplication failed: Invalid matrix dimensions: ${matrix.rows}x${matrix.columns}`
-                );
-            }
-            const newX =
-                this.x * matrix.getValue(0, 0) + this.y * matrix.getValue(0, 1);
-            const newY =
-                this.x * matrix.getValue(1, 0) + this.y * matrix.getValue(1, 1);
-            return new Vector(newX, newY);
-        } catch (error) {
-            throw new Error(
-                `Vector matrix multiplication failed: ${
-                    error instanceof Error ? error.message : String(error)
-                }`
-            );
-        }
-    }
-
     public get magnitude(): number {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
@@ -109,9 +92,5 @@ export default class Vector extends Matrix implements VectorInterface {
 
     public set y(newY: number) {
         this.setValue(1, 0, newY);
-    }
-
-    public toString(): string {
-        return `Vector(${this.x}, ${this.y})`;
     }
 }

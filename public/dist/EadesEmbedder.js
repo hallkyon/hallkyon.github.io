@@ -1,14 +1,23 @@
 import Canvas from './Canvas.js';
 import DrawingRect from './DrawingRect.js';
+import Matrix from './Matrix.js';
 import Vector from './Vector.js';
 class EadesEmbedder {
-    static calculateCenterScalar(distance) {
+    static calculateCenterScalar(rectA, center) {
+        const distance = rectA.position.getDistance(center.position);
         return EadesEmbedder._c0 * Math.sqrt(distance);
     }
-    static calculateSpringScalar(distance) {
-        return EadesEmbedder._c1 * Math.log(distance / EadesEmbedder._c2);
+    static calculateSpringScalar(rectA, rectB) {
+        const matrix = new Matrix(2, 2);
+        matrix.setValue(0, 0, EadesEmbedder._c2 * (rectA.width + rectB.width) / 2);
+        matrix.setValue(1, 1, EadesEmbedder._c2 * (rectA.height + rectB.height) / 2);
+        const distance = rectA.position.getDistance(rectB.position);
+        const direction = rectA.position.getDirectedVector(rectB.position).toUnitVector();
+        const idealEdgeLength = direction.matrixMultiply(matrix).magnitude;
+        return EadesEmbedder._c1 * Math.log(distance / idealEdgeLength);
     }
-    static calculateRepulsionScalar(distance) {
+    static calculateRepulsionScalar(rectA, rectB) {
+        const distance = rectA.position.getDistance(rectB.position);
         return -EadesEmbedder._c3 / Math.sqrt(distance);
     }
     static calculateForce(rectA, rectB, scalarFunction) {
@@ -16,9 +25,10 @@ class EadesEmbedder {
             return new Vector(0, 0);
         }
         try {
-            const distance = rectA.position.getDistance(rectB.position);
-            const direction = rectA.position.getDirection(rectB.position);
-            return direction.scale(scalarFunction(distance));
+            const directionUnitVector = rectA.position
+                .getDirectedVector(rectB.position)
+                .toUnitVector();
+            return directionUnitVector.scale(scalarFunction(rectA, rectB));
         }
         catch (_a) {
             return new Vector(Math.random(), Math.random());
@@ -45,8 +55,8 @@ class EadesEmbedder {
 }
 EadesEmbedder._c0 = 0.2; // center attraction constant
 EadesEmbedder._c1 = 10;
-EadesEmbedder._c2 = 100; // distance between two vertices
-EadesEmbedder._c3 = 4;
+EadesEmbedder._c2 = 2; // distance between two vertices
+EadesEmbedder._c3 = 6;
 EadesEmbedder._c4 = 0.5; // repulsion constant
 export default EadesEmbedder;
 //# sourceMappingURL=EadesEmbedder.js.map

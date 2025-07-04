@@ -19,8 +19,7 @@ class Canvas {
     static drawEdge(rectA, rectB) {
         try {
             const line = Canvas.getEdgeDrawing(rectA, rectB);
-            let vector = rectA.position.getDirection(rectB.position);
-            vector.scale(rectA.position.getDistance(rectB.position));
+            let vector = rectA.position.getDirectedVector(rectB.position);
             const vectorScalar = rectA.width / (rectA.width + rectB.width);
             const dx = vectorScalar * vector.x;
             const dy = vectorScalar * vector.y;
