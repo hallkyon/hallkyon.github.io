@@ -20,6 +20,12 @@ export default class Point {
         const vector = this.getDirectedVector(to);
         return vector.magnitude;
     }
+    getBarycenter(...points) {
+        return new Point(0, 0);
+    }
+    toString() {
+        return `Point(${this.x},${this.y})`;
+    }
     get x() {
         return this._x;
     }
@@ -31,9 +37,6 @@ export default class Point {
     }
     set y(newY) {
         this._y = newY;
-    }
-    toString() {
-        return `Point(${this.x},${this.y})`;
     }
 }
 //# sourceMappingURL=Point.js.map

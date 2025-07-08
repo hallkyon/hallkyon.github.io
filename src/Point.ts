@@ -32,6 +32,10 @@ export default class Point implements PointInterface {
         return vector.magnitude;
     }
 
+    public toString(): string {
+        return `Point(${this.x},${this.y})`;
+    }
+
     public get x(): number {
         return this._x;
     }
@@ -46,9 +50,5 @@ export default class Point implements PointInterface {
 
     public set y(newY: number) {
         this._y = newY;
-    }
-
-    public toString(): string {
-        return `Point(${this.x},${this.y})`;
     }
 }

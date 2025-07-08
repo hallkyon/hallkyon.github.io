@@ -79,7 +79,7 @@ export default class Canvas {
         }
     }
 
-    private static animate(timestamp: number) {
+    private static animate() {
         Canvas._drawingGraph = EadesEmbedder.embed(Canvas._drawingGraph);
 
         Canvas._drawingGraph.edges.forEach((edge) => {
@@ -152,7 +152,7 @@ export default class Canvas {
             Canvas._edgeMap.set(rect, neighborsMap);
         });
 
-        Canvas.animate(0);
+        Canvas.animate();
     }
 
     public static get height(): number {

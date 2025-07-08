@@ -52,7 +52,7 @@ class Canvas {
             console.error(`Error drawing edge from ${rectA.toString()} to ${rectB.toString()}:`, error);
         }
     }
-    static animate(timestamp) {
+    static animate() {
         Canvas._drawingGraph = EadesEmbedder.embed(Canvas._drawingGraph);
         Canvas._drawingGraph.edges.forEach((edge) => {
             Canvas.drawEdge(edge[0], edge[1]);
@@ -111,7 +111,7 @@ class Canvas {
             });
             Canvas._edgeMap.set(rect, neighborsMap);
         });
-        Canvas.animate(0);
+        Canvas.animate();
     }
     static get height() {
         return window.innerHeight;

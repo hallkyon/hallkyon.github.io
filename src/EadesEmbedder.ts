@@ -1,16 +1,15 @@
 import Canvas from './Canvas.js';
 import DrawingRect from './DrawingRect.js';
 import Graph from './Graph.js';
-import Point from './Point.js';
 import Matrix from './Matrix.js';
 import Vector from './Vector.js';
 
 export default class EadesEmbedder {
     private static readonly _c0 = 0.2; // center attraction constant
     private static readonly _c1 = 10;
-    private static readonly _c2 = 2; // distance between two vertices
+    private static readonly _c2 = 2;
     private static readonly _c3 = 6;
-    private static readonly _c4 = 0.5; // repulsion constant
+    private static readonly _c4 = 0.9;
 
     private static _center: DrawingRect;
 

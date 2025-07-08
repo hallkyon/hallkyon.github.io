@@ -55,8 +55,8 @@ class EadesEmbedder {
 }
 EadesEmbedder._c0 = 0.2; // center attraction constant
 EadesEmbedder._c1 = 10;
-EadesEmbedder._c2 = 2; // distance between two vertices
+EadesEmbedder._c2 = 2;
 EadesEmbedder._c3 = 6;
-EadesEmbedder._c4 = 0.5; // repulsion constant
+EadesEmbedder._c4 = 0.9;
 export default EadesEmbedder;
 //# sourceMappingURL=EadesEmbedder.js.map
