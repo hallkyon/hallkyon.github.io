@@ -5,6 +5,7 @@ import DrawingLine from './DrawingLine.js';
 import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
+import Vector from '.Vector.js';
 
 export default class Canvas {
     private static _drawingGraph: Graph<DrawingRect>;
@@ -12,6 +13,16 @@ export default class Canvas {
         DrawingRect,
         Map<DrawingRect, DrawingLine>
     > = new Map<DrawingRect, Map<DrawingRect, DrawingLine>>();
+
+    private static getBarycenter(...points: Point[]): Point {
+        const barycenterPositionVector = new Vector(0, 0);
+        points.forEach((point) => {
+            const positionVector = point.getPositionVector();
+            barycenterPositionVector.add(positionVector);
+        });
+        barycenterPositionVector.scale(1 / points.length);
+        return new Point(barycenterPositionVector.x, barycenterPositionVector.y);
+    }
 
     private static getEdgeDrawing(
         rectA: DrawingRect,
@@ -33,44 +44,34 @@ export default class Canvas {
     private static drawEdge(rectA: DrawingRect, rectB: DrawingRect): void {
         try {
             const line = Canvas.getEdgeDrawing(rectA, rectB);
+            const barycenter = Canvas.getBarycenter([rectA.topLeft,
+                                                     rectA.topRight,
+rectA.bottomRight,
+rectA.bottomLeft,
+rectB.topLeft,
+rectB.topRight,
+rectB.bottomRight,
+rectB.bottomLeft]);
 
-            let vector = rectA.position.getDirectedVector(rectB.position);
+line.pointA = barycenter.copy();
+line.pointB = barycenter.copy();
 
-            const vectorScalar = rectA.width / (rectA.width + rectB.width);
-            const dx = vectorScalar * vector.x;
-            const dy = vectorScalar * vector.y;
+if (rectA.top > rectB.bottom) {
+    line.pointA.y = rectA.top;
+    line.ponitB.y = rectB.bottom;
+} else if (rectA.bottom < rectB.top) {
+    line.pointA.y = rectA.bottom;
+    line.pointB.y = rectB.top;
+}
 
-            const anchorA = new Point(
-                rectA.position.x + dx,
-                rectA.position.y + dy
-            );
-            const anchorB = new Point(
-                rectA.position.x + dx,
-                rectA.position.y + dy
-            );
+if (rectA.left > rectB.right) {
+    line.pointA.x = rectA.left;
+    line.pointB.x = rectB.right;
+} else if (rectA.right < rectB.left) {
+    line.pointA.x = rectA.right;
+    line.pointB.x = rectB.left;
+}
 
-            if (Math.abs(vector.x) >= (rectA.width + rectB.width) / 2) {
-                if (vector.x > 0) {
-                    anchorA.x = rectA.right;
-                    anchorB.x = rectB.left;
-                } else {
-                    anchorA.x = rectA.left;
-                    anchorB.x = rectB.right;
-                }
-            }
-
-            if (Math.abs(vector.y) >= (rectA.height + rectB.height) / 2) {
-                if (vector.y > 0) {
-                    anchorA.y = rectA.bottom;
-                    anchorB.y = rectB.top;
-                } else {
-                    anchorA.y = rectA.top;
-                    anchorB.y = rectB.bottom;
-                }
-            }
-
-            line.pointA = anchorA;
-            line.pointB = anchorB;
         } catch (error) {
             console.error(
                 `Error drawing edge from ${rectA.toString()} to ${rectB.toString()}:`,
