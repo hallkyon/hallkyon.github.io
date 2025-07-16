@@ -5,7 +5,7 @@ import DrawingLine from './DrawingLine.js';
 import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
-import Vector from '.Vector.js';
+import Vector from './Vector.js';
 
 export default class Canvas {
     private static _drawingGraph: Graph<DrawingRect>;
@@ -21,7 +21,10 @@ export default class Canvas {
             barycenterPositionVector.add(positionVector);
         });
         barycenterPositionVector.scale(1 / points.length);
-        return new Point(barycenterPositionVector.x, barycenterPositionVector.y);
+        return new Point(
+            barycenterPositionVector.x,
+            barycenterPositionVector.y
+        );
     }
 
     private static getEdgeDrawing(
@@ -43,35 +46,39 @@ export default class Canvas {
 
     private static drawEdge(rectA: DrawingRect, rectB: DrawingRect): void {
         try {
+            const barycenter = Canvas.getBarycenter(
+                rectA.topLeft,
+                rectA.topRight,
+                rectA.bottomRight,
+                rectA.bottomLeft,
+                rectB.topLeft,
+                rectB.topRight,
+                rectB.bottomRight,
+                rectB.bottomLeft
+            );
+
+            const anchorA = barycenter.copy();
+            const anchorB = barycenter.copy();
+
+            if (rectA.top > rectB.bottom) {
+                anchorA.y = rectA.top;
+                anchorB.y = rectB.bottom;
+            } else if (rectA.bottom < rectB.top) {
+                anchorA.y = rectA.bottom;
+                anchorB.y = rectB.top;
+            }
+
+            if (rectA.left > rectB.right) {
+                anchorA.x = rectA.left;
+                anchorB.x = rectB.right;
+            } else if (rectA.right < rectB.left) {
+                anchorA.x = rectA.right;
+                anchorB.x = rectB.left;
+            }
+
             const line = Canvas.getEdgeDrawing(rectA, rectB);
-            const barycenter = Canvas.getBarycenter([rectA.topLeft,
-                                                     rectA.topRight,
-rectA.bottomRight,
-rectA.bottomLeft,
-rectB.topLeft,
-rectB.topRight,
-rectB.bottomRight,
-rectB.bottomLeft]);
-
-line.pointA = barycenter.copy();
-line.pointB = barycenter.copy();
-
-if (rectA.top > rectB.bottom) {
-    line.pointA.y = rectA.top;
-    line.ponitB.y = rectB.bottom;
-} else if (rectA.bottom < rectB.top) {
-    line.pointA.y = rectA.bottom;
-    line.pointB.y = rectB.top;
-}
-
-if (rectA.left > rectB.right) {
-    line.pointA.x = rectA.left;
-    line.pointB.x = rectB.right;
-} else if (rectA.right < rectB.left) {
-    line.pointA.x = rectA.right;
-    line.pointB.x = rectB.left;
-}
-
+            line.pointA = anchorA;
+            line.pointB = anchorB;
         } catch (error) {
             console.error(
                 `Error drawing edge from ${rectA.toString()} to ${rectB.toString()}:`,

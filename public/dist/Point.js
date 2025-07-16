@@ -8,6 +8,9 @@ export default class Point {
         this._x = x;
         this._y = y;
     }
+    copy() {
+        return new Point(this.x, this.y);
+    }
     getPositionVector() {
         return new Vector(this.x, this.y);
     }
@@ -19,9 +22,6 @@ export default class Point {
     getDistance(to) {
         const vector = this.getDirectedVector(to);
         return vector.magnitude;
-    }
-    getBarycenter(...points) {
-        return new Point(0, 0);
     }
     toString() {
         return `Point(${this.x},${this.y})`;

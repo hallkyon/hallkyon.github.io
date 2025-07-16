@@ -72,6 +72,22 @@ export default class DrawingRect implements DrawingRectInterface {
         return this.x - this.width / 2;
     }
 
+    get topLeft(): Point {
+        return new Point(this.left, this.top);
+    }
+
+    get topRight(): Point {
+        return new Point(this.right, this.top);
+    }
+
+    get bottomRight(): Point {
+        return new Point(this.right, this.bottom);
+    }
+
+    get bottomLeft(): Point {
+        return new Point(this.left, this.bottom);
+    }
+
     get width(): number {
         const width = this._svg.getAttribute('width');
         return width ? parseFloat(width) : 0;

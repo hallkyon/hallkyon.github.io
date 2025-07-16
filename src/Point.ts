@@ -17,6 +17,10 @@ export default class Point implements PointInterface {
         this._y = y;
     }
 
+    public copy(): Point {
+        return new Point(this.x, this.y);
+    }
+
     public getPositionVector(): Vector {
         return new Vector(this.x, this.y);
     }

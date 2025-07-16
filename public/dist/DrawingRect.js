@@ -49,6 +49,18 @@ export default class DrawingRect {
     get left() {
         return this.x - this.width / 2;
     }
+    get topLeft() {
+        return new Point(this.left, this.top);
+    }
+    get topRight() {
+        return new Point(this.right, this.top);
+    }
+    get bottomRight() {
+        return new Point(this.right, this.bottom);
+    }
+    get bottomLeft() {
+        return new Point(this.left, this.bottom);
+    }
     get width() {
         const width = this._svg.getAttribute('width');
         return width ? parseFloat(width) : 0;
