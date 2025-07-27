@@ -1,5 +1,3 @@
-// @prettier
-
 import VectorInterface from 'VectorInterface.js';
 
 export default interface PointInterface {

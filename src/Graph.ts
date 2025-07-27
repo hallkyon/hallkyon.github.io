@@ -1,5 +1,3 @@
-// @prettier
-
 import GraphInterface from './interfaces/GraphInterface';
 
 export default class Graph<Type> implements GraphInterface<Type> {
@@ -40,7 +38,8 @@ export default class Graph<Type> implements GraphInterface<Type> {
             throw new Error(`Vertex ${vertex} not found in graph.`);
         }
         const adjacentVertices = this._adjacencyList.get(vertex);
-        if (undefined === adjacentVertices) { // Shouldn't happen, but just in case
+        if (undefined === adjacentVertices) {
+            // Shouldn't happen, but just in case
             return [];
         }
         return adjacentVertices;

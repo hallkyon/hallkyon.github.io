@@ -1,5 +1,3 @@
-// @prettier
-
 import PointInterface from './interfaces/PointInterface.js';
 import Vector from './Vector.js';
 

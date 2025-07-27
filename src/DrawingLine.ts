@@ -1,5 +1,3 @@
-// @prettier
-
 import DrawingLineInterface from './interfaces/DrawingLineInterface.js';
 import Point from './Point.js';
 

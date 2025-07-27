@@ -1,5 +1,3 @@
-// @prettier
-
 export default interface GraphInterface<Type> {
     insertVertex(vertex: Type): void;
     insertUndirectedEdge(vertexA: Type, vertexB: Type): void;

@@ -1,5 +1,3 @@
-// @prettier
-
 import VectorInterface from './interfaces/VectorInterface.js';
 import Matrix from './Matrix.js';
 
@@ -60,7 +58,9 @@ export default class Vector extends Matrix implements VectorInterface {
         if (this.isZeroVector()) {
             throw new Error('Cannot project a zero vector');
         }
-        return nonZeroVector.scale(this.dotProduct(nonZeroVector) / this.dotProduct(this));
+        return nonZeroVector.scale(
+            this.dotProduct(nonZeroVector) / this.dotProduct(this)
+        );
     }
 
     public matrixMultiply(matrix: Matrix): Vector {
@@ -69,8 +69,10 @@ export default class Vector extends Matrix implements VectorInterface {
                 `Matrix must be 2x2 for vector transformation, got ${matrix.numRows}x${matrix.numColumns}`
             );
         }
-        const x = this.x * matrix.getValue(0, 0) + this.y * matrix.getValue(0, 1);
-        const y = this.x * matrix.getValue(1, 0) + this.y * matrix.getValue(1, 1);
+        const x =
+            this.x * matrix.getValue(0, 0) + this.y * matrix.getValue(0, 1);
+        const y =
+            this.x * matrix.getValue(1, 0) + this.y * matrix.getValue(1, 1);
         return new Vector(x, y);
     }
 
