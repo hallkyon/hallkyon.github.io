@@ -8,15 +8,23 @@ export default class Point {
         this._x = x;
         this._y = y;
     }
-    getDirection(to) {
-        const vectorA = new Vector(this.x, this.y);
-        const vectorB = new Vector(to.x, to.y);
-        return vectorB.sub(vectorA).toUnitVector();
+    copy() {
+        return new Point(this.x, this.y);
+    }
+    getPositionVector() {
+        return new Vector(this.x, this.y);
+    }
+    getDirectedVector(to) {
+        const vectorA = this.getPositionVector();
+        const vectorB = to.getPositionVector();
+        return vectorB.sub(vectorA);
     }
     getDistance(to) {
-        const vectorA = new Vector(this.x, this.y);
-        const vectorB = new Vector(to.x, to.y);
-        return vectorB.sub(vectorA).magnitude;
+        const vector = this.getDirectedVector(to);
+        return vector.magnitude;
+    }
+    toString() {
+        return `Point(${this.x},${this.y})`;
     }
     get x() {
         return this._x;
@@ -29,9 +37,6 @@ export default class Point {
     }
     set y(newY) {
         this._y = newY;
-    }
-    toString() {
-        return `Point(${this.x}, ${this.y})`;
     }
 }
 //# sourceMappingURL=Point.js.map

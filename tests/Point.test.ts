@@ -8,7 +8,7 @@ let pointB;
 
 describe('Point', () => {
     beforeEach(() => {
-        pointA = new Point(0, 0);
+        pointA = new Point(1, -1);
         pointB = new Point(2, 2);
     });
 
@@ -33,14 +33,24 @@ describe('Point', () => {
         );
     });
 
-    it('should return the direction to pointB', () => {
-        const direction = pointA.getDirection(pointB);
-        expect(direction.x).toStrictEqual(1 / Math.sqrt(2));
-        expect(direction.y).toStrictEqual(1 / Math.sqrt(2));
+    it('should return the position vector of pointA', () => {
+        const positionVector = pointA.getPositionVector();
+        expect(positionVector.x).toStrictEqual(1);
+        expect(positionVector.y).toStrictEqual(-1);
+    });
+
+    it('should return the directed vector from pointA to pointB', () => {
+        const directedVector = pointA.getDirectedVector(pointB);
+        expect(directedVector.x).toStrictEqual(1);
+        expect(directedVector.y).toStrictEqual(3);
     });
 
     it('should return the distance to pointB', () => {
         const distance = pointA.getDistance(pointB);
-        expect(distance).toStrictEqual(Math.sqrt(8));
+        expect(distance).toStrictEqual(Math.sqrt(10));
+    });
+
+    it('should stringify the object', () => {
+        expect(pointA.toString()).toStrictEqual('Point(1,-1)');
     });
 });

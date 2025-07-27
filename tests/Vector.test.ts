@@ -2,6 +2,7 @@
 
 import { describe, expect, it, beforeEach } from 'vitest';
 import Vector from '../src/Vector.ts';
+import Matrix from '../src/Matrix.ts';
 
 let vectorA: Vector;
 let vectorB: Vector;
@@ -72,16 +73,37 @@ describe('Vector', () => {
         expect(dotProduct).toStrictEqual(-10);
     });
 
-    it('should return the projection of vectorB onto vectorA', () => {
-        const projection = vectorA.projection(vectorB);
+    it('should throw an error when trying to project a zero vector', () => {
+        const zeroVector = new Vector(0, 0);
+        expect(() => zeroVector.projectOn(vectorA)).toThrow(
+            'Cannot project a zero vector'
+        );
+    });
+
+    it('should return the projectOn of vectorB onto vectorA', () => {
+        const projection = vectorA.projectOn(vectorB);
         expect(projection.x).toStrictEqual(5);
         expect(projection.y).toStrictEqual(-1.25);
     });
 
-    it('should throw an error when trying to project a zero vector', () => {
-        const zeroVector = new Vector(0, 0);
-        expect(() => zeroVector.projection(vectorA)).toThrow(
-            'Cannot project a zero vector'
-        );
+    it('should stringify the vector', () => {
+        const expected = ['2', '-2'].join('\n');
+        expect(vectorA.toString()).toStrictEqual(expected);
+    });
+
+    it('should throw an error if matrix is not 2x2', () => {
+        const matrix = new Matrix(2, 3);
+        matrix.setValue(0, 0, 2);
+        matrix.setValue(1, 1, 4);
+        expect(() => vectorA.matrixMultiply(matrix)).toThrow();
+    });
+
+    it('should transform a vector with matrix', () => {
+        const matrix = new Matrix(2, 2);
+        matrix.setValue(0, 0, 2);
+        matrix.setValue(1, 1, 4);
+        const transformedVector = vectorA.matrixMultiply(matrix);
+        expect(transformedVector.x).toStrictEqual(4);
+        expect(transformedVector.y).toStrictEqual(-8);
     });
 });

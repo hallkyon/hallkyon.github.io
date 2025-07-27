@@ -5,96 +5,65 @@ import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
 class Canvas {
-    static getVertexDrawing(point) {
-        const rect = Canvas.vertexMap.get(point);
-        if (undefined === rect) {
-            throw new Error(`No drawing found for point ${point.toString()}`);
-        }
-        return rect;
-    }
-    static getEdgeDrawing(pointA, pointB) {
-        const map = Canvas._edgeMap.get(pointA);
+    static getEdgeDrawing(rectA, rectB) {
+        const map = Canvas._edgeMap.get(rectA);
         if (undefined === map) {
-            throw new Error(`No edge map found for point ${pointA.toString()}`);
+            throw new Error(`No edge map found for point ${rectA.toString()}`);
         }
-        const line = map.get(pointB);
+        const line = map.get(rectB);
         if (undefined === line) {
-            throw new Error(`No line found for edge from ${pointA.toString()} to ${pointB.toString()}`);
+            throw new Error(`No line found for edge from ${rectA.toString()} to ${rectB.toString()}`);
         }
         return line;
     }
-    static drawVertex(point) {
-        const rect = Canvas.getVertexDrawing(point);
-        rect.position = point;
-    }
-    static drawEdge(pointA, pointB) {
-        const line = Canvas.getEdgeDrawing(pointA, pointB);
-        const rectA = Canvas.getVertexDrawing(pointA);
-        const rectB = Canvas.getVertexDrawing(pointB);
-        let vector = rectA.position.getDirection(rectB.position);
-        vector.scale(rectA.position.getDistance(rectB.position));
-        const dx = vector.x / 2;
-        const dy = vector.y / 2;
-        const anchorA = new Point(rectA.position.x + dx, rectA.position.y + dy);
-        const anchorB = new Point(rectA.position.x + dx, rectA.position.y + dy);
-        if (Math.abs(vector.x) >= (rectA.width + rectB.width) / 2) {
-            if (vector.x > 0) {
+    static drawEdge(rectA, rectB) {
+        try {
+            const dividendX = rectA.left * rectB.left - rectA.right * rectB.right;
+            const divisorX = (rectA.left + rectB.left) - (rectA.right + rectB.right);
+            const x = dividendX / divisorX;
+            const dividendY = rectA.top * rectB.top - rectA.bottom * rectB.bottom;
+            const divisorY = (rectA.top + rectB.top) - (rectA.bottom + rectB.bottom);
+            const y = dividendY / divisorY;
+            const optimalPoint = new Point(x, y);
+            const line = Canvas.getEdgeDrawing(rectA, rectB);
+            const anchorA = optimalPoint.copy();
+            const anchorB = optimalPoint.copy();
+            if (rectA.right < rectB.left) {
                 anchorA.x = rectA.right;
                 anchorB.x = rectB.left;
             }
-            else {
+            else if (rectA.left > rectB.right) {
                 anchorA.x = rectA.left;
                 anchorB.x = rectB.right;
             }
-        }
-        if (Math.abs(vector.y) >= (rectA.height + rectB.height) / 2) {
-            if (vector.y > 0) {
-                anchorA.y = rectA.bottom;
-                anchorB.y = rectB.top;
-            }
-            else {
+            if (rectA.top > rectB.bottom) {
                 anchorA.y = rectA.top;
                 anchorB.y = rectB.bottom;
             }
+            else if (rectA.bottom < rectB.top) {
+                anchorA.y = rectA.bottom;
+                anchorB.y = rectB.top;
+            }
+            line.pointA = anchorA;
+            line.pointB = anchorB;
         }
-        line.pointA = anchorA;
-        line.pointB = anchorB;
-    }
-    static addDrawing(drawing, id) {
-        const canvas = document.getElementById(id);
-        if (null === canvas) {
-            throw new Error('Canvas element with id "vertices" not found');
+        catch (error) {
+            console.error(`Error drawing edge from ${rectA.toString()} to ${rectB.toString()}:`, error);
         }
-        canvas.appendChild(drawing);
     }
-    static animate(timestamp) {
-        Canvas._pointGraph = EadesEmbedder.embed(Canvas._pointGraph);
-        Canvas._pointGraph.vertices.forEach((point) => {
-            Canvas.drawVertex(point);
-        });
-        Canvas._pointGraph.edges.forEach((edge) => {
+    static animate() {
+        Canvas._drawingGraph = EadesEmbedder.embed(Canvas._drawingGraph);
+        Canvas._drawingGraph.edges.forEach((edge) => {
             Canvas.drawEdge(edge[0], edge[1]);
         });
         requestAnimationFrame(Canvas.animate);
     }
-    static createPointGraph(graph) {
-        const pointGraph = new Graph();
-        const pointMap = new Map();
-        graph.vertices.forEach((vertex) => {
-            const point = new Point(Canvas.width / 2, Canvas.height / 2);
-            pointGraph.insertVertex(point);
-            pointMap.set(vertex, point);
-            return point;
-        });
-        graph.edges.forEach((edge) => {
-            const pointA = pointMap.get(edge[0]);
-            const pointB = pointMap.get(edge[1]);
-            if (undefined === pointA || undefined === pointB) {
-                throw new Error(`Edge ${edge} contains undefined points`);
-            }
-            pointGraph.insertUndirectedEdge(pointA, pointB);
-        });
-        return pointGraph;
+    static addDrawing(drawing, id) {
+        const canvas = document.getElementById(id);
+        if (null === canvas) {
+            throw new Error(`Canvas element with id ${id} not found`);
+        }
+        canvas.appendChild(drawing);
     }
     static removeDrawing(drawing) {
         const canvas = document.getElementById('svg');
@@ -103,26 +72,45 @@ class Canvas {
         }
         canvas.removeChild(drawing);
     }
-    static draw(graph) {
-        Canvas._pointGraph = Canvas.createPointGraph(graph);
-        Canvas._pointGraph.vertices.forEach((vertex) => {
-            const rect = new DrawingRect(Canvas.center.x, Canvas.center.y);
-            Canvas.addDrawing(rect.svg, 'clip-path-vertices');
-            Canvas.vertexMap.set(vertex, rect);
+    static createDrawingRectGraph(graph) {
+        const drawingGraph = new Graph();
+        const drawingMap = new Map();
+        graph.vertices.forEach((vertex) => {
+            const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2);
+            drawingGraph.insertVertex(rect);
+            drawingMap.set(vertex, rect);
         });
-        Canvas._pointGraph.edges.forEach((edge) => {
-            const point = edge[0];
-            const neighbors = Canvas._pointGraph.getAdjacentVertices(point);
+        graph.edges.forEach((edge) => {
+            const rectA = drawingMap.get(edge[0]);
+            const rectB = drawingMap.get(edge[1]);
+            if (undefined === rectA || undefined === rectB) {
+                throw new Error(`Edge ${edge} contains undefined points`);
+            }
+            drawingGraph.insertDirectedEdge(rectA, rectB);
+        });
+        return drawingGraph;
+    }
+    static draw(graph) {
+        Canvas._drawingGraph = Canvas.createDrawingRectGraph(graph);
+        Canvas._drawingGraph.vertices.forEach((vertex) => {
+            Canvas.addDrawing(vertex.svg, 'clip-path-vertices');
+        });
+        Canvas._drawingGraph.edges.forEach((edge) => {
+            if (Canvas._edgeMap.has(edge[0])) {
+                return; // Edge already exists
+            }
+            const rect = edge[0];
+            const neighbors = Canvas._drawingGraph.getAdjacentVertices(rect);
             const neighborsMap = new Map();
             neighbors.forEach((neighbor) => {
-                const line = new DrawingLine(point, neighbor);
+                const line = new DrawingLine(rect.position, neighbor.position);
                 line.stroke = 'black';
                 Canvas.addDrawing(line.svg, 'svg');
                 neighborsMap.set(neighbor, line);
             });
-            Canvas._edgeMap.set(point, neighborsMap);
+            Canvas._edgeMap.set(rect, neighborsMap);
         });
-        Canvas.animate(0);
+        Canvas.animate();
     }
     static get height() {
         return window.innerHeight;
@@ -134,7 +122,6 @@ class Canvas {
         return new Point(Canvas.width / 2, Canvas.height / 2);
     }
 }
-Canvas.vertexMap = new Map();
 Canvas._edgeMap = new Map();
 export default Canvas;
 //# sourceMappingURL=Canvas.js.map
