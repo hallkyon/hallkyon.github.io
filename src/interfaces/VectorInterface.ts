@@ -1,5 +1,3 @@
-// @prettier
-
 export default interface VectorInterface {
     add(vector: VectorInterface): VectorInterface;
     sub(vector: VectorInterface): VectorInterface;

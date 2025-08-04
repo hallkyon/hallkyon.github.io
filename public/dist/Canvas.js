@@ -5,6 +5,39 @@ import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
 class Canvas {
+    static setViewBox() {
+        const canvas = document.getElementById('svg');
+        if (null === canvas) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        if (canvas.getAttribute('viewBox')) {
+            return;
+        }
+        canvas.setAttribute('viewBox', `0 0 ${Canvas.width} ${Canvas.height}`);
+        canvas.addEventListener('pointerdown', Canvas.onPointerDown); // Pointer is pressed
+        canvas.addEventListener('pointerup', Canvas.onPointerUp); // Releasing the pointer
+        canvas.addEventListener('pointerleave', Canvas.onPointerUp); // Pointer gets out of the SVG area
+        canvas.addEventListener('pointermove', Canvas.onPointerMove); // Pointer is moving
+    }
+    static onPointerDown(event) {
+        Canvas._pointerDown = true;
+        Canvas.delta = new Point(event.clientX, event.clientY);
+    }
+    static onPointerUp(event) {
+        Canvas._pointerDown = false;
+    }
+    static onPointerMove(event) {
+        if (!Canvas._pointerDown) {
+            return;
+        }
+        const newPosition = new Point(event.clientX, event.clientY);
+        const direction = newPosition
+            .getPositionVector()
+            .sub(Canvas.delta.getPositionVector());
+        Canvas.viewBox.x -= direction.x;
+        Canvas.viewBox.y -= direction.y;
+        Canvas.delta = newPosition.copy();
+    }
     static getEdgeDrawing(rectA, rectB) {
         const map = Canvas._edgeMap.get(rectA);
         if (undefined === map) {
@@ -19,10 +52,10 @@ class Canvas {
     static drawEdge(rectA, rectB) {
         try {
             const dividendX = rectA.left * rectB.left - rectA.right * rectB.right;
-            const divisorX = (rectA.left + rectB.left) - (rectA.right + rectB.right);
+            const divisorX = rectA.left + rectB.left - (rectA.right + rectB.right);
             const x = dividendX / divisorX;
             const dividendY = rectA.top * rectB.top - rectA.bottom * rectB.bottom;
-            const divisorY = (rectA.top + rectB.top) - (rectA.bottom + rectB.bottom);
+            const divisorY = rectA.top + rectB.top - (rectA.bottom + rectB.bottom);
             const y = dividendY / divisorY;
             const optimalPoint = new Point(x, y);
             const line = Canvas.getEdgeDrawing(rectA, rectB);
@@ -77,6 +110,7 @@ class Canvas {
         const drawingMap = new Map();
         graph.vertices.forEach((vertex) => {
             const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2);
+            rect.fill = 'plum';
             drawingGraph.insertVertex(rect);
             drawingMap.set(vertex, rect);
         });
@@ -91,9 +125,10 @@ class Canvas {
         return drawingGraph;
     }
     static draw(graph) {
+        Canvas.setViewBox();
         Canvas._drawingGraph = Canvas.createDrawingRectGraph(graph);
         Canvas._drawingGraph.vertices.forEach((vertex) => {
-            Canvas.addDrawing(vertex.svg, 'clip-path-vertices');
+            Canvas.addDrawing(vertex.svg, 'svg');
         });
         Canvas._drawingGraph.edges.forEach((edge) => {
             if (Canvas._edgeMap.has(edge[0])) {
@@ -121,7 +156,18 @@ class Canvas {
     static get center() {
         return new Point(Canvas.width / 2, Canvas.height / 2);
     }
+    static get viewBox() {
+        const canvas = document.getElementById('svg');
+        if (null === canvas) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        if (canvas instanceof SVGSVGElement) {
+            return canvas.viewBox.baseVal;
+        }
+        throw new Error('Canvas element is not an SVGSVGElement');
+    }
 }
 Canvas._edgeMap = new Map();
+Canvas._pointerDown = false;
 export default Canvas;
 //# sourceMappingURL=Canvas.js.map

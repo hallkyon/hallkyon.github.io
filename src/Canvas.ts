@@ -1,11 +1,8 @@
-// @prettier
-
 import DrawingRect from './DrawingRect.js';
 import DrawingLine from './DrawingLine.js';
 import EadesEmbedder from './EadesEmbedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
-import Vector from './Vector.js';
 
 export default class Canvas {
     private static _drawingGraph: Graph<DrawingRect>;
@@ -13,6 +10,46 @@ export default class Canvas {
         DrawingRect,
         Map<DrawingRect, DrawingLine>
     > = new Map<DrawingRect, Map<DrawingRect, DrawingLine>>();
+
+    private static _pointerDown: boolean = false;
+    private static delta: Point;
+
+    private static setViewBox(): void {
+        const canvas = document.getElementById('svg');
+        if (null === canvas) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        if (canvas.getAttribute('viewBox')) {
+            return;
+        }
+        canvas.setAttribute('viewBox', `0 0 ${Canvas.width} ${Canvas.height}`);
+        canvas.addEventListener('pointerdown', Canvas.onPointerDown); // Pointer is pressed
+        canvas.addEventListener('pointerup', Canvas.onPointerUp); // Releasing the pointer
+        canvas.addEventListener('pointerleave', Canvas.onPointerUp); // Pointer gets out of the SVG area
+        canvas.addEventListener('pointermove', Canvas.onPointerMove); // Pointer is moving
+    }
+
+    private static onPointerDown(event: PointerEvent): void {
+        Canvas._pointerDown = true;
+        Canvas.delta = new Point(event.clientX, event.clientY);
+    }
+
+    private static onPointerUp(event: PointerEvent): void {
+        Canvas._pointerDown = false;
+    }
+
+    private static onPointerMove(event: PointerEvent): void {
+        if (!Canvas._pointerDown) {
+            return;
+        }
+        const newPosition = new Point(event.clientX, event.clientY);
+        const direction = newPosition
+            .getPositionVector()
+            .sub(Canvas.delta.getPositionVector());
+        Canvas.viewBox.x -= direction.x;
+        Canvas.viewBox.y -= direction.y;
+        Canvas.delta = newPosition.copy();
+    }
 
     private static getEdgeDrawing(
         rectA: DrawingRect,
@@ -33,12 +70,16 @@ export default class Canvas {
 
     private static drawEdge(rectA: DrawingRect, rectB: DrawingRect): void {
         try {
-            const dividendX = rectA.left * rectB.left - rectA.right * rectB.right;
-            const divisorX = (rectA.left + rectB.left) - (rectA.right + rectB.right);
+            const dividendX =
+                rectA.left * rectB.left - rectA.right * rectB.right;
+            const divisorX =
+                rectA.left + rectB.left - (rectA.right + rectB.right);
             const x = dividendX / divisorX;
 
-            const dividendY = rectA.top * rectB.top - rectA.bottom * rectB.bottom;
-            const divisorY = (rectA.top + rectB.top) - (rectA.bottom + rectB.bottom);
+            const dividendY =
+                rectA.top * rectB.top - rectA.bottom * rectB.bottom;
+            const divisorY =
+                rectA.top + rectB.top - (rectA.bottom + rectB.bottom);
             const y = dividendY / divisorY;
 
             const optimalPoint = new Point(x, y);
@@ -106,6 +147,7 @@ export default class Canvas {
 
         graph.vertices.forEach((vertex) => {
             const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2);
+            rect.fill = 'plum';
             drawingGraph.insertVertex(rect);
             drawingMap.set(vertex, rect);
         });
@@ -123,10 +165,12 @@ export default class Canvas {
     }
 
     public static draw(graph: Graph<number>): void {
+        Canvas.setViewBox();
+
         Canvas._drawingGraph = Canvas.createDrawingRectGraph(graph);
 
         Canvas._drawingGraph.vertices.forEach((vertex: DrawingRect) => {
-            Canvas.addDrawing(vertex.svg, 'clip-path-vertices');
+            Canvas.addDrawing(vertex.svg, 'svg');
         });
 
         Canvas._drawingGraph.edges.forEach((edge) => {
@@ -158,5 +202,16 @@ export default class Canvas {
 
     public static get center(): Point {
         return new Point(Canvas.width / 2, Canvas.height / 2);
+    }
+
+    private static get viewBox(): SVGRect {
+        const canvas = document.getElementById('svg');
+        if (null === canvas) {
+            throw new Error('Canvas element with id "svg" not found');
+        }
+        if (canvas instanceof SVGSVGElement) {
+            return canvas.viewBox.baseVal;
+        }
+        throw new Error('Canvas element is not an SVGSVGElement');
     }
 }

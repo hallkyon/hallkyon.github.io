@@ -28,6 +28,6 @@ x(A_{left} - B_{right}) - x(A_{right} - B_{left}) =  B_{left}(A_{left} - B_{righ
 \\
 x(A_{left} - A_{right} + B_{left} - B_{right}) =  A_{left}B_{left} - B_{left}B_{right} - A_{right}B_{right} + B_{left}B_{right} \\
 \\
-x = \frac{A_{left}B_{left} - A_{right}B_{right}}{A_{left} - A_{right} + B_{left} - B_{right}} \\
+x = \frac{A_{left}B_{left} - A_{right}B_{right}}{A_{left} + B_{left} - (A_{right} + B_{right})} \\
 \\
 ```

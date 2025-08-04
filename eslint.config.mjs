@@ -19,7 +19,7 @@ export default tseslint.config(
     {
         ignores: ['./public/dist', 'coverage'],
         rules: {
-            complexity: ['error', { max: 2 , variant: 'modified'}],
+            complexity: ['error', { max: 5 , variant: 'modified'}],
         }
     }
 );

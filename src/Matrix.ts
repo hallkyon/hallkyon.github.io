@@ -1,5 +1,5 @@
 export default class Matrix {
-    private _data: number[][];
+    private readonly _data: number[][];
 
     constructor(numRows: number, numColumns: number) {
         if (numRows < 1 || numColumns < 1) {
