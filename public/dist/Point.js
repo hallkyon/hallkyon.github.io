@@ -1,4 +1,3 @@
-// @prettier
 import Vector from './Vector.js';
 export default class Point {
     constructor(x, y) {

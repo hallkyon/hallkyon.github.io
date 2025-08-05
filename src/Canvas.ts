@@ -12,7 +12,7 @@ export default class Canvas {
     > = new Map<DrawingRect, Map<DrawingRect, DrawingLine>>();
 
     private static _pointerDown: boolean = false;
-    private static delta: Point;
+    private static delta: DOMPointReadOnly = new DOMPointReadOnly(0, 0);
 
     private static setViewBox(): void {
         const canvas = document.getElementById('svg');
@@ -27,11 +27,32 @@ export default class Canvas {
         canvas.addEventListener('pointerup', Canvas.onPointerUp); // Releasing the pointer
         canvas.addEventListener('pointerleave', Canvas.onPointerUp); // Pointer gets out of the SVG area
         canvas.addEventListener('pointermove', Canvas.onPointerMove); // Pointer is moving
+        canvas.addEventListener('wheel', Canvas.onScroll); // Scrolling the canvas
+    }
+
+    private static getSvgPoint(
+        event: PointerEvent | WheelEvent
+    ): DOMPointReadOnly {
+        try {
+            const canvas = document.getElementById('svg');
+            const cursorPosition = new DOMPointReadOnly(
+                event.clientX,
+                event.clientY
+            );
+            if (!(canvas instanceof SVGSVGElement)) {
+                throw new Error('Canvas element is not an SVGSVGElement');
+            }
+            return cursorPosition.matrixTransform(
+                canvas.getScreenCTM()?.inverse()
+            );
+        } catch (error) {
+            throw new Error(`Error getting SVG point: ${error}`);
+        }
     }
 
     private static onPointerDown(event: PointerEvent): void {
         Canvas._pointerDown = true;
-        Canvas.delta = new Point(event.clientX, event.clientY);
+        Canvas.delta = Canvas.getSvgPoint(event);
     }
 
     private static onPointerUp(event: PointerEvent): void {
@@ -39,16 +60,42 @@ export default class Canvas {
     }
 
     private static onPointerMove(event: PointerEvent): void {
-        if (!Canvas._pointerDown) {
-            return;
+        try {
+            if (!Canvas._pointerDown) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const position = Canvas.getSvgPoint(event);
+            const directionX = position.x - Canvas.delta.x;
+            const directionY = position.y - Canvas.delta.y;
+            Canvas.viewBox.x -= directionX;
+            Canvas.viewBox.y -= directionY;
+        } catch (error) {
+            console.error('Error handling pointer move event:', error);
         }
-        const newPosition = new Point(event.clientX, event.clientY);
-        const direction = newPosition
-            .getPositionVector()
-            .sub(Canvas.delta.getPositionVector());
-        Canvas.viewBox.x -= direction.x;
-        Canvas.viewBox.y -= direction.y;
-        Canvas.delta = newPosition.copy();
+    }
+
+    private static onScroll(event: WheelEvent): void {
+        try {
+            event.preventDefault();
+
+            const cursorPosition = Canvas.getSvgPoint(event);
+            const factor = 1.05;
+            const zoomFactor = event.deltaY < 0 ? factor : 1 / factor;
+
+            Canvas.viewBox.x =
+                cursorPosition.x -
+                (cursorPosition.x - Canvas.viewBox.x) * zoomFactor;
+            Canvas.viewBox.y =
+                cursorPosition.y -
+                (cursorPosition.y - Canvas.viewBox.y) * zoomFactor;
+            Canvas.viewBox.width *= zoomFactor;
+            Canvas.viewBox.height *= zoomFactor;
+        } catch (error) {
+            console.error('Error handling scroll event:', error);
+        }
     }
 
     private static getEdgeDrawing(

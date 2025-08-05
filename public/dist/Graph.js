@@ -1,4 +1,3 @@
-// @prettier
 export default class Graph {
     constructor() {
         this._adjacencyList = new Map();
@@ -31,7 +30,8 @@ export default class Graph {
             throw new Error(`Vertex ${vertex} not found in graph.`);
         }
         const adjacentVertices = this._adjacencyList.get(vertex);
-        if (undefined === adjacentVertices) { // Shouldn't happen, but just in case
+        if (undefined === adjacentVertices) {
+            // Shouldn't happen, but just in case
             return [];
         }
         return adjacentVertices;

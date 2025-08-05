@@ -1,4 +1,3 @@
-// @prettier
 import Point from './Point.js';
 export default class DrawingRect {
     constructor(x, y) {

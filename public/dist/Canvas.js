@@ -1,4 +1,3 @@
-// @prettier
 import DrawingRect from './DrawingRect.js';
 import DrawingLine from './DrawingLine.js';
 import EadesEmbedder from './EadesEmbedder.js';
@@ -18,25 +17,63 @@ class Canvas {
         canvas.addEventListener('pointerup', Canvas.onPointerUp); // Releasing the pointer
         canvas.addEventListener('pointerleave', Canvas.onPointerUp); // Pointer gets out of the SVG area
         canvas.addEventListener('pointermove', Canvas.onPointerMove); // Pointer is moving
+        canvas.addEventListener('wheel', Canvas.onScroll); // Scrolling the canvas
+    }
+    static getSvgPoint(event) {
+        var _a;
+        try {
+            const canvas = document.getElementById('svg');
+            const cursorPosition = new DOMPointReadOnly(event.clientX, event.clientY);
+            if (!(canvas instanceof SVGSVGElement)) {
+                throw new Error('Canvas element is not an SVGSVGElement');
+            }
+            return cursorPosition.matrixTransform((_a = canvas.getScreenCTM()) === null || _a === void 0 ? void 0 : _a.inverse());
+        }
+        catch (error) {
+            throw new Error(`Error getting SVG point: ${error}`);
+        }
     }
     static onPointerDown(event) {
         Canvas._pointerDown = true;
-        Canvas.delta = new Point(event.clientX, event.clientY);
+        Canvas.delta = Canvas.getSvgPoint(event);
     }
     static onPointerUp(event) {
         Canvas._pointerDown = false;
     }
     static onPointerMove(event) {
-        if (!Canvas._pointerDown) {
-            return;
+        try {
+            if (!Canvas._pointerDown) {
+                return;
+            }
+            event.preventDefault();
+            const position = Canvas.getSvgPoint(event);
+            const directionX = position.x - Canvas.delta.x;
+            const directionY = position.y - Canvas.delta.y;
+            Canvas.viewBox.x -= directionX;
+            Canvas.viewBox.y -= directionY;
         }
-        const newPosition = new Point(event.clientX, event.clientY);
-        const direction = newPosition
-            .getPositionVector()
-            .sub(Canvas.delta.getPositionVector());
-        Canvas.viewBox.x -= direction.x;
-        Canvas.viewBox.y -= direction.y;
-        Canvas.delta = newPosition.copy();
+        catch (error) {
+            console.error('Error handling pointer move event:', error);
+        }
+    }
+    static onScroll(event) {
+        try {
+            event.preventDefault();
+            const cursorPosition = Canvas.getSvgPoint(event);
+            const factor = 1.05;
+            const zoomFactor = event.deltaY < 0 ? factor : 1 / factor;
+            Canvas.viewBox.x =
+                cursorPosition.x -
+                    (cursorPosition.x - Canvas.viewBox.x) * zoomFactor;
+            Canvas.viewBox.y =
+                cursorPosition.y -
+                    (cursorPosition.y - Canvas.viewBox.y) * zoomFactor;
+            Canvas.viewBox.width *= zoomFactor;
+            Canvas.viewBox.height *= zoomFactor;
+        }
+        catch (error) {
+            console.error('Error handling scroll event:', error);
+        }
     }
     static getEdgeDrawing(rectA, rectB) {
         const map = Canvas._edgeMap.get(rectA);
@@ -169,5 +206,6 @@ class Canvas {
 }
 Canvas._edgeMap = new Map();
 Canvas._pointerDown = false;
+Canvas.delta = new DOMPointReadOnly(0, 0);
 export default Canvas;
 //# sourceMappingURL=Canvas.js.map

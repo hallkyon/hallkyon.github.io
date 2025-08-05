@@ -1,4 +1,3 @@
-// @prettier
 export default class DrawingLine {
     constructor(pointA, pointB) {
         this._pointA = pointA;

@@ -1,4 +1,3 @@
-// @prettier
 import Matrix from './Matrix.js';
 export default class Vector extends Matrix {
     constructor(x, y) {
