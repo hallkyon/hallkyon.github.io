@@ -10,8 +10,25 @@
     overflow: hidden;
 }
 
+body {
+    font-family: 'Noto Sans', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: 'wdth' 100;
+}
+
 svg {
     height: 100vh;
     width: 100vw;
     background-color: whitesmoke;
+
+}
+
+svg text {
+    pointer-events: none;
+}
+
+svg line {
+    shape-rendering: auto;
 }

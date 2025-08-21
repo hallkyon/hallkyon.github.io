@@ -1,12 +1,37 @@
 import Graph from './Graph.js';
 
-export default class Mapper {
-    private static randomGraph(order: number): Graph<number> {
-        const graph = new Graph<number>();
+const titles: string[] = [
+    '...trotzdem Ja zum Leben sagen: Ein Psychologe erlebt das Konzentrationslager',
+    'How to Take Smart Notes',
+    'Building a Second Brain',
+    'The Lean Startup',
+    'Sofies Welt',
+    'How do you live?',
+    'Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones',
+    'Open Circuits: The inner Beauty of Electronic Components',
+    'Das Wandelnde Schloss',
+    'A Philosophy of Software Design',
+    'Embedded Linux mit Raspberry Pi und Co.',
+    'Algorithms to Live By: The Computer Science of Human Decisions',
+    'Pride and Prejudice',
+    'Sense and Sensibility',
+    'Stoner',
+    'The Three Body Problem',
+    'The Dark Forest',
+    "Death's End",
+    'The Fault in our Stars',
+    'Only Human',
+    'Walking Gods',
+    'Sleeping Giants',
+];
 
-        for (let i = 0; i < order; i++) {
-            graph.insertVertex(i);
-        }
+export default class Mapper {
+    private static randomGraph(titles: string[]): Graph<string> {
+        const graph = new Graph<string>();
+
+        titles.forEach((title) => {
+            graph.insertVertex(title);
+        });
 
         graph.vertices.forEach((vertexA) => {
             graph.vertices.forEach((vertexB) => {
@@ -22,7 +47,7 @@ export default class Mapper {
         return graph;
     }
 
-    public static getGraph(): Graph<number> {
-        return Mapper.randomGraph(30);
+    public static getGraph(): Graph<string> {
+        return Mapper.randomGraph(titles);
     }
 }

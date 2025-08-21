@@ -36,7 +36,7 @@ class EadesEmbedder {
     }
     static embed(graph) {
         var _a;
-        (_a = EadesEmbedder._center) !== null && _a !== void 0 ? _a : (EadesEmbedder._center = new DrawingRect(Canvas.center.x, Canvas.center.y));
+        (_a = EadesEmbedder._center) !== null && _a !== void 0 ? _a : (EadesEmbedder._center = new DrawingRect(Canvas.center.x, Canvas.center.y, ''));
         graph.vertices.forEach((rectA) => {
             let force = new Vector(0, 0);
             force = force.add(this.calculateForce(rectA, EadesEmbedder._center, EadesEmbedder.calculateCenterScalar));

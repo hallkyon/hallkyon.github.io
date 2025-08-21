@@ -170,10 +170,10 @@ export default class Canvas {
         requestAnimationFrame(Canvas.animate);
     }
 
-    private static addDrawing(drawing: SVGElement, id: string): void {
-        const canvas = document.getElementById(id);
+    public static addDrawing(drawing: SVGElement): void {
+        const canvas = document.getElementById('svg');
         if (null === canvas) {
-            throw new Error(`Canvas element with id ${id} not found`);
+            throw new Error(`Canvas element with id "svg" not found`);
         }
         canvas.appendChild(drawing);
     }
@@ -187,13 +187,13 @@ export default class Canvas {
     }
 
     private static createDrawingRectGraph(
-        graph: Graph<number>
+        graph: Graph<string>
     ): Graph<DrawingRect> {
         const drawingGraph = new Graph<DrawingRect>();
-        const drawingMap = new Map<number, DrawingRect>();
+        const drawingMap = new Map<string, DrawingRect>();
 
         graph.vertices.forEach((vertex) => {
-            const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2);
+            const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2, vertex);
             rect.fill = 'plum';
             drawingGraph.insertVertex(rect);
             drawingMap.set(vertex, rect);
@@ -211,14 +211,10 @@ export default class Canvas {
         return drawingGraph;
     }
 
-    public static draw(graph: Graph<number>): void {
+    public static draw(graph: Graph<string>): void {
         Canvas.setViewBox();
 
         Canvas._drawingGraph = Canvas.createDrawingRectGraph(graph);
-
-        Canvas._drawingGraph.vertices.forEach((vertex: DrawingRect) => {
-            Canvas.addDrawing(vertex.svg, 'svg');
-        });
 
         Canvas._drawingGraph.edges.forEach((edge) => {
             if (Canvas._edgeMap.has(edge[0])) {
@@ -230,7 +226,7 @@ export default class Canvas {
             neighbors.forEach((neighbor) => {
                 const line = new DrawingLine(rect.position, neighbor.position);
                 line.stroke = 'black';
-                Canvas.addDrawing(line.svg, 'svg');
+                Canvas.addDrawing(line.svg);
                 neighborsMap.set(neighbor, line);
             });
             Canvas._edgeMap.set(rect, neighborsMap);

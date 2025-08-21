@@ -54,7 +54,8 @@ export default class EadesEmbedder {
     public static embed(graph: Graph<DrawingRect>): Graph<DrawingRect> {
         EadesEmbedder._center ??= new DrawingRect(
             Canvas.center.x,
-            Canvas.center.y
+            Canvas.center.y,
+            ''
         );
 
         graph.vertices.forEach((rectA) => {
