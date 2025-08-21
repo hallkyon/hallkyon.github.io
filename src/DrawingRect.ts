@@ -1,28 +1,20 @@
 import DrawingRectInterface from './interfaces/DrawingRectInterface.js';
 import Point from './Point.js';
 import Canvas from './Canvas.js';
-import { text } from 'stream/consumers';
 
 export default class DrawingRect implements DrawingRectInterface {
     private readonly _position: Point = Canvas.center;
-    private _label!: string;
     private readonly _maxLabelLength: number = 200;
+    private _label!: string;
+    private _fill: string = 'white';
 
-    private _svgRect!: SVGRectElement;
-    private _svgText!: SVGTextElement;
-    private _svgGroup!: SVGGElement;
+    private readonly _svgRect!: SVGRectElement;
+    private readonly _svgText!: SVGTextElement;
+    private readonly _svgGroup!: SVGGElement;
 
     constructor(x: number, y: number, label: string) {
-        this._position = new Point(x, y);
-        this.makeSvg();
-
-        this.label = label;
-    }
-
-    private makeSvg(): void {
         const namespace = 'http://www.w3.org/2000/svg';
-
-        const fill = 'white';
+        this._position = new Point(x, y);
 
         this._svgText = document.createElementNS(namespace, 'text');
         this._svgText.setAttribute('x', String(this._position.x));
@@ -32,12 +24,42 @@ export default class DrawingRect implements DrawingRectInterface {
         this._svgRect = document.createElementNS(namespace, 'rect');
         this._svgRect.setAttribute('x', String(this._position.x));
         this._svgRect.setAttribute('y', String(this._position.y));
-        this._svgRect.setAttribute('fill', fill);
+        this._svgRect.setAttribute('fill', this._fill);
 
         this._svgGroup = document.createElementNS(namespace, 'g');
         this._svgGroup.appendChild(this._svgRect);
         this._svgGroup.appendChild(this._svgText);
         Canvas.addDrawing(this._svgGroup);
+
+        this.label = label;
+    }
+
+    public get svg(): SVGElement {
+        return this._svgGroup;
+    }
+
+    public get x(): number {
+        return this._position.x;
+    }
+
+    public set x(newX: number) {
+        this._position.x = newX;
+        this._svgRect.setAttribute('x', String(newX));
+        this._svgText.setAttribute('x', String(newX));
+        const tspans = this._svgText.querySelectorAll('tspan');
+        tspans.forEach((tspan) => {
+            tspan.setAttribute('x', String(newX));
+        });
+    }
+
+    public get y(): number {
+        return this._position.y;
+    }
+
+    public set y(newY: number) {
+        this._position.y = newY;
+        this._svgRect.setAttribute('y', String(newY));
+        this._svgText.setAttribute('y', String(newY));
     }
 
     public get label(): string {
@@ -82,34 +104,6 @@ export default class DrawingRect implements DrawingRectInterface {
             'transform',
             `translate(${-this.width / 2}, ${-this.height / 2})`
         );
-    }
-
-    public get svg(): SVGElement {
-        return this._svgGroup;
-    }
-
-    public get x(): number {
-        return this._position.x;
-    }
-
-    public set x(newX: number) {
-        this._position.x = newX;
-        this._svgRect.setAttribute('x', String(newX));
-        this._svgText.setAttribute('x', String(newX));
-        const tspans = this._svgText.querySelectorAll('tspan');
-        tspans.forEach((tspan) => {
-            tspan.setAttribute('x', String(newX));
-        });
-    }
-
-    public get y(): number {
-        return this._position.y;
-    }
-
-    public set y(newY: number) {
-        this._position.y = newY;
-        this._svgRect.setAttribute('y', String(newY));
-        this._svgText.setAttribute('y', String(newY));
     }
 
     public get top(): number {
@@ -190,10 +184,11 @@ export default class DrawingRect implements DrawingRectInterface {
     }
 
     public get fill(): string {
-        return this._svgRect.getAttribute('fill') ?? '';
+        return this._fill;
     }
 
     public set fill(newFill: string) {
+        this._fill = newFill;
         this._svgRect.setAttribute('fill', newFill);
     }
 

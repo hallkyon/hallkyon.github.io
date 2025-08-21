@@ -38,7 +38,7 @@ export default class Mapper {
                 if (vertexA === vertexB) {
                     return;
                 }
-                if (Math.random() > 0.95) {
+                if (Math.random() > 0.98) {
                     graph.insertUndirectedEdge(vertexA, vertexB);
                 }
             });

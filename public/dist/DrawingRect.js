@@ -4,13 +4,9 @@ export default class DrawingRect {
     constructor(x, y, label) {
         this._position = Canvas.center;
         this._maxLabelLength = 200;
-        this._position = new Point(x, y);
-        this.makeSvg();
-        this.label = label;
-    }
-    makeSvg() {
+        this._fill = 'white';
         const namespace = 'http://www.w3.org/2000/svg';
-        const fill = 'white';
+        this._position = new Point(x, y);
         this._svgText = document.createElementNS(namespace, 'text');
         this._svgText.setAttribute('x', String(this._position.x));
         this._svgText.setAttribute('y', String(this._position.y));
@@ -18,45 +14,12 @@ export default class DrawingRect {
         this._svgRect = document.createElementNS(namespace, 'rect');
         this._svgRect.setAttribute('x', String(this._position.x));
         this._svgRect.setAttribute('y', String(this._position.y));
-        this._svgRect.setAttribute('fill', fill);
+        this._svgRect.setAttribute('fill', this._fill);
         this._svgGroup = document.createElementNS(namespace, 'g');
         this._svgGroup.appendChild(this._svgRect);
         this._svgGroup.appendChild(this._svgText);
         Canvas.addDrawing(this._svgGroup);
-    }
-    get label() {
-        return this._label;
-    }
-    set label(label) {
-        this._label = label;
-        const namespace = 'http://www.w3.org/2000/svg';
-        // Remove all elements in the _svgText element
-        while (this._svgText.firstChild) {
-            this._svgText.removeChild(this._svgText.firstChild);
-        }
-        const words = this._label.split(/\s+/);
-        let line = [];
-        let tspan = document.createElementNS(namespace, 'tspan');
-        this._svgText.appendChild(tspan);
-        words.forEach((word) => {
-            line.push(word);
-            tspan.textContent = line.join(' ');
-            if (tspan.getComputedTextLength() > this._maxLabelLength) {
-                line.pop();
-                tspan.textContent = line.join(' ');
-                line = [word];
-                tspan = document.createElementNS(namespace, 'tspan');
-                tspan.setAttribute('x', String(this.position.x));
-                tspan.setAttribute('dy', `1.2em`);
-                tspan.textContent = word;
-                this._svgText.appendChild(tspan);
-            }
-        });
-        const padding = 20;
-        const textBoundingBox = this._svgText.getBBox();
-        this.width = textBoundingBox.width + padding;
-        this.height = textBoundingBox.height + padding;
-        this._svgGroup.setAttribute('transform', `translate(${-this.width / 2}, ${-this.height / 2})`);
+        this.label = label;
     }
     get svg() {
         return this._svgGroup;
@@ -80,6 +43,39 @@ export default class DrawingRect {
         this._position.y = newY;
         this._svgRect.setAttribute('y', String(newY));
         this._svgText.setAttribute('y', String(newY));
+    }
+    get label() {
+        return this._label;
+    }
+    set label(label) {
+        this._label = label;
+        const namespace = 'http://www.w3.org/2000/svg';
+        const words = this._label.split(/\s+/);
+        let line = [];
+        while (this._svgText.firstChild) {
+            this._svgText.removeChild(this._svgText.firstChild);
+        }
+        let tspan = document.createElementNS(namespace, 'tspan');
+        this._svgText.appendChild(tspan);
+        words.forEach((word) => {
+            line.push(word);
+            tspan.textContent = line.join(' ');
+            if (tspan.getComputedTextLength() > this._maxLabelLength) {
+                line.pop();
+                tspan.textContent = line.join(' ');
+                line = [word];
+                tspan = document.createElementNS(namespace, 'tspan');
+                tspan.setAttribute('x', String(this.position.x));
+                tspan.setAttribute('dy', `1.2em`);
+                tspan.textContent = word;
+                this._svgText.appendChild(tspan);
+            }
+        });
+        const padding = 20;
+        const textBoundingBox = this._svgText.getBBox();
+        this.width = textBoundingBox.width + padding;
+        this.height = textBoundingBox.height + padding;
+        this._svgGroup.setAttribute('transform', `translate(${-this.width / 2}, ${-this.height / 2})`);
     }
     get top() {
         return this.y - this.height / 2;
@@ -141,10 +137,10 @@ export default class DrawingRect {
         this.y = newPosition.y;
     }
     get fill() {
-        var _a;
-        return (_a = this._svgRect.getAttribute('fill')) !== null && _a !== void 0 ? _a : '';
+        return this._fill;
     }
     set fill(newFill) {
+        this._fill = newFill;
         this._svgRect.setAttribute('fill', newFill);
     }
     get stroke() {

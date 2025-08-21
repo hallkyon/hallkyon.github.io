@@ -22,4 +22,13 @@ svg {
     height: 100vh;
     width: 100vw;
     background-color: whitesmoke;
+
+}
+
+svg text {
+    pointer-events: none;
+}
+
+svg line {
+    shape-rendering: auto;
 }
