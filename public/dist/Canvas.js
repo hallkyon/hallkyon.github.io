@@ -128,10 +128,10 @@ class Canvas {
         });
         requestAnimationFrame(Canvas.animate);
     }
-    static addDrawing(drawing, id) {
-        const canvas = document.getElementById(id);
+    static addDrawing(drawing) {
+        const canvas = document.getElementById('svg');
         if (null === canvas) {
-            throw new Error(`Canvas element with id ${id} not found`);
+            throw new Error(`Canvas element with id "svg" not found`);
         }
         canvas.appendChild(drawing);
     }
@@ -146,7 +146,7 @@ class Canvas {
         const drawingGraph = new Graph();
         const drawingMap = new Map();
         graph.vertices.forEach((vertex) => {
-            const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2);
+            const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2, vertex);
             rect.fill = 'plum';
             drawingGraph.insertVertex(rect);
             drawingMap.set(vertex, rect);
@@ -164,9 +164,6 @@ class Canvas {
     static draw(graph) {
         Canvas.setViewBox();
         Canvas._drawingGraph = Canvas.createDrawingRectGraph(graph);
-        Canvas._drawingGraph.vertices.forEach((vertex) => {
-            Canvas.addDrawing(vertex.svg, 'svg');
-        });
         Canvas._drawingGraph.edges.forEach((edge) => {
             if (Canvas._edgeMap.has(edge[0])) {
                 return; // Edge already exists
@@ -177,7 +174,7 @@ class Canvas {
             neighbors.forEach((neighbor) => {
                 const line = new DrawingLine(rect.position, neighbor.position);
                 line.stroke = 'black';
-                Canvas.addDrawing(line.svg, 'svg');
+                Canvas.addDrawing(line.svg);
                 neighborsMap.set(neighbor, line);
             });
             Canvas._edgeMap.set(rect, neighborsMap);

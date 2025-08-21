@@ -1,39 +1,91 @@
 import DrawingRectInterface from './interfaces/DrawingRectInterface.js';
 import Point from './Point.js';
+import Canvas from './Canvas.js';
+import { text } from 'stream/consumers';
 
 export default class DrawingRect implements DrawingRectInterface {
-    private readonly _position: Point;
-    private readonly _svg: SVGRectElement;
+    private readonly _position: Point = Canvas.center;
+    private _label!: string;
+    private readonly _maxLabelLength: number = 200;
 
-    constructor(x: number, y: number) {
+    private _svgRect!: SVGRectElement;
+    private _svgText!: SVGTextElement;
+    private _svgGroup!: SVGGElement;
+
+    constructor(x: number, y: number, label: string) {
         this._position = new Point(x, y);
-        this._svg = this.makeSvgRect();
+        this.makeSvg();
+
+        this.label = label;
     }
 
-    private makeSvgRect(): SVGRectElement {
+    private makeSvg(): void {
         const namespace = 'http://www.w3.org/2000/svg';
-        const shape = 'rect';
-        const svg = document.createElementNS(namespace, shape);
 
-        const height = 30 * Math.floor(3 * Math.random() + 1);
-        const width = 30 * Math.floor(5 * Math.random() + 1);
         const fill = 'white';
 
-        svg.setAttribute(
-            'transform',
-            `translate(${-width / 2}, ${-height / 2})`
-        );
-        svg.setAttribute('height', String(height));
-        svg.setAttribute('width', String(width));
-        svg.setAttribute('x', String(this._position.x));
-        svg.setAttribute('y', String(this._position.y));
-        svg.setAttribute('fill', fill);
+        this._svgText = document.createElementNS(namespace, 'text');
+        this._svgText.setAttribute('x', String(this._position.x));
+        this._svgText.setAttribute('y', String(this._position.y));
+        this._svgText.setAttribute('dy', '1em');
 
-        return svg;
+        this._svgRect = document.createElementNS(namespace, 'rect');
+        this._svgRect.setAttribute('x', String(this._position.x));
+        this._svgRect.setAttribute('y', String(this._position.y));
+        this._svgRect.setAttribute('fill', fill);
+
+        this._svgGroup = document.createElementNS(namespace, 'g');
+        this._svgGroup.appendChild(this._svgRect);
+        this._svgGroup.appendChild(this._svgText);
+        Canvas.addDrawing(this._svgGroup);
+    }
+
+    public get label(): string {
+        return this._label;
+    }
+
+    public set label(label: string) {
+        this._label = label;
+
+        const namespace = 'http://www.w3.org/2000/svg';
+        const words = this._label.split(/\s+/);
+        let line: string[] = [];
+
+        while (this._svgText.firstChild) {
+            this._svgText.removeChild(this._svgText.firstChild);
+        }
+        let tspan = document.createElementNS(namespace, 'tspan');
+        this._svgText.appendChild(tspan);
+
+        words.forEach((word) => {
+            line.push(word);
+            tspan.textContent = line.join(' ');
+
+            if (tspan.getComputedTextLength() > this._maxLabelLength) {
+                line.pop();
+                tspan.textContent = line.join(' ');
+                line = [word];
+                tspan = document.createElementNS(namespace, 'tspan');
+                tspan.setAttribute('x', String(this.position.x));
+                tspan.setAttribute('dy', `1.2em`);
+                tspan.textContent = word;
+                this._svgText.appendChild(tspan);
+            }
+        });
+
+        const padding = 20;
+        const textBoundingBox = this._svgText.getBBox();
+        this.width = textBoundingBox.width + padding;
+        this.height = textBoundingBox.height + padding;
+
+        this._svgGroup.setAttribute(
+            'transform',
+            `translate(${-this.width / 2}, ${-this.height / 2})`
+        );
     }
 
     public get svg(): SVGElement {
-        return this._svg;
+        return this._svgGroup;
     }
 
     public get x(): number {
@@ -42,7 +94,12 @@ export default class DrawingRect implements DrawingRectInterface {
 
     public set x(newX: number) {
         this._position.x = newX;
-        this._svg.setAttribute('x', String(newX));
+        this._svgRect.setAttribute('x', String(newX));
+        this._svgText.setAttribute('x', String(newX));
+        const tspans = this._svgText.querySelectorAll('tspan');
+        tspans.forEach((tspan) => {
+            tspan.setAttribute('x', String(newX));
+        });
     }
 
     public get y(): number {
@@ -51,63 +108,76 @@ export default class DrawingRect implements DrawingRectInterface {
 
     public set y(newY: number) {
         this._position.y = newY;
-        this._svg.setAttribute('y', String(newY));
+        this._svgRect.setAttribute('y', String(newY));
+        this._svgText.setAttribute('y', String(newY));
     }
 
-    get top(): number {
+    public get top(): number {
         return this.y - this.height / 2;
     }
 
-    get right(): number {
+    public get right(): number {
         return this.x + this.width / 2;
     }
 
-    get bottom(): number {
+    public get bottom(): number {
         return this.y + this.height / 2;
     }
 
-    get left(): number {
+    public get left(): number {
         return this.x - this.width / 2;
     }
 
-    get topLeft(): Point {
+    public get topLeft(): Point {
         return new Point(this.left, this.top);
     }
 
-    get topRight(): Point {
+    public get topRight(): Point {
         return new Point(this.right, this.top);
     }
 
-    get bottomRight(): Point {
+    public get bottomRight(): Point {
         return new Point(this.right, this.bottom);
     }
 
-    get bottomLeft(): Point {
+    public get bottomLeft(): Point {
         return new Point(this.left, this.bottom);
     }
 
-    get width(): number {
-        const width = this._svg.getAttribute('width');
+    public get width(): number {
+        const width = this._svgRect.getAttribute('width');
         return width ? parseFloat(width) : 0;
     }
 
-    set width(newWidth: number) {
-        if (newWidth < 0) {
+    private set width(newWidth: number) {
+        const textBoundingBox = this._svgText.getBBox();
+        if (newWidth < textBoundingBox.width) {
             throw new Error(`Invalid width: ${newWidth}`);
         }
-        this._svg.setAttribute('width', String(newWidth));
+
+        this._svgRect.setAttribute('width', String(newWidth));
+
+        const textTranslationX = (newWidth - textBoundingBox.width) / 2;
+        const textTranslationY = (this.height - textBoundingBox.height) / 2;
+        this._svgText.setAttribute('transform', `translate(${textTranslationX}, ${textTranslationY})`);
     }
 
-    get height(): number {
-        const height = this._svg.getAttribute('height');
+    public get height(): number {
+        const height = this._svgRect.getAttribute('height');
         return height ? parseFloat(height) : 0;
     }
 
-    set height(newHeight: number) {
-        if (newHeight < 0) {
+    private set height(newHeight: number) {
+        const textBoundingBox = this._svgText.getBBox();
+        if (newHeight < textBoundingBox.height) {
             throw new Error(`Invalid height: ${newHeight}`);
         }
-        this._svg.setAttribute('height', String(newHeight));
+
+        this._svgRect.setAttribute('height', String(newHeight));
+
+        const textTranslationX = (this.width - textBoundingBox.width) / 2;
+        const textTranslationY = (newHeight - textBoundingBox.height) / 2;
+        this._svgText.setAttribute('transform', `translate(${textTranslationX}, ${textTranslationY})`);
     }
 
     public get position(): Point {
@@ -120,19 +190,19 @@ export default class DrawingRect implements DrawingRectInterface {
     }
 
     public get fill(): string {
-        return this._svg.getAttribute('fill') ?? '';
+        return this._svgRect.getAttribute('fill') ?? '';
     }
 
     public set fill(newFill: string) {
-        this._svg.setAttribute('fill', newFill);
+        this._svgRect.setAttribute('fill', newFill);
     }
 
     public get stroke(): string {
-        return this._svg.getAttribute('stroke') ?? '';
+        return this._svgRect.getAttribute('stroke') ?? '';
     }
 
     public set stroke(newStroke: string) {
-        this._svg.setAttribute('stroke', newStroke);
+        this._svgRect.setAttribute('stroke', newStroke);
     }
 
     public toString(): string {
