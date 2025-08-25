@@ -1,0 +1,25 @@
+= Summery of Graph Drawing Algorithm from Fruchterman and Reingold
+
+== Motivation
+
+In my current implementation of _eudaimonio_ I am using the Graph Drawing
+Algorithm as described by Peter Eades. The limitation of this algorithm is, that
+the ideal length between two verticies is only applied to adjacent ones.
+Non-adjacent verticies are pushed away by a uniform repulsion force. This works
+well if the vertices are represented as points or small circles, but in my
+implementation the vertices are rectangles with a greater width than height.
+This means that the ideal distance depends on the angle between two vertices,
+since they have to further appart if they are next to each other compared to if
+they are on top of each other.
+
+With the apporach from Eades, this adjustmet is only possible for adjacent
+vertices, because the ideal length is only used in the calculation of of the
+spring force between adjacent vertices. With the approach of Furchterman and
+Reingolds the spring force is replaced by a attraction force. Both attraction
+and repultion force are applied to adjacent vertices and they cancel each other
+out at the ideal distance between them. So the ideal distance is used to
+calculate both the attraction and repulsion forces and can be adjusted for both.
+
+== Reference
+
+. Graph Drawing by Force-directed Placement

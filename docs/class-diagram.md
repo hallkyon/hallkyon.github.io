@@ -46,7 +46,7 @@ class Canvas {
 	+draw(graph: Graph<T>) void
 }
 
-class EadesEmbedder {
+class Embedder {
 	+embed(graph: Graph<T>) Map< T, Point >
 }
 

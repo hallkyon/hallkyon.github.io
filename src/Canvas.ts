@@ -1,6 +1,6 @@
 import DrawingRect from './DrawingRect.js';
 import DrawingLine from './DrawingLine.js';
-import EadesEmbedder from './EadesEmbedder.js';
+import Embedder from './Embedder.js';
 import Graph from './Graph.js';
 import Point from './Point.js';
 
@@ -161,7 +161,7 @@ export default class Canvas {
     }
 
     private static animate() {
-        Canvas._drawingGraph = EadesEmbedder.embed(Canvas._drawingGraph);
+        Canvas._drawingGraph = Embedder.embed(Canvas._drawingGraph);
 
         Canvas._drawingGraph.edges.forEach((edge) => {
             Canvas.drawEdge(edge[0], edge[1]);
@@ -193,7 +193,8 @@ export default class Canvas {
         const drawingMap = new Map<string, DrawingRect>();
 
         graph.vertices.forEach((vertex) => {
-            const rect = new DrawingRect(Canvas.width / 2, Canvas.height / 2, vertex);
+            const randomPosition = new Point(Canvas.width * Math.random(), Canvas.height * Math.random());
+            const rect = new DrawingRect(randomPosition.x, randomPosition.y, vertex);
             rect.fill = 'plum';
             drawingGraph.insertVertex(rect);
             drawingMap.set(vertex, rect);

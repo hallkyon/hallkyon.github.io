@@ -3,15 +3,15 @@
 ```mermaid
 classDiagram
 
-class EadesEmbedder {
+class Embedder {
 	-_c0: number
 	-_c1: number
 	-_c2: number
 	-_c3: number
 	-_c4: number
-	
+
 	-_center: Point
-	
+
 	-calculateCenterScalar(distance: number) number
 	-calculateSpringScalar(distance: number) number
 	-calculateRepulsionScalar(distance: number) number
@@ -21,7 +21,7 @@ class EadesEmbedder {
 
 class Graph {
 	-_adjacencyList: Map< Type, Type[] >
-	
+
 	+insertVertex(vertex: Type) void
 	+insertDirectedEdge(vertexA: Type, vertexB: Type) void
 	+insertUndirectedEdge(vertexA: Type, vertexB: Type) void
@@ -49,7 +49,7 @@ class Canvas {
 class Point {
 	-_x: number
 	-_y: number
-	
+
 	+getDirection(to: Point) Vector
 	+getDistance(to: Point) number
 	+get x() number
@@ -61,7 +61,7 @@ class Point {
 class Vector {
 	-_x: number
 	-_y: number
-	
+
 	-isZeroVector(): boolean
 	+add(vector: Vector) Vector
 	+sub(vector: Vector) Vector
@@ -101,7 +101,7 @@ class DrawingLine {
 	-_pointA: Point
 	-_pointB: Point
 	-_svg: SVGLineElement
-	
+
 	-makeSvgLine(): SVGLineElement
 	+show() void
 	+hide() void
@@ -113,13 +113,13 @@ class DrawingLine {
 
 Canvas -- DrawingCircle
 Canvas -- DrawingLine
-Point -- EadesEmbedder
+Point -- Embedder
 Point -- Canvas
 Point -- DrawingCircle
 Point -- DrawingLine
 Point -- Vector
-Vector -- EadesEmbedder
-Canvas -- EadesEmbedder
+Vector -- Embedder
+Canvas -- Embedder
 Graph -- Canvas
-Graph -- EadesEmbedder
+Graph -- Embedder
 ```
