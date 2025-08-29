@@ -1,0 +1,26 @@
+= Vite
+
+What do I expect from Vite
+
+In my current development, I want to use the
+https://asciidoctor.org/[AsciiDoctor] module to parse my input und convert it
+into HTML. _AsciiDoctor_ is installed with npm, the node package module, so
+there not a direct way of using this module in a browser. Vite simplifies this
+for me by taking care that even in a browser environment I can use node modules.
+
+Vite was originally developed for https://vue.dev[Vue] but is now supporting a
+variety of other frameworks and Vanilla JavaScript/Typescript, which is
+especially important for me. Additionally it keeps the end result small with
+tree-shaking and minification.
+
+Scaffolding works with the following command:
+
+[code, bash]
+----
+npm create vite@latest <project> -- --template vanilla-ts
+----
+
+== See also
+
+. https://vite.new/vanilla-ts[Vite Online (Typescript template)]: Building Vite
+  projects in your browser. No need to install anything.

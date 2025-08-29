@@ -1,5 +1,5 @@
-import DrawingLineInterface from './interfaces/DrawingLineInterface.js';
-import Point from './Point.js';
+import type DrawingLineInterface from './interfaces/DrawingLineInterface';
+import Point from './Point';
 
 export default class DrawingLine implements DrawingLineInterface {
     private _pointA: Point;

@@ -1,6 +1,6 @@
-import DrawingRectInterface from './interfaces/DrawingRectInterface.js';
-import Point from './Point.js';
-import Canvas from './Canvas.js';
+import type DrawingRectInterface from './interfaces/DrawingRectInterface';
+import Point from './Point';
+import Canvas from './Canvas';
 
 export default class DrawingRect implements DrawingRectInterface {
     private readonly _position: Point = Canvas.center;

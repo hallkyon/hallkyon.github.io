@@ -1,8 +1,8 @@
-import DrawingRect from './DrawingRect.js';
-import DrawingLine from './DrawingLine.js';
-import Embedder from './Embedder.js';
-import Graph from './Graph.js';
-import Point from './Point.js';
+import DrawingRect from './DrawingRect';
+import DrawingLine from './DrawingLine';
+import Embedder from './Embedder';
+import Graph from './Graph';
+import Point from './Point';
 
 export default class Canvas {
     private static _drawingGraph: Graph<DrawingRect>;
@@ -55,7 +55,7 @@ export default class Canvas {
         Canvas.delta = Canvas.getSvgPoint(event);
     }
 
-    private static onPointerUp(event: PointerEvent): void {
+    private static onPointerUp(): void {
         Canvas._pointerDown = false;
     }
 

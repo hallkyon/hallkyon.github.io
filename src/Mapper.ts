@@ -1,4 +1,4 @@
-import Graph from './Graph.js';
+import Graph from './Graph';
 
 const titles: string[] = [
     '...trotzdem Ja zum Leben sagen: Ein Psychologe erlebt das Konzentrationslager',

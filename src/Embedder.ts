@@ -1,7 +1,7 @@
-import DrawingRect from './DrawingRect.js';
-import Graph from './Graph.js';
-import Matrix from './Matrix.js';
-import Vector from './Vector.js';
+import DrawingRect from './DrawingRect';
+import Graph from './Graph';
+import Matrix from './Matrix';
+import Vector from './Vector';
 
 export default class Embedder {
     private static readonly _edgeScalar = 1.2;

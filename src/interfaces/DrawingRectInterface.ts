@@ -1,5 +1,5 @@
-import PointInterface from './PointInterface.js';
-import DrawingInterface from './DrawingInterface.js';
+import type PointInterface from './PointInterface';
+import type DrawingInterface from './DrawingInterface';
 
 export default interface DrawingRectInterface extends DrawingInterface {
     get x(): number;

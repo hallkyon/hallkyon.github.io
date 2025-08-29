@@ -1,5 +1,5 @@
-import PointInterface from './interfaces/PointInterface.js';
-import Vector from './Vector.js';
+import type PointInterface from './interfaces/PointInterface';
+import Vector from './Vector';
 
 export default class Point implements PointInterface {
     private _x: number;

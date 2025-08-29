@@ -1,4 +1,4 @@
-import VectorInterface from 'VectorInterface.js';
+import type VectorInterface from './VectorInterface';
 
 export default interface PointInterface {
     getDirectedVector(to: PointInterface): VectorInterface;

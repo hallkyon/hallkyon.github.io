@@ -1,4 +1,4 @@
-import GraphInterface from './interfaces/GraphInterface';
+import type GraphInterface from './interfaces/GraphInterface';
 
 export default class Graph<Type> implements GraphInterface<Type> {
     private readonly _adjacencyList: Map<Type, Type[]>;
