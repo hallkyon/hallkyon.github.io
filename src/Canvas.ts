@@ -1,5 +1,5 @@
 import DrawingVertex from './DrawingVertex';
-import DrawingLine from './DrawingLine';
+import DrawingEdge from './DrawingEdge';
 import Embedder from './Embedder';
 import Graph from './Graph';
 import Point from './Point';
@@ -8,8 +8,8 @@ export default class Canvas {
     private static _drawingGraph: Graph<DrawingVertex>;
     private static readonly _edgeMap: Map<
         DrawingVertex,
-        Map<DrawingVertex, DrawingLine>
-    > = new Map<DrawingVertex, Map<DrawingVertex, DrawingLine>>();
+        Map<DrawingVertex, DrawingEdge>
+    > = new Map<DrawingVertex, Map<DrawingVertex, DrawingEdge>>();
 
     private static _pointerDown: boolean = false;
     private static delta: DOMPointReadOnly = new DOMPointReadOnly(0, 0);
@@ -101,7 +101,7 @@ export default class Canvas {
     private static getEdgeDrawing(
         rectA: DrawingVertex,
         rectB: DrawingVertex
-    ): DrawingLine {
+    ): DrawingEdge {
         const map = Canvas._edgeMap.get(rectA);
         if (undefined === map) {
             throw new Error(`No edge map found for point ${rectA.toString()}`);
@@ -223,9 +223,9 @@ export default class Canvas {
             }
             const rect = edge[0];
             const neighbors = Canvas._drawingGraph.getAdjacentVertices(rect);
-            const neighborsMap = new Map<DrawingVertex, DrawingLine>();
+            const neighborsMap = new Map<DrawingVertex, DrawingEdge>();
             neighbors.forEach((neighbor) => {
-                const line = new DrawingLine(rect.position, neighbor.position);
+                const line = new DrawingEdge(rect.position, neighbor.position);
                 line.stroke = 'black';
                 Canvas.addDrawing(line.svg);
                 neighborsMap.set(neighbor, line);
