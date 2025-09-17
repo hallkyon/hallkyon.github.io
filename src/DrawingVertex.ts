@@ -1,8 +1,8 @@
-import type DrawingRectInterface from './interfaces/DrawingRectInterface';
+import type DrawingVertexInterface from './interfaces/DrawingVertexInterface';
 import Point from './Point';
 import Canvas from './Canvas';
 
-export default class DrawingRect implements DrawingRectInterface {
+export default class DrawingVertex implements DrawingVertexInterface {
     private readonly _position: Point = Canvas.center;
     private readonly _maxLabelLength: number = 200;
     private _label!: string;
@@ -201,6 +201,6 @@ export default class DrawingRect implements DrawingRectInterface {
     }
 
     public toString(): string {
-        return `DrawingRect(${this.x}, ${this.y}, ${this.width}, ${this.height})`;
+        return `DrawingVertex(${this.x}, ${this.y}, ${this.width}, ${this.height})`;
     }
 }

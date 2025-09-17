@@ -1,4 +1,4 @@
-import DrawingRect from './DrawingRect';
+import DrawingVertex from './DrawingVertex';
 import Graph from './Graph';
 import Matrix from './Matrix';
 import Vector from './Vector';
@@ -26,8 +26,8 @@ export default class Embedder {
     }
 
     private static calculateForce(
-        rectA: DrawingRect,
-        rectB: DrawingRect,
+        rectA: DrawingVertex,
+        rectB: DrawingVertex,
         scalarFunction: (
             idealDistance: number,
             actualDistance: number
@@ -65,7 +65,7 @@ export default class Embedder {
         }
     }
 
-    public static embed(graph: Graph<DrawingRect>): Graph<DrawingRect> {
+    public static embed(graph: Graph<DrawingVertex>): Graph<DrawingVertex> {
         graph.vertices.forEach((rectA) => {
             let force = new Vector(0, 0);
             graph.getAdjacentVertices(rectA).forEach((rectB) => {

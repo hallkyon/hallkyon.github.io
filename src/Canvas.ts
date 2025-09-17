@@ -1,15 +1,15 @@
-import DrawingRect from './DrawingRect';
+import DrawingVertex from './DrawingVertex';
 import DrawingLine from './DrawingLine';
 import Embedder from './Embedder';
 import Graph from './Graph';
 import Point from './Point';
 
 export default class Canvas {
-    private static _drawingGraph: Graph<DrawingRect>;
+    private static _drawingGraph: Graph<DrawingVertex>;
     private static readonly _edgeMap: Map<
-        DrawingRect,
-        Map<DrawingRect, DrawingLine>
-    > = new Map<DrawingRect, Map<DrawingRect, DrawingLine>>();
+        DrawingVertex,
+        Map<DrawingVertex, DrawingLine>
+    > = new Map<DrawingVertex, Map<DrawingVertex, DrawingLine>>();
 
     private static _pointerDown: boolean = false;
     private static delta: DOMPointReadOnly = new DOMPointReadOnly(0, 0);
@@ -99,8 +99,8 @@ export default class Canvas {
     }
 
     private static getEdgeDrawing(
-        rectA: DrawingRect,
-        rectB: DrawingRect
+        rectA: DrawingVertex,
+        rectB: DrawingVertex
     ): DrawingLine {
         const map = Canvas._edgeMap.get(rectA);
         if (undefined === map) {
@@ -115,7 +115,7 @@ export default class Canvas {
         return line;
     }
 
-    private static drawEdge(rectA: DrawingRect, rectB: DrawingRect): void {
+    private static drawEdge(rectA: DrawingVertex, rectB: DrawingVertex): void {
         try {
             const dividendX =
                 rectA.left * rectB.left - rectA.right * rectB.right;
@@ -186,15 +186,15 @@ export default class Canvas {
         canvas.removeChild(drawing);
     }
 
-    private static createDrawingRectGraph(
+    private static createDrawingVertexGraph(
         graph: Graph<string>
-    ): Graph<DrawingRect> {
-        const drawingGraph = new Graph<DrawingRect>();
-        const drawingMap = new Map<string, DrawingRect>();
+    ): Graph<DrawingVertex> {
+        const drawingGraph = new Graph<DrawingVertex>();
+        const drawingMap = new Map<string, DrawingVertex>();
 
         graph.vertices.forEach((vertex) => {
             const randomPosition = new Point(Canvas.width * Math.random(), Canvas.height * Math.random());
-            const rect = new DrawingRect(randomPosition.x, randomPosition.y, vertex);
+            const rect = new DrawingVertex(randomPosition.x, randomPosition.y, vertex);
             rect.fill = 'plum';
             drawingGraph.insertVertex(rect);
             drawingMap.set(vertex, rect);
@@ -215,7 +215,7 @@ export default class Canvas {
     public static draw(graph: Graph<string>): void {
         Canvas.setViewBox();
 
-        Canvas._drawingGraph = Canvas.createDrawingRectGraph(graph);
+        Canvas._drawingGraph = Canvas.createDrawingVertexGraph(graph);
 
         Canvas._drawingGraph.edges.forEach((edge) => {
             if (Canvas._edgeMap.has(edge[0])) {
@@ -223,7 +223,7 @@ export default class Canvas {
             }
             const rect = edge[0];
             const neighbors = Canvas._drawingGraph.getAdjacentVertices(rect);
-            const neighborsMap = new Map<DrawingRect, DrawingLine>();
+            const neighborsMap = new Map<DrawingVertex, DrawingLine>();
             neighbors.forEach((neighbor) => {
                 const line = new DrawingLine(rect.position, neighbor.position);
                 line.stroke = 'black';
