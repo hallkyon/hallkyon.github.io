@@ -3,6 +3,14 @@
 
 A generic implementation of the graph datastructure.
 
+*Superclass:* `BaseClass`
+
+*Used By:*
+
+* `Canvas`
+* `Embedder`
+* `Mapper`
+
 == Attributes
 
 === `private readonly _adjacencyList: Map<Type, Type[]>`

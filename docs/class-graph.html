@@ -462,6 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
+<<<<<<< HEAD
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -486,6 +487,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </tbody>
 </table>
+=======
+<div class="paragraph">
+<p>A generic implementation of the graph datastructure.</p>
+</div>
+<div class="paragraph">
+<p><strong>Superclass:</strong> <code>BaseClass</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Used By:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Canvas</code></p>
+</li>
+<li>
+<p><code>Embedder</code></p>
+</li>
+<li>
+<p><code>Mapper</code></p>
+</li>
+</ul>
+</div>
+>>>>>>> e9cadb8 (work in progress)
 </div>
 </div>
 <div class="sect1">
@@ -505,6 +530,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_public_insertvertexvertex_type_void"><code>public insertVertex(vertex: Type): void</code></h3>
 <div class="paragraph">
+<<<<<<< HEAD
 <p>Insert a vertex of type &lt;Type&gt; to the graph. Every vertex inside
 the graph needs to be unique.</p>
 </div>
@@ -569,13 +595,58 @@ the graph needs to be unique.</p>
 <div class="sect2">
 <h3 id="_public_get_edges_type"><code>public get edges(): Type[][]</code></h3>
 
+=======
+<p>Insert a vertex of type <code>&lt;Type&gt;</code> to the graph. Every vertex inside
+the graph needs to be unique.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_public_insertdirectededgevertexa_type_vertexb_type_void"><code>public insertDirectedEdge(vertexA: Type, vertexB: Type): void</code></h3>
+<div class="paragraph">
+<p>Inserts a directed edge between two vertices. <code>vertexA</code> is the sources and <code>vertexB</code> is the destination.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_public_insertundirectededgevertexa_type_vertexb_type_void"><code>public insertUndirectedEdge(vertexA: Type, vertexB: Type): void</code></h3>
+<div class="paragraph">
+<p>Inserts an undirected edge between two vertices.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_public_getadjacentverticesvertex_type_type"><code>public getAdjacentVertices(vertex: Type): Type[]</code></h3>
+<div class="paragraph">
+<p>Get a list of vertices that are directly adjacent to the given vertex.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_public_getnonadjacentverticesvertex_type_type"><code>public getNonAdjacentVertices(vertex: Type): Type[]</code></h3>
+<div class="paragraph">
+<p>Get a list of vertices that are not directly adjacent to the given vertex.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_public_get_vertices_type"><code>public get vertices(): Type[]</code></h3>
+<div class="paragraph">
+<p>Get a list of all vertices in the graph.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_public_get_edges_type"><code>public get edges(): Type[][]</code></h3>
+<div class="paragraph">
+<p>Get a list of all edges of the graph.</p>
+</div>
+>>>>>>> e9cadb8 (work in progress)
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
+<<<<<<< HEAD
 Last updated 2025-09-19 12:30:59 UTC
+=======
+Last updated 2025-09-22 08:28:08 UTC
+>>>>>>> e9cadb8 (work in progress)
 </div>
 </div>
 </body>
