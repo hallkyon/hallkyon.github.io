@@ -1,0 +1,41 @@
+= Class: `Graph<Type>`
+:toc:
+
+A generic implementation of the graph datastructure.
+
+== Attributes
+
+=== `private readonly _adjacencyList: Map<Type, Type[]>`
+
+A list of vertices and their neighbors
+
+== Methods
+
+=== `public insertVertex(vertex: Type): void`
+
+Insert a vertex of type `<Type>` to the graph. Every vertex inside
+the graph needs to be unique.
+
+=== `public insertDirectedEdge(vertexA: Type, vertexB: Type): void`
+
+Inserts a directed edge between two vertices. `vertexA` is the sources and `vertexB` is the destination.
+
+=== `public insertUndirectedEdge(vertexA: Type, vertexB: Type): void`
+
+Inserts an undirected edge between two vertices.
+
+=== `public getAdjacentVertices(vertex: Type): Type[]`
+
+Get a list of vertices that are directly adjacent to the given vertex.
+
+=== `public getNonAdjacentVertices(vertex: Type): Type[]`
+
+Get a list of vertices that are not directly adjacent to the given vertex.
+
+=== `public get vertices(): Type[]`
+
+Get a list of all vertices in the graph.
+
+=== `public get edges(): Type[][]`
+
+Get a list of all edges of the graph.

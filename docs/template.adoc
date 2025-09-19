@@ -1,0 +1,104 @@
+= Class: `Graph`
+
+== Module: `module_name`
+
+[cols="1,3"]
+|===
+| **Description** | A short overview of what this module does, its responsibilities, and when to use it.
+| **Version Introduced** | X.Y.Z
+| **Dependencies** |
+* `utils.logging` — used for logging
+* `network.http` — used for API requests
+| **Related Modules** |
+* `auth` — handles user authentication
+* `config` — configuration loading
+|===
+
+
+== Class: `ClassName`
+
+[cols="1,3"]
+|===
+| **Description** | What this class represents or encapsulates, and the main use cases for it.
+| **Module** | `module_name`
+| **Superclass** | `BaseClass` (if applicable)
+| **Implements / Mixins** | `InterfaceA`, `MixinB`
+| **Thread-safety** | Yes / No
+| **Lifecycle** | How instances are created and destroyed.
+| **Depends On** |
+* `HelperClass` (from `helpers` module)
+* `DatabaseClient` (from `storage.db`)
+* `ExternalAPI` (external library)
+| **Used By** |
+* `Controller` class in `controllers` module
+* `Scheduler` class in `scheduler` module
+|===
+
+
+=== Attributes
+
+[cols="1,1,1,4", options="header"]
+|===
+| Name | Type | Read-Only | Description
+
+| `attribute1` | `String` | No | What it stores and any constraints.
+| `attribute2` | `List[Int]` | Yes | Immutable list of values.
+|===
+
+=== Methods
+
+[cols="1,3"]
+|===
+| **Overview** | List of public methods available in this class.
+|===
+
+==== `method_one(param1, param2=None)`
+
+[cols="1,1,1,1,4", options="header"]
+|===
+| Name | Type | Required | Default | Description
+
+| `param1` | `String` | Yes | — | First argument.
+| `param2` | `Integer` | No | `None` | Optional parameter.
+|===
+
+[cols="1,4"]
+|===
+| **Returns** | `ReturnType` — description of the return value.
+| **Raises** | `ValueError` if something goes wrong.
+|===
+
+Example:
+[source,python]
+----
+obj = ClassName()
+result = obj.method_one("value", param2=42)
+----
+
+==== `method_two()`
+
+[cols="1,4"]
+|===
+| **Returns** | `bool` — True if operation succeeded.
+| **Raises** | `IOError` if the resource cannot be accessed.
+|===
+
+
+=== Usage Example
+
+[source,python]
+----
+from module_name import ClassName
+
+obj = ClassName()
+obj.attribute1 = "hello"
+result = obj.method_one("abc")
+print(result)
+----
+
+
+=== Notes
+* Any performance considerations or gotchas.
+* Deprecation notices, if applicable.
+* Known limitations or TODOs.
+

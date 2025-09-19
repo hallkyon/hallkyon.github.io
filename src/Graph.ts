@@ -8,9 +8,10 @@ export default class Graph<Type> implements GraphInterface<Type> {
     }
 
     public insertVertex(vertex: Type): void {
-        if (false === this._adjacencyList.has(vertex)) {
-            this._adjacencyList.set(vertex, []);
+        if (this._adjacencyList.has(vertex)) {
+            throw new Error(`Vertex ${vertex} already exist in graph`);
         }
+        this._adjacencyList.set(vertex, []);
     }
 
     public insertDirectedEdge(vertexA: Type, vertexB: Type): void {

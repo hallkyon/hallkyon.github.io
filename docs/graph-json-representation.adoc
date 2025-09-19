@@ -1,0 +1,21 @@
+= Representing a Graph with JSON Notation
+
+[code, json]
+----
+{
+    "Books": {
+        "vertices": {
+            "0": {"title": "Three Body Problem", "link": "three-body-problem.html"},
+            "1": {"title": "The Dark Forest", "link": "the-dark-forest.html"},
+            "2": {"title": "Death's End", "link": "deaths-end.html"},
+            "3": {"title": "Liu Cixin", "link": "liu-cixin.html"}
+        },
+        "edges": {
+            "0": ["1"],
+            "1": ["2"],
+            "2": [],
+            "3": ["1", "2", "3"]
+        }
+    }
+}
+----
