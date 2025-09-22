@@ -1,5 +1,5 @@
-import Canvas from './Canvas.js';
-import Mapper from './Mapper.js';
+import Canvas from './Canvas';
+import Mapper from './Mapper';
 
 function main() {
     const graph = Mapper.getGraph();
