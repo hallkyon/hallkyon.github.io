@@ -1,12 +1,13 @@
+import Canvas from './Canvas';
 import DrawingVertex from './DrawingVertex';
 import Graph from './Graph';
 import Matrix from './Matrix';
 import Vector from './Vector';
 
 export default class Embedder {
-    private static readonly _edgeScalar = 1.2;
+    private static readonly _edgeScalar = 2;
     private static readonly _coolingFactor = 0.01;
-    private static readonly _negiligibleDistance = 300;
+    private static readonly _centerForceFactor = 0.7;
 
     private static calculateAttractionScalar(
         idealDistance: number,
@@ -19,21 +20,18 @@ export default class Embedder {
         idealDistance: number,
         actualDistance: number
     ): number {
-        if (actualDistance > Embedder._negiligibleDistance) {
-            return 0;
-        }
         return -(idealDistance * idealDistance) / actualDistance;
     }
 
     private static calculateForce(
-        rectA: DrawingVertex,
-        rectB: DrawingVertex,
+        vertexA: DrawingVertex,
+        vertexB: DrawingVertex,
         scalarFunction: (
             idealDistance: number,
             actualDistance: number
         ) => number
     ): Vector {
-        if (rectA === rectB) {
+        if (vertexA === vertexB) {
             return new Vector(0, 0);
         }
 
@@ -42,18 +40,18 @@ export default class Embedder {
             transformationMatrix.setValue(
                 0,
                 0,
-                (rectA.width + rectB.width) / 2
+                (vertexA.width + vertexB.width) / 2
             );
             transformationMatrix.setValue(
                 1,
                 1,
-                (rectA.height + rectB.height) / 2
+                (vertexA.height + vertexB.height) / 2
             );
 
-            const direction = rectA.position
-                .getDirectedVector(rectB.position)
+            const direction = vertexA.position
+                .getDirectedVector(vertexB.position)
                 .toUnitVector();
-            const actualDistance = rectA.position.getDistance(rectB.position);
+            const actualDistance = vertexA.position.getDistance(vertexB.position);
             const idealDistance = direction
                 .matrixMultiply(transformationMatrix)
                 .scale(Embedder._edgeScalar).magnitude;
@@ -66,37 +64,40 @@ export default class Embedder {
     }
 
     public static embed(graph: Graph<DrawingVertex>): Graph<DrawingVertex> {
-        graph.vertices.forEach((rectA) => {
+        graph.vertices.forEach((vertexA) => {
             let force = new Vector(0, 0);
-            graph.getAdjacentVertices(rectA).forEach((rectB) => {
+            // center force
+            const centerForce = vertexA.position.getDirectedVector(Canvas.center).scale(Embedder._centerForceFactor);
+            force = force.add(centerForce);
+            graph.getAdjacentVertices(vertexA).forEach((vertexB) => {
                 force = force.add(
                     this.calculateForce(
-                        rectA,
-                        rectB,
+                        vertexA,
+                        vertexB,
                         Embedder.calculateAttractionScalar
                     )
                 );
                 force = force.add(
                     this.calculateForce(
-                        rectA,
-                        rectB,
+                        vertexA,
+                        vertexB,
                         Embedder.calculateRepulsionScalar
                     )
                 );
             });
-            graph.getNonAdjacentVertices(rectA).forEach((rectB) => {
+            graph.getNonAdjacentVertices(vertexA).forEach((vertexB) => {
                 force = force.add(
                     this.calculateForce(
-                        rectA,
-                        rectB,
+                        vertexA,
+                        vertexB,
                         Embedder.calculateRepulsionScalar
                     )
                 );
             });
             force.scale(Embedder._coolingFactor);
 
-            rectA.x += force.x;
-            rectA.y += force.y;
+            vertexA.x += force.x;
+            vertexA.y += force.y;
         });
 
         return graph;

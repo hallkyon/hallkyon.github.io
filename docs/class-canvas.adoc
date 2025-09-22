@@ -1,0 +1,40 @@
+= Class: `Canvas`
+:toc:
+
+Class handling the visualization of the graph.
+
+*Superclass:* `BaseClass`
+
+*Used By:*
+
+* `main`
+* `app`
+* `DrawingVertex`
+* `Embedder`
+
+== Attributes
+
+=== `private static _drawingGraph: Graph<DrawingVertex>`
+=== `private static readonly _edgeMap: Map<DrawingVertex, Map<DrawingVertex, DrawingEdge>>`
+=== `private static _pointerDown: boolean`
+=== `private static delta: DOMPointReadOnly`
+
+== Methods
+
+=== `private static setViewBox(): void`
+=== `private static getSvgPoint(event: PointerEvent | WheelEvent): DOMPointReadOnly`
+=== `private static onPointerDown(event: PointerEvent): void`
+=== `private static onPointerUp(): void`
+=== `private static onPointerMove(event: PointerEvent): void`
+=== `private static onScroll(event: WheelEvent): void`
+=== `private static getDrawingEdge(vertexA: DrawingVertex, vertexB: DrawingVertex): DrawingEdge`
+=== `private static drawEdge(vertexA: DrawingVertex, vertexB: DrawingVertex): void`
+=== `private static animate(): void`
+=== `public static addDrawing(drawing: SVGElement): void`
+=== `public static removeDrawing(drawing: SVGElement): void`
+=== `private static createDrawingVertexGraph(graph: Graph<string>): Graph<DrawingVertex>`
+=== `public static draw(graph: Graph<string>): void`
+=== `public static get height(): number`
+=== `public static get width(): number`
+=== `public static get center(): Point`
+=== `private static get viewBox(): SVGRect`

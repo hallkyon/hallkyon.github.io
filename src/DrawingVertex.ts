@@ -5,8 +5,9 @@ import Canvas from './Canvas';
 export default class DrawingVertex implements DrawingVertexInterface {
     private readonly _position: Point = Canvas.center;
     private readonly _maxLabelLength: number = 200;
+    private readonly _fill = ' #BA3925 ';
+    private readonly _textColor = 'white'
     private _label!: string;
-    private _fill: string = 'white';
 
     private readonly _svgRect!: SVGRectElement;
     private readonly _svgText!: SVGTextElement;
@@ -20,6 +21,7 @@ export default class DrawingVertex implements DrawingVertexInterface {
         this._svgText.setAttribute('x', String(this._position.x));
         this._svgText.setAttribute('y', String(this._position.y));
         this._svgText.setAttribute('dy', '1em');
+        this._svgText.setAttribute('fill', this._textColor);
 
         this._svgRect = document.createElementNS(namespace, 'rect');
         this._svgRect.setAttribute('x', String(this._position.x));
@@ -181,23 +183,6 @@ export default class DrawingVertex implements DrawingVertexInterface {
     public set position(newPosition: Point) {
         this.x = newPosition.x;
         this.y = newPosition.y;
-    }
-
-    public get fill(): string {
-        return this._fill;
-    }
-
-    public set fill(newFill: string) {
-        this._fill = newFill;
-        this._svgRect.setAttribute('fill', newFill);
-    }
-
-    public get stroke(): string {
-        return this._svgRect.getAttribute('stroke') ?? '';
-    }
-
-    public set stroke(newStroke: string) {
-        this._svgRect.setAttribute('stroke', newStroke);
     }
 
     public toString(): string {

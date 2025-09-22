@@ -6,10 +6,7 @@ import Point from './Point';
 
 export default class Canvas {
     private static _drawingGraph: Graph<DrawingVertex>;
-    private static readonly _edgeMap: Map<
-        DrawingVertex,
-        Map<DrawingVertex, DrawingEdge>
-    > = new Map<DrawingVertex, Map<DrawingVertex, DrawingEdge>>();
+    private static readonly _edgeMap = new Map<DrawingVertex, Map<DrawingVertex, DrawingEdge>>();
 
     private static _pointerDown: boolean = false;
     private static delta: DOMPointReadOnly = new DOMPointReadOnly(0, 0);
@@ -98,69 +95,69 @@ export default class Canvas {
         }
     }
 
-    private static getEdgeDrawing(
-        rectA: DrawingVertex,
-        rectB: DrawingVertex
+    private static getDrawingEdge(
+        vertexA: DrawingVertex,
+        vertexB: DrawingVertex
     ): DrawingEdge {
-        const map = Canvas._edgeMap.get(rectA);
+        const map = Canvas._edgeMap.get(vertexA);
         if (undefined === map) {
-            throw new Error(`No edge map found for point ${rectA.toString()}`);
+            throw new Error(`No edge map found for point ${vertexA.toString()}`);
         }
-        const line = map.get(rectB);
+        const line = map.get(vertexB);
         if (undefined === line) {
             throw new Error(
-                `No line found for edge from ${rectA.toString()} to ${rectB.toString()}`
+                `No line found for edge from ${vertexA.toString()} to ${vertexB.toString()}`
             );
         }
         return line;
     }
 
-    private static drawEdge(rectA: DrawingVertex, rectB: DrawingVertex): void {
+    private static drawEdge(vertexA: DrawingVertex, vertexB: DrawingVertex): void {
         try {
             const dividendX =
-                rectA.left * rectB.left - rectA.right * rectB.right;
+                vertexA.left * vertexB.left - vertexA.right * vertexB.right;
             const divisorX =
-                rectA.left + rectB.left - (rectA.right + rectB.right);
+                vertexA.left + vertexB.left - (vertexA.right + vertexB.right);
             const x = dividendX / divisorX;
 
             const dividendY =
-                rectA.top * rectB.top - rectA.bottom * rectB.bottom;
+                vertexA.top * vertexB.top - vertexA.bottom * vertexB.bottom;
             const divisorY =
-                rectA.top + rectB.top - (rectA.bottom + rectB.bottom);
+                vertexA.top + vertexB.top - (vertexA.bottom + vertexB.bottom);
             const y = dividendY / divisorY;
 
             const optimalPoint = new Point(x, y);
-            const line = Canvas.getEdgeDrawing(rectA, rectB);
+            const line = Canvas.getDrawingEdge(vertexA, vertexB);
             const anchorA = optimalPoint.copy();
             const anchorB = optimalPoint.copy();
 
-            if (rectA.right < rectB.left) {
-                anchorA.x = rectA.right;
-                anchorB.x = rectB.left;
-            } else if (rectA.left > rectB.right) {
-                anchorA.x = rectA.left;
-                anchorB.x = rectB.right;
+            if (vertexA.right < vertexB.left) {
+                anchorA.x = vertexA.right;
+                anchorB.x = vertexB.left;
+            } else if (vertexA.left > vertexB.right) {
+                anchorA.x = vertexA.left;
+                anchorB.x = vertexB.right;
             }
 
-            if (rectA.top > rectB.bottom) {
-                anchorA.y = rectA.top;
-                anchorB.y = rectB.bottom;
-            } else if (rectA.bottom < rectB.top) {
-                anchorA.y = rectA.bottom;
-                anchorB.y = rectB.top;
+            if (vertexA.top > vertexB.bottom) {
+                anchorA.y = vertexA.top;
+                anchorB.y = vertexB.bottom;
+            } else if (vertexA.bottom < vertexB.top) {
+                anchorA.y = vertexA.bottom;
+                anchorB.y = vertexB.top;
             }
 
             line.pointA = anchorA;
             line.pointB = anchorB;
         } catch (error) {
             console.error(
-                `Error drawing edge from ${rectA.toString()} to ${rectB.toString()}:`,
+                `Error drawing edge from ${vertexA.toString()} to ${vertexB.toString()}:`,
                 error
             );
         }
     }
 
-    private static animate() {
+    private static animate(): void {
         Canvas._drawingGraph = Embedder.embed(Canvas._drawingGraph);
 
         Canvas._drawingGraph.edges.forEach((edge) => {
@@ -194,19 +191,18 @@ export default class Canvas {
 
         graph.vertices.forEach((vertex) => {
             const randomPosition = new Point(Canvas.width * Math.random(), Canvas.height * Math.random());
-            const rect = new DrawingVertex(randomPosition.x, randomPosition.y, vertex);
-            rect.fill = 'plum';
-            drawingGraph.insertVertex(rect);
-            drawingMap.set(vertex, rect);
+            const drawing = new DrawingVertex(randomPosition.x, randomPosition.y, vertex);
+            drawingGraph.insertVertex(drawing);
+            drawingMap.set(vertex, drawing);
         });
 
         graph.edges.forEach((edge) => {
-            const rectA = drawingMap.get(edge[0]);
-            const rectB = drawingMap.get(edge[1]);
-            if (undefined === rectA || undefined === rectB) {
+            const vertexA = drawingMap.get(edge[0]);
+            const vertexB = drawingMap.get(edge[1]);
+            if (undefined === vertexA || undefined === vertexB) {
                 throw new Error(`Edge ${edge} contains undefined points`);
             }
-            drawingGraph.insertDirectedEdge(rectA, rectB);
+            drawingGraph.insertDirectedEdge(vertexA, vertexB);
         });
 
         return drawingGraph;
@@ -221,16 +217,16 @@ export default class Canvas {
             if (Canvas._edgeMap.has(edge[0])) {
                 return; // Edge already exists
             }
-            const rect = edge[0];
-            const neighbors = Canvas._drawingGraph.getAdjacentVertices(rect);
+            const vertex = edge[0];
+            const neighbors = Canvas._drawingGraph.getAdjacentVertices(vertex);
             const neighborsMap = new Map<DrawingVertex, DrawingEdge>();
             neighbors.forEach((neighbor) => {
-                const line = new DrawingEdge(rect.position, neighbor.position);
+                const line = new DrawingEdge(vertex.position, neighbor.position);
                 line.stroke = 'black';
                 Canvas.addDrawing(line.svg);
                 neighborsMap.set(neighbor, line);
             });
-            Canvas._edgeMap.set(rect, neighborsMap);
+            Canvas._edgeMap.set(vertex, neighborsMap);
         });
 
         Canvas.animate();
