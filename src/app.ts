@@ -3,7 +3,8 @@ import Mapper from './Mapper';
 
 function main() {
     const graph = Mapper.getGraph();
-    Canvas.draw(graph);
+    const canvas = Canvas.getInstance();
+    canvas.draw(graph);
 }
 
 main();

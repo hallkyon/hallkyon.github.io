@@ -17,7 +17,7 @@ export default class DrawingEdge implements DrawingEdgeInterface {
         const shape = 'line';
         const svg = document.createElementNS(namespace, shape);
 
-        const stroke = 'white';
+        const stroke = 'black';
 
         svg.setAttribute('x1', String(this._pointA.x));
         svg.setAttribute('y1', String(this._pointA.y));

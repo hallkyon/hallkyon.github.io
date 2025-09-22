@@ -51,7 +51,9 @@ export default class Embedder {
             const direction = vertexA.position
                 .getDirectedVector(vertexB.position)
                 .toUnitVector();
-            const actualDistance = vertexA.position.getDistance(vertexB.position);
+            const actualDistance = vertexA.position.getDistance(
+                vertexB.position
+            );
             const idealDistance = direction
                 .matrixMultiply(transformationMatrix)
                 .scale(Embedder._edgeScalar).magnitude;
@@ -64,10 +66,13 @@ export default class Embedder {
     }
 
     public static embed(graph: Graph<DrawingVertex>): Graph<DrawingVertex> {
+        const center = Canvas.getInstance().center;
         graph.vertices.forEach((vertexA) => {
             let force = new Vector(0, 0);
             // center force
-            const centerForce = vertexA.position.getDirectedVector(Canvas.center).scale(Embedder._centerForceFactor);
+            const centerForce = vertexA.position
+                .getDirectedVector(center)
+                .scale(Embedder._centerForceFactor);
             force = force.add(centerForce);
             graph.getAdjacentVertices(vertexA).forEach((vertexB) => {
                 force = force.add(

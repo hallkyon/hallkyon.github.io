@@ -3,7 +3,7 @@ import Point from './Point';
 import Canvas from './Canvas';
 
 export default class DrawingVertex implements DrawingVertexInterface {
-    private readonly _position: Point = Canvas.center;
+    private readonly _position: Point;
     private readonly _maxLabelLength: number = 200;
     private readonly _fill = ' #BA3925 ';
     private readonly _textColor = 'white'
@@ -31,7 +31,9 @@ export default class DrawingVertex implements DrawingVertexInterface {
         this._svgGroup = document.createElementNS(namespace, 'g');
         this._svgGroup.appendChild(this._svgRect);
         this._svgGroup.appendChild(this._svgText);
-        Canvas.addDrawing(this._svgGroup);
+
+        const canvas = Canvas.getInstance();
+        canvas.addDrawing(this._svgGroup);
 
         this.label = label;
     }
