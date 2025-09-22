@@ -1,0 +1,21 @@
+= Class: `Embedder`
+:toc:
+
+This module calculates the positions of the vertices using a force directed approach. The algorithm used is simmilar to Eades' or Fuchtermann and Reingold's algorithm. 
+
+*Superclass:* `BaseClass`
+
+*Used By:*
+
+== Attributes
+
+=== `private static readonly _edgeScalar`
+=== `private static readonly _coolingFactor`
+=== `private static readonly _centerForceFactor`
+
+== Methods
+
+=== `private static calculateAttractionScalar(idealDistance: number, actualDistance: number): number`
+=== `private static calculateRepulsionScalar(idealDistance: number, actualDistance: number): number`
+=== `private static calculateForce(vertexA: DrawingVertex, vertexB: DrawingVertex, scalarFunction: (idealDistance: number, actualDistance: number) => number): Vector`
+=== `public static embed(graph: Graph<DrawingVertex>): Graph<DrawingVertex>`

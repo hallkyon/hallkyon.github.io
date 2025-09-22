@@ -22,7 +22,6 @@ Class handling the visualization of the graph.
 
 == Methods
 
-=== `public static getInstance(): Canvas`
 === `private getDomPoint(event: PointerEvent | WheelEvent): DOMPointReadOnly`
 === `private onPointerDown(event: PointerEvent): void`
 === `private onPointerUp(): void`
@@ -31,11 +30,10 @@ Class handling the visualization of the graph.
 === `private getDrawingEdge(vertexA: DrawingVertex, vertexB: DrawingVertex): DrawingEdge`
 === `private drawEdge(vertexA: DrawingVertex, vertexB: DrawingVertex): void`
 === `private animate(): void`
+=== `public static getInstance(): Canvas`
 === `public addDrawing(drawing: SVGElement): void`
 === `public removeDrawing(drawing: SVGElement): void`
-=== `private createDrawingVertexGraph(graph: Graph<string>): Graph<DrawingVertex>`
-=== `public draw(graph: Graph<string>): void`
+=== `public draw(graph: Graph<DrawingVertices>): void`
 === `public get height(): number`
 === `public get width(): number`
 === `public get center(): Point`
-=== `private get viewBox(): SVGRect`
