@@ -1,7 +1,7 @@
-import type DrawingEdgeInterface from './interfaces/DrawingEdgeInterface';
+import type DrawingInterface from './interfaces/DrawingInterface';
 import Point from './Point';
 
-export default class DrawingEdge implements DrawingEdgeInterface {
+export default class DrawingEdge implements DrawingInterface {
     private _pointA: Point;
     private _pointB: Point;
     private readonly _svg: SVGLineElement;

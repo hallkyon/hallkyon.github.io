@@ -1,7 +1,6 @@
-import type PointInterface from './interfaces/PointInterface';
 import Vector from './Vector';
 
-export default class Point implements PointInterface {
+export default class Point {
     private _x: number;
     private _y: number;
 

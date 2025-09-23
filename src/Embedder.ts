@@ -1,13 +1,13 @@
+import type DrawingVertex from './DrawingVertex';
+import type Graph from './Graph';
+import type Point from './Point';
 import Canvas from './Canvas';
-import DrawingVertex from './DrawingVertex';
-import Graph from './Graph';
 import Matrix from './Matrix';
 import Vector from './Vector';
 
 export default class Embedder {
     private static readonly _edgeScalar = 2;
     private static readonly _coolingFactor = 0.01;
-    private static readonly _centerForceFactor = 0.7;
 
     private static calculateAttractionScalar(
         idealDistance: number,
@@ -21,6 +21,11 @@ export default class Embedder {
         actualDistance: number
     ): number {
         return -(idealDistance * idealDistance) / actualDistance;
+    }
+
+    private static calculateCenterForce(vertex: DrawingVertex, center: Point): Vector {
+        const centerForceFactor = 0.7;
+        return vertex.position.getDirectedVector(center).toUnitVector().scale(centerForceFactor);
     }
 
     private static calculateForce(
@@ -69,11 +74,7 @@ export default class Embedder {
         const center = Canvas.getInstance().center;
         graph.vertices.forEach((vertexA) => {
             let force = new Vector(0, 0);
-            // center force
-            const centerForce = vertexA.position
-                .getDirectedVector(center)
-                .scale(Embedder._centerForceFactor);
-            force = force.add(centerForce);
+            force = force.add(this.calculateCenterForce(vertexA, center));
             graph.getAdjacentVertices(vertexA).forEach((vertexB) => {
                 force = force.add(
                     this.calculateForce(

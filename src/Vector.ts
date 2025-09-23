@@ -1,7 +1,6 @@
-import type VectorInterface from './interfaces/VectorInterface';
 import Matrix from './Matrix';
 
-export default class Vector extends Matrix implements VectorInterface {
+export default class Vector extends Matrix {
     constructor(x: number, y: number) {
         super(2, 1);
 

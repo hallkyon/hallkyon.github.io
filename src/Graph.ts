@@ -1,6 +1,4 @@
-import type GraphInterface from './interfaces/GraphInterface';
-
-export default class Graph<Type> implements GraphInterface<Type> {
+export default class Graph<Type> {
     private readonly _adjacencyList: Map<Type, Type[]>;
 
     constructor() {
