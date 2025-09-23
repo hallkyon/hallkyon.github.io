@@ -1,0 +1,24 @@
+= Class: `Matrix`
+:toc:
+
+The matrix datastructure.
+
+*Superclass:* `BaseClass`
+
+*Used By:*
+
+* `Vector`
+
+== Attributes
+
+=== `private readonly _data: number[][]`
+
+Two dimensional Array representing the matrix.
+
+== Methods
+
+=== `public getValue(row: number, column: number): number`
+=== `public setValue(row: number, column: number, value: number): void`
+=== `public get numRows(): number`
+=== `public get numColumns(): number`
+=== `public toString(): string`

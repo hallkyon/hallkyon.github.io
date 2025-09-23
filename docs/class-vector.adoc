@@ -1,0 +1,81 @@
+= Class: `Vector`
+:toc:
+
+*Superclass:* `Matrix`
+
+*Used By:*
+
+* `Point`
+* `Embedder`
+
+== Methods
+
+=== `public isZeroVector(): boolean`
+
+Checks, if the vector is a zero vector `(0,0)`.
+
+=== `public add(vector: Vector): this`
+
+Vector addition.
+
+=== `public sub(vector: Vector): this`
+
+Vector substraction.
+
+=== `public scale(scalar: number): this`
+
+Scalar multiplication.
+
+[NOTE]
+Throws an error if argument is not finite (not `NaN` or `Infinite`).
+
+=== `public toUnitVector(): this`
+
+Transforms the vector into one with magnitude 1 without changing its orientation.
+
+[NOTE]
+`this` is not allowed to be a zero vector `(0,0)`. Otherwise an error is thrown.
+
+=== `public dotProduct(vector: Vector): number`
+
+Dot product.
+
+=== `public projectionOn(vector: Vector): Vector`
+
+Returns a new `Vector` which is the projection of `this` onto `vector`.
+
+[NOTE]
+`this` is not allowed to be a zero vector `(0,0)`. Otherwise an error is thrown.
+
+=== `public matrixMultiply(matrix: Matrix): this`
+
+Matrix multiplication.
+
+[NOTE]
+The matrix needs to be a 2x2 matrix. Otherwise an error is thrown.
+
+=== `public get magnitude(): number`
+
+Returns the length of the vector.
+
+=== `public get x(): number`
+
+Returns the `x` component.
+
+=== `public set x(newX: number)`
+
+Sets the `x` component.
+
+[NOTE]
+Throws an error if argument is not finite (not `NaN` or `Infinite`).
+
+=== `public get y(): number`
+
+Returns the `y` component.
+
+=== `public set y(newY: number)`
+
+Sets the `x` component.
+
+[NOTE]
+Throws an error if argument is not finite (not `NaN` or `Infinite`).

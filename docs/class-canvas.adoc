@@ -15,10 +15,12 @@ Class handling the visualization of the graph.
 
 === `private static _instance: Canvas`
 === `private _canvas: HTMLElement`
-=== `private _drawingGraph: Graph<DrawingVertex>`
+=== `private _graph: Graph<DrawingVertex>`
 === `private readonly _edgeMap: Map<DrawingVertex, Map<DrawingVertex, DrawingEdge>>`
 === `private _pointerDown: boolean`
 === `private _domPoint: DOMPointReadOnly`
+
+For zooming and panning the distance between two points, while considering the viewBox, needs to be calculated. Using `DOMPointReadOnly` objects for this makes it easier, because this object is affected by the viewBox too. 
 
 == Methods
 
@@ -27,13 +29,16 @@ Class handling the visualization of the graph.
 === `private onPointerUp(): void`
 === `private onPointerMove(event: PointerEvent): void`
 === `private onScroll(event: WheelEvent): void`
+=== `private addDrawing(drawing: SVGElement): void
 === `private getDrawingEdge(vertexA: DrawingVertex, vertexB: DrawingVertex): DrawingEdge`
 === `private drawEdge(vertexA: DrawingVertex, vertexB: DrawingVertex): void`
 === `private animate(): void`
 === `public static getInstance(): Canvas`
-=== `public addDrawing(drawing: SVGElement): void`
-=== `public removeDrawing(drawing: SVGElement): void`
 === `public draw(graph: Graph<DrawingVertices>): void`
 === `public get height(): number`
 === `public get width(): number`
 === `public get center(): Point`
+
+== Behaviours
+
+The Canvas only supports two behaviours: Panning and zooming. Both are implemented by the `CanvasEvents` module.
