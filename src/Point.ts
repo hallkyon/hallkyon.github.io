@@ -42,6 +42,9 @@ export default class Point {
     }
 
     public set x(newX: number) {
+        if (false === isFinite(newX)) {
+            throw new Error(`Invalid argument: ${newX}`);
+        }
         this._x = newX;
     }
 
@@ -50,6 +53,9 @@ export default class Point {
     }
 
     public set y(newY: number) {
+        if (false === isFinite(newY)) {
+            throw new Error(`Invalid argument: ${newY}`);
+        }
         this._y = newY;
     }
 }

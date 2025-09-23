@@ -23,9 +23,15 @@ export default class Embedder {
         return -(idealDistance * idealDistance) / actualDistance;
     }
 
-    private static calculateCenterForce(vertex: DrawingVertex, center: Point): Vector {
+    private static calculateCenterForce(
+        vertex: DrawingVertex,
+        center: Point
+    ): Vector {
         const centerForceFactor = 0.7;
-        return vertex.position.getDirectedVector(center).toUnitVector().scale(centerForceFactor);
+        return vertex.position
+            .getDirectedVector(center)
+            .toUnitVector()
+            .scale(centerForceFactor);
     }
 
     private static calculateForce(
@@ -71,19 +77,20 @@ export default class Embedder {
     }
 
     public static embed(graph: Graph<DrawingVertex>): Graph<DrawingVertex> {
-        const center = Canvas.getInstance().center;
         graph.vertices.forEach((vertexA) => {
             let force = new Vector(0, 0);
-            force = force.add(this.calculateCenterForce(vertexA, center));
+            force.add(
+                this.calculateCenterForce(vertexA, Canvas.getInstance().center)
+            );
             graph.getAdjacentVertices(vertexA).forEach((vertexB) => {
-                force = force.add(
+                force.add(
                     this.calculateForce(
                         vertexA,
                         vertexB,
                         Embedder.calculateAttractionScalar
                     )
                 );
-                force = force.add(
+                force.add(
                     this.calculateForce(
                         vertexA,
                         vertexB,
@@ -92,7 +99,7 @@ export default class Embedder {
                 );
             });
             graph.getNonAdjacentVertices(vertexA).forEach((vertexB) => {
-                force = force.add(
+                force.add(
                     this.calculateForce(
                         vertexA,
                         vertexB,

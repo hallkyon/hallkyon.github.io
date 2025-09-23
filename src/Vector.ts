@@ -62,7 +62,7 @@ export default class Vector extends Matrix {
         );
     }
 
-    public matrixMultiply(matrix: Matrix): Vector {
+    public matrixMultiply(matrix: Matrix): this {
         if (matrix.numRows !== 2 || matrix.numColumns !== 2) {
             throw new Error(
                 `Matrix must be 2x2 for vector transformation, got ${matrix.numRows}x${matrix.numColumns}`
@@ -72,7 +72,10 @@ export default class Vector extends Matrix {
             this.x * matrix.getValue(0, 0) + this.y * matrix.getValue(0, 1);
         const y =
             this.x * matrix.getValue(1, 0) + this.y * matrix.getValue(1, 1);
-        return new Vector(x, y);
+
+        this.x = x;
+        this.y = y;
+        return this;
     }
 
     public get magnitude(): number {
@@ -84,6 +87,9 @@ export default class Vector extends Matrix {
     }
 
     public set x(newX: number) {
+        if (false === isFinite(newX)) {
+            throw new Error(`Invalid argument: ${newX}`);
+        }
         this.setValue(0, 0, newX);
     }
 
@@ -92,6 +98,9 @@ export default class Vector extends Matrix {
     }
 
     public set y(newY: number) {
+        if (false === isFinite(newY)) {
+            throw new Error(`Invalid argument: ${newY}`);
+        }
         this.setValue(1, 0, newY);
     }
 }

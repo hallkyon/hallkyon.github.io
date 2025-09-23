@@ -9,10 +9,7 @@ export default class Canvas {
 
     private readonly _canvas: HTMLElement;
     private readonly _viewBox!: SVGRect;
-    private readonly _drawingEdges = new Map<
-        DrawingVertex,
-        Map<DrawingVertex, DrawingEdge>
-    >();
+    private readonly _drawingEdges = new Map<DrawingVertex, Map<DrawingVertex, DrawingEdge>>();
     private _graph!: Graph<DrawingVertex>;
     private _domPoint: DOMPointReadOnly = new DOMPointReadOnly(0, 0);
     private _pointerDown: boolean = false;

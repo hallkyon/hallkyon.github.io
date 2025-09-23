@@ -1,8 +1,8 @@
-import type DrawingVertexInterface from './interfaces/DrawingVertexInterface';
+import type DrawingInterface from './interfaces/DrawingInterface';
 import Point from './Point';
 import Canvas from './Canvas';
 
-export default class DrawingVertex implements DrawingVertexInterface {
+export default class DrawingVertex implements DrawingInterface {
     private readonly _position: Point;
     private readonly _maxLabelLength: number = 200;
     private readonly _fill = ' #BA3925 ';
