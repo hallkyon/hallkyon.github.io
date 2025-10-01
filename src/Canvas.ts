@@ -53,7 +53,7 @@ export default class Canvas {
                 event.clientY
             );
             if (!(this._canvas instanceof SVGSVGElement)) {
-                throw new Error('Canvas element is not an SVGSVGElement');
+                throw new Error('Canvas is not an SVGSVGElement');
             }
             return cursorPosition.matrixTransform(
                 this._canvas.getScreenCTM()?.inverse()

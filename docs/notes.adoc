@@ -1,0 +1,14 @@
+= Parser
+
+First idea would be to add a single event if the user hits the _enter_ key. After that a map with regular expressions as keys and callbacks as values is searched. The callback is then transforming the input of the user.
+
+----
+/^=/:       handle_h1
+/^==/:      handle_h2
+/^===/:     handle_h3
+/^===/:     handle_h4
+/^====/:    handle_h5
+/^=====/:   handle_h6
+/^\w/:      handle_paragraph
+/^\[code\,/: handle_code   
+----
