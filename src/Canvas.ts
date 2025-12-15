@@ -9,10 +9,14 @@ export default class Canvas {
 
     private readonly _canvas: HTMLElement;
     private readonly _viewBox!: SVGRect;
-    private readonly _drawingEdges = new Map<DrawingVertex, Map<DrawingVertex, DrawingEdge>>();
+    private readonly _drawingEdges = new Map<
+        DrawingVertex,
+        Map<DrawingVertex, DrawingEdge>
+    >();
     private _graph!: Graph<DrawingVertex>;
-    private _domPoint: DOMPointReadOnly = new DOMPointReadOnly(0, 0);
-    private _pointerDown: boolean = false;
+    private _domPoint = new DOMPointReadOnly(0, 0);
+    private _pointerDown = false;
+    private _runAnimation = true;
 
     private constructor() {
         this._canvas = document.getElementById('svg') as HTMLElement;
@@ -53,7 +57,7 @@ export default class Canvas {
                 event.clientY
             );
             if (!(this._canvas instanceof SVGSVGElement)) {
-                throw new Error('Canvas is not an SVGSVGElement');
+                throw new TypeError('Canvas is not an SVGSVGElement');
             }
             return cursorPosition.matrixTransform(
                 this._canvas.getScreenCTM()?.inverse()
@@ -159,22 +163,28 @@ export default class Canvas {
 
             line.pointA = anchorA;
             line.pointB = anchorB;
-        } catch (error) {
-            console.error(
-                `Error drawing edge from ${vertexA.toString()} to ${vertexB.toString()}:`,
-                error
+        } catch {
+            throw new Error(
+                `Error drawing edge from ${vertexA.toString()} to ${vertexB.toString()}:`
             );
         }
     }
 
     private animate(): void {
-        this._graph = Embedder.embed(this._graph);
+        try {
+            if (this._runAnimation) {
+                this._graph = Embedder.embed(this._graph);
 
-        this._graph.edges.forEach((edge) => {
-            this.drawEdge(edge[0], edge[1]);
-        });
+                this._graph.edges.forEach((edge) => {
+                    this.drawEdge(edge[0], edge[1]);
+                });
 
-        requestAnimationFrame(this.animate.bind(this));
+                requestAnimationFrame(this.animate.bind(this));
+            }
+        } catch (error) {
+            this._runAnimation = false;
+            console.error(error);
+        }
     }
 
     public static getInstance(): Canvas {
@@ -186,10 +196,11 @@ export default class Canvas {
 
     public addDrawing(drawing: SVGElement): void {
         this._canvas.appendChild(drawing);
+        console.log(drawing);
     }
 
     public removeDrawing(drawing: SVGElement): void {
-        this._canvas.removeChild(drawing);
+        drawing.remove();
     }
 
     public draw(graph: Graph<DrawingVertex>): void {

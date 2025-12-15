@@ -28,6 +28,10 @@ export default class Point {
         return vectorB.sub(vectorA);
     }
 
+    public getDirection(to: Point): Vector {
+        return this.getDirectedVector(to).toUnitVector();
+    }
+
     public getDistance(to: Point): number {
         const vector = this.getDirectedVector(to);
         return vector.magnitude;

@@ -1,10 +1,10 @@
 import Canvas from './Canvas';
 import Mapper from './Mapper';
 
-function main() {
-    const graph = Mapper.getGraph();
+async function main() {
+    const graph = await Mapper.getGraph();
     const canvas = Canvas.getInstance();
     canvas.draw(graph);
 }
 
-main();
+await main();

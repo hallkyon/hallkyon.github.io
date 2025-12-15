@@ -7,7 +7,8 @@ import Vector from './Vector';
 
 export default class Embedder {
     private static readonly _edgeScalar = 2;
-    private static readonly _coolingFactor = 0.01;
+    private static readonly _coolingFactor = 0.0001;
+    private static readonly _centerForceFactor = 0.5;
 
     private static calculateAttractionScalar(
         idealDistance: number,
@@ -27,11 +28,9 @@ export default class Embedder {
         vertex: DrawingVertex,
         center: Point
     ): Vector {
-        const centerForceFactor = 0.7;
-        return vertex.position
-            .getDirectedVector(center)
-            .toUnitVector()
-            .scale(centerForceFactor);
+        const direction = vertex.position.getDirection(center);
+        const distance = vertex.position.getDistance(center);
+        return direction.scale(Embedder._centerForceFactor * distance * distance);
     }
 
     private static calculateForce(
@@ -59,12 +58,8 @@ export default class Embedder {
                 (vertexA.height + vertexB.height) / 2
             );
 
-            const direction = vertexA.position
-                .getDirectedVector(vertexB.position)
-                .toUnitVector();
-            const actualDistance = vertexA.position.getDistance(
-                vertexB.position
-            );
+            const direction = vertexA.position.getDirection(vertexB.position);
+            const actualDistance = vertexA.position.getDistance(vertexB.position);
             const idealDistance = direction
                 .matrixMultiply(transformationMatrix)
                 .scale(Embedder._edgeScalar).magnitude;

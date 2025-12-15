@@ -6,14 +6,15 @@ export default class DrawingVertex implements DrawingInterface {
     private readonly _position: Point;
     private readonly _maxLabelLength: number = 200;
     private readonly _fill = ' #BA3925 ';
-    private readonly _textColor = 'white'
+    private readonly _textColor = 'white';
     private _label!: string;
 
     private readonly _svgRect!: SVGRectElement;
     private readonly _svgText!: SVGTextElement;
     private readonly _svgGroup!: SVGGElement;
+    private readonly _anchor!: SVGAElement;
 
-    constructor(x: number, y: number, label: string) {
+    constructor(x: number, y: number, id: string, label: string) {
         const namespace = 'http://www.w3.org/2000/svg';
         this._position = new Point(x, y);
 
@@ -32,8 +33,12 @@ export default class DrawingVertex implements DrawingInterface {
         this._svgGroup.appendChild(this._svgRect);
         this._svgGroup.appendChild(this._svgText);
 
+        this._anchor = document.createElementNS(namespace, 'a');
+        this._anchor.setAttribute('href', `http://localhost:5173/${id}.html`);
+        this._anchor.appendChild(this._svgGroup);
+
         const canvas = Canvas.getInstance();
-        canvas.addDrawing(this._svgGroup);
+        canvas.addDrawing(this._anchor);
 
         this.label = label;
     }
@@ -78,7 +83,7 @@ export default class DrawingVertex implements DrawingInterface {
         let line: string[] = [];
 
         while (this._svgText.firstChild) {
-            this._svgText.removeChild(this._svgText.firstChild);
+            this._svgText.remove();
         }
         let tspan = document.createElementNS(namespace, 'tspan');
         this._svgText.appendChild(tspan);
@@ -144,7 +149,7 @@ export default class DrawingVertex implements DrawingInterface {
 
     public get width(): number {
         const width = this._svgRect.getAttribute('width');
-        return width ? parseFloat(width) : 0;
+        return width ? Number.parseFloat(width) : 0;
     }
 
     private set width(newWidth: number) {
@@ -157,12 +162,15 @@ export default class DrawingVertex implements DrawingInterface {
 
         const textTranslationX = (newWidth - textBoundingBox.width) / 2;
         const textTranslationY = (this.height - textBoundingBox.height) / 2;
-        this._svgText.setAttribute('transform', `translate(${textTranslationX}, ${textTranslationY})`);
+        this._svgText.setAttribute(
+            'transform',
+            `translate(${textTranslationX}, ${textTranslationY})`
+        );
     }
 
     public get height(): number {
         const height = this._svgRect.getAttribute('height');
-        return height ? parseFloat(height) : 0;
+        return height ? Number.parseFloat(height) : 0;
     }
 
     private set height(newHeight: number) {
@@ -175,7 +183,10 @@ export default class DrawingVertex implements DrawingInterface {
 
         const textTranslationX = (this.width - textBoundingBox.width) / 2;
         const textTranslationY = (newHeight - textBoundingBox.height) / 2;
-        this._svgText.setAttribute('transform', `translate(${textTranslationX}, ${textTranslationY})`);
+        this._svgText.setAttribute(
+            'transform',
+            `translate(${textTranslationX}, ${textTranslationY})`
+        );
     }
 
     public get position(): Point {

@@ -2,6 +2,7 @@
 
 First idea would be to add a single event if the user hits the _enter_ key. After that a map with regular expressions as keys and callbacks as values is searched. The callback is then transforming the input of the user.
 
+[source]
 ----
 /^=/:       handle_h1
 /^==/:      handle_h2
