@@ -11,8 +11,11 @@ export default class Matrix {
     }
 
     public getValue(row: number, column: number): number {
-        if (false === Number.isInteger(row) || false === Number.isInteger(column)) {
-            throw new Error(`Row or column must be an integer`);
+        if (
+            false === Number.isInteger(row) ||
+            false === Number.isInteger(column)
+        ) {
+            throw new TypeError(`Row or column must be an integer`);
         }
         if (
             row < 0 ||
@@ -26,8 +29,11 @@ export default class Matrix {
     }
 
     public setValue(row: number, column: number, value: number): void {
-        if (false === Number.isInteger(row) || false === Number.isInteger(column)) {
-            throw new Error(`Row or column must be an integer`);
+        if (
+            false === Number.isInteger(row) ||
+            false === Number.isInteger(column)
+        ) {
+            throw new TypeError(`Row or column must be an integer`);
         }
         if (
             row < 0 ||

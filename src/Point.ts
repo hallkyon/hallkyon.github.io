@@ -5,8 +5,8 @@ export default class Point {
     private _y: number;
 
     constructor(x: number, y: number) {
-        if (false === isFinite(x) || false === isFinite(y)) {
-            throw new Error(
+        if (false === Number.isFinite(x) || false === Number.isFinite(y)) {
+            throw new TypeError(
                 `Point constructor failed: Invalid arguments: ${x}, ${y}`
             );
         }
@@ -46,8 +46,8 @@ export default class Point {
     }
 
     public set x(newX: number) {
-        if (false === isFinite(newX)) {
-            throw new Error(`Invalid argument: ${newX}`);
+        if (false === Number.isFinite(newX)) {
+            throw new TypeError(`Invalid argument: ${newX}`);
         }
         this._x = newX;
     }
@@ -57,8 +57,8 @@ export default class Point {
     }
 
     public set y(newY: number) {
-        if (false === isFinite(newY)) {
-            throw new Error(`Invalid argument: ${newY}`);
+        if (false === Number.isFinite(newY)) {
+            throw new TypeError(`Invalid argument: ${newY}`);
         }
         this._y = newY;
     }

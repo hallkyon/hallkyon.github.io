@@ -196,7 +196,6 @@ export default class Canvas {
 
     public addDrawing(drawing: SVGElement): void {
         this._canvas.appendChild(drawing);
-        console.log(drawing);
     }
 
     public removeDrawing(drawing: SVGElement): void {

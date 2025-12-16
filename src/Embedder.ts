@@ -9,6 +9,7 @@ export default class Embedder {
     private static readonly _edgeScalar = 2;
     private static readonly _coolingFactor = 0.0001;
     private static readonly _centerForceFactor = 0.5;
+    private static readonly _maxForceMagnitude = 10;
 
     private static calculateAttractionScalar(
         idealDistance: number,
@@ -28,9 +29,17 @@ export default class Embedder {
         vertex: DrawingVertex,
         center: Point
     ): Vector {
-        const direction = vertex.position.getDirection(center);
-        const distance = vertex.position.getDistance(center);
-        return direction.scale(Embedder._centerForceFactor * distance * distance);
+        try {
+            const direction = vertex.position.getDirection(center);
+            const distance = vertex.position.getDistance(center);
+            return direction.scale(
+                Embedder._centerForceFactor * distance * distance
+            );
+        } catch {
+            return new Vector(Math.random(), Math.random())
+                .toUnitVector()
+                .scale(10);
+        }
     }
 
     private static calculateForce(
@@ -59,7 +68,9 @@ export default class Embedder {
             );
 
             const direction = vertexA.position.getDirection(vertexB.position);
-            const actualDistance = vertexA.position.getDistance(vertexB.position);
+            const actualDistance = vertexA.position.getDistance(
+                vertexB.position
+            );
             const idealDistance = direction
                 .matrixMultiply(transformationMatrix)
                 .scale(Embedder._edgeScalar).magnitude;
@@ -103,7 +114,9 @@ export default class Embedder {
                 );
             });
             force.scale(Embedder._coolingFactor);
-
+            if (force.magnitude > this._maxForceMagnitude) {
+                force = force.toUnitVector().scale(this._maxForceMagnitude);
+            }
             vertexA.x += force.x;
             vertexA.y += force.y;
         });

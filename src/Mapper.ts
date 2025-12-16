@@ -1,71 +1,69 @@
 import Graph from './Graph';
+import Canvas from './Canvas';
 import DrawingVertex from './DrawingVertex';
 
+interface Node {
+    id: string;
+    labels: string[];
+    properties: Record<string, string>;
+}
+
+interface Relationship {
+    id: string;
+    type: string;
+    from: string;
+    to: string;
+    properties: Record<string, string>;
+}
+
+interface GraphData {
+    nodes: Node[];
+    rels: Relationship[];
+}
 
 export default class Mapper {
-    private static toGraph(response: string): Graph<DrawingVertex> {
-        const drawingMap = new Map<string, DrawingVertex>();
+    private static toGraph(data: GraphData): Graph<DrawingVertex> {
         const graph = new Graph<DrawingVertex>();
-        const data = JSON.parse(response);
+        const drawingMap = new Map<string, DrawingVertex>();
 
-        console.log(data);
-
-        data['nodes'].forEach((vertex: { id: string; labels: string[], properties: Object}) => {
-            const titel = vertex.properties.title || 'No Title';
+        data.nodes.forEach((node: Node) => {
+            const title = node.properties.title || 'Untitled';
+            const canvas = Canvas.getInstance();
             const drawingVertex = new DrawingVertex(
-                0,
-                0,
-                vertex.id,
-                vertex.title
+                canvas.center.x,
+                canvas.center.y,
+                node.id,
+                title
             );
             graph.insertVertex(drawingVertex);
-            drawingMap.set(vertex.id, drawingVertex);
+            drawingMap.set(node.id, drawingVertex);
         });
 
-        data['edges'].forEach((edge: { [key: string]: string[] }) => {
-            Object.keys(edge).forEach((vertexA: string) => {
-                edge[vertexA].forEach((vertexB: string) => {
-                    const drawingA = drawingMap.get(vertexA);
-                    const drawingB = drawingMap.get(vertexB);
-                    if (drawingA === undefined || drawingB === undefined) {
-                        throw new Error('Vertices not found in map');
-                    }
-                    graph.insertUndirectedEdge(drawingA, drawingB);
-                });
-            });
+        data.rels.forEach((rel: Relationship) => {
+            const drawingA = drawingMap.get(rel.from);
+            const drawingB = drawingMap.get(rel.to);
+            if (drawingA === undefined || drawingB === undefined) {
+                throw new Error(`${rel.from} or ${rel.to} not found in map`);
+            }
+            graph.insertUndirectedEdge(drawingA, drawingB);
         });
 
         return graph;
     }
 
-    private static async getData() {
-        const url = 'http://localhost:5173/graph.json';
+    public static async getGraph(): Promise<Graph<DrawingVertex>> {
         try {
-            const response = await fetch(url);
+            const response = await fetch('graph.json');
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
-
-            const result = await response.json();
-            return JSON.stringify(result);
+            const result: GraphData = await response.json();
+            return this.toGraph(result);
         } catch (error) {
             console.error(
                 error instanceof Error ? error.message : String(error)
             );
-        }
-    }
-
-    public static async getGraph(): Promise<Graph<DrawingVertex>> {
-        try {
-            const graph = await this.getData();
-            if (graph === undefined) {
-                throw new Error('Failed to fetch graph data');
-            }
-            return this.toGraph(graph);
-        } catch {
-            throw new Error(
-                '500 Internal Server Error: Using default graph data.'
-            );
+            throw error;
         }
     }
 }

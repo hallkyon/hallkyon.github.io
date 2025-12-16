@@ -1,41 +1,44 @@
 import Matrix from './Matrix';
 
-export default class Vector extends Matrix {
-    constructor(x: number, y: number) {
-        super(2, 1);
+export default class Vector {
+    private _x: number;
+    private _y: number;
 
-        if (false === isFinite(x) || false === isFinite(y)) {
-            throw new Error(
+    constructor(x: number, y: number) {
+        if (false === Number.isFinite(x) || false === Number.isFinite(y)) {
+            throw new TypeError(
                 `Vector constructor failed: Invalid arguments: ${x}, ${y}`
             );
         }
 
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
     }
 
     private isZeroVector(): boolean {
-        return this.x === 0 && this.y === 0;
+        return this._x === 0 && this._y === 0;
     }
 
     public add(vector: Vector): this {
-        this.x += vector.x;
-        this.y += vector.y;
+        this._x += vector.x;
+        this._y += vector.y;
         return this;
     }
 
     public sub(vector: Vector): this {
-        this.x -= vector.x;
-        this.y -= vector.y;
+        this._x -= vector.x;
+        this._y -= vector.y;
         return this;
     }
 
     public scale(scalar: number): this {
-        if (false === isFinite(scalar)) {
-            throw new Error(`Vector scale failed: Invalid argument: ${scalar}`);
+        if (false === Number.isFinite(scalar)) {
+            throw new TypeError(
+                `Vector scale failed: Invalid argument: ${scalar}`
+            );
         }
-        this.x *= scalar;
-        this.y *= scalar;
+        this._x *= scalar;
+        this._y *= scalar;
         return this;
     }
 
@@ -44,13 +47,13 @@ export default class Vector extends Matrix {
             throw new Error('Cannot convert a zero vector to a unit vector');
         }
         const magnitude = this.magnitude;
-        this.x = this.x / magnitude;
-        this.y = this.y / magnitude;
+        this._x = this._x / magnitude;
+        this._y = this._y / magnitude;
         return this;
     }
 
     public dotProduct(vector: Vector): number {
-        return this.x * vector.x + this.y * vector.y;
+        return this._x * vector.x + this._y * vector.y;
     }
 
     public projectOn(nonZeroVector: Vector): Vector {
@@ -69,38 +72,42 @@ export default class Vector extends Matrix {
             );
         }
         const x =
-            this.x * matrix.getValue(0, 0) + this.y * matrix.getValue(0, 1);
+            this._x * matrix.getValue(0, 0) + this._y * matrix.getValue(0, 1);
         const y =
-            this.x * matrix.getValue(1, 0) + this.y * matrix.getValue(1, 1);
+            this._x * matrix.getValue(1, 0) + this._y * matrix.getValue(1, 1);
 
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
         return this;
     }
 
     public get magnitude(): number {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
+        return Math.sqrt(this._x * this._x + this._y * this._y);
     }
 
     public get x(): number {
-        return this.getValue(0, 0);
+        return this._x;
     }
 
     public set x(newX: number) {
-        if (false === isFinite(newX)) {
-            throw new Error(`Invalid argument: ${newX}`);
+        if (false === Number.isFinite(newX)) {
+            throw new TypeError(`Invalid argument: ${newX}`);
         }
-        this.setValue(0, 0, newX);
+        this._x = newX;
     }
 
     public get y(): number {
-        return this.getValue(1, 0);
+        return this._y;
     }
 
     public set y(newY: number) {
-        if (false === isFinite(newY)) {
-            throw new Error(`Invalid argument: ${newY}`);
+        if (false === Number.isFinite(newY)) {
+            throw new TypeError(`Invalid argument: ${newY}`);
         }
-        this.setValue(1, 0, newY);
+        this._y = newY;
+    }
+
+    public toString(): string {
+        return `${this._x}\n${this._y}`;
     }
 }
