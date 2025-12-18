@@ -66,6 +66,10 @@ func handleError(w http.ResponseWriter, instance string, status int) {
     json.NewEncoder(w).Encode(problemDetail)
 }
 
+func getId(r *http.Request) string {
+    return strings.TrimPrefix(r.URL.Path, "/graph/")
+}
+
 func getGraph(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     err := json.NewEncoder(w).Encode(graph)
